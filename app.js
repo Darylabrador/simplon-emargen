@@ -1,8 +1,8 @@
-var createError  = require('http-errors');
-var express      = require('express');
-var path         = require('path');
-var cookieParser = require('cookie-parser');
-var logger       = require('morgan');
+const createError  = require('http-errors');
+const express      = require('express');
+const path         = require('path');
+const cookieParser = require('cookie-parser');
+const logger       = require('morgan');
 
 const mongoose     = require('mongoose');
 const dotenv       = require('dotenv').config();
@@ -11,10 +11,10 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const flash        = require('connect-flash');
 const helmet       = require('helmet');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// error controller 
+const errorController = require('./controllers/errorController');
 
-var app = express();
+const app = express();
 
 // Add robust session handler
 const store = new MongoDBStore({
@@ -62,9 +62,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+app.use(errorController.get404);
 
 // general error handler (all except 404)
 app.use((error, req, res, next) => {
