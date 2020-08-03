@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const axios                = require('axios');
 
+
 /** get admin dashboard
  * @name getDashboard
  * @function
@@ -13,7 +14,8 @@ exports.getDashboard = async (req, res) => {
         res.render('index', {
             title: 'Dashboard',
             path: '/dashboard',
-            errorMessage: null
+            errorMessage: null,
+            page: ""
         })
     } catch (error) {
         const err = new Error(error);
@@ -44,6 +46,18 @@ exports.postSignOffShettPdf = async (req, res) => {
     }
 
     const { createdBy, intitule, dataSheetUrl } = req.body;
+    const imageFile = req.file;
+
+    if (!imageFile) {
+        return res.json({
+            success: false,
+            message: 'Veuillez ajouter un logo'
+        });
+    }
+
+    const imageUploaded = imageFile.path.replace("\\", "/"); // uniquement sous windows
+    const image = imageFile.path.split('public')[1];
+
     const infoUrl = dataSheetUrl.split('/')[5];
 
     try {
@@ -67,6 +81,7 @@ exports.postSignOffShettPdf = async (req, res) => {
         console.log(apprenants);
         console.log(joursFormation);
         console.log(formateur);
+        console.log(image);
 
     } catch (error) {
         res.json({

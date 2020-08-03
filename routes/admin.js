@@ -1,4 +1,5 @@
 const express  = require('express');
+const multer   = require('multer');
 const { body } = require('express-validator');
 
 const isAuth = require('../middleware/is-auth');
@@ -11,6 +12,28 @@ const router = express.Router();
  * @module routers/admin
  * @requires express express.Router()
  */
+
+// storage uploaded file
+const imageStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public/images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + file.originalname);
+    }
+});
+
+// filter image by extension
+const imageFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
+// multer middleware
+const uploadImage = multer({ storage: imageStorage, fileFilter: imageFilter }).single('image');
 
 /**
  * Return view with all generated pdf
@@ -34,6 +57,7 @@ router.get('/dashboard', isAuth, adminController.getDashboard);
 router.post(
     '/signoffsheet', 
     isAuth,
+    uploadImage,
     [
         body('createdBy', 'Une erreur est survenue, veuillez ressayé')
             .trim()

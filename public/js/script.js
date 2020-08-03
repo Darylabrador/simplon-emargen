@@ -37,24 +37,25 @@ function showError(message) {
 if (emargementForm !== null){
     emargementForm.addEventListener('submit', evt =>{
         evt.preventDefault();
+        const formData   = new FormData();
+
         let userId       = document.querySelector('#userId').value;
         let dataSheetUrl = document.querySelector('#url').value;
         let intitule     = document.querySelector('#intitule').value;
+        let image        = document.querySelector('#image').files[0];
         generateBtn.classList.add('d-none');
        
-        data = {
-            createdBy: userId,
-            intitule: intitule,
-            dataSheetUrl: dataSheetUrl
-        }
+        formData.set('createdBy', userId);
+        formData.set('intitule', intitule);
+        formData.set('dataSheetUrl', dataSheetUrl);
+        formData.set('image', image);
 
         $.ajax({
             type: "POST",
             url: "/admin/signoffsheet",
-            headers: {
-                'Content-Type' : 'application/json; charset=UTF-8'
-            },
-            data: JSON.stringify(data),
+            data: formData,
+            processData: false,
+            contentType: false,
             dataType: "json",
             success: function (response) {
                 if(response != null){
