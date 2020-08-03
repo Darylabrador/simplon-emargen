@@ -1,0 +1,44 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-1 px-4">
+
+        <a class="navbar-brand" href="<%= locals.isAuthenticated ? '/admin/dashboard' : '/' %>">
+            EmerGen
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <% if( locals.isAuthenticated ) { %>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <button class="nav-link btn px-3" data-toggle="modal" data-target="#modalEmergement">Nouvelle feuille d'émargement</button>
+                </li>
+            </ul>
+            <% } %>
+
+            <ul class="navbar-nav ml-auto">
+                <% if( locals.isAuthenticated ) { %>
+                    <li class="nav-item">
+                        <a class="nav-link btn px-3" href="/logout">Deconnexion</a>
+                    </li>
+                <% } else { %>
+
+                    <% if (page == 'login') { %>
+                        <li class="nav-item">
+                            <a class="nav-link btn px-3" href="/signup">Inscription</a>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                            <a class="nav-link btn px-3" href="/login">Se connecter</a>
+                        </li>
+                    <% } %>
+                    
+                <% } %>
+            </ul>
+
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,229 @@
+/* --- ELEMENTS GENERAUX ---- */
+
+h3, label {
+    color: #757575 !important;
+}
+
+h5 {
+    color: #757575 !important;
+}
+
+h5.detailTitre, h6.detailTitre{
+    color: #1F1F1F !important;
+}
+
+h4 {
+    color: #00C51F !important;
+}
+
+/* --- NAVIGATIONS ---- */
+
+#logo{
+    max-width: 100px;
+}
+
+a.nav-link {
+    color: #757575 !important;
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+}
+
+a.nav-link.activeLink {
+    color: black !important;
+    font-weight: bold !important;
+}
+
+a.nav-link.btn {
+    background-color: rgba(223, 223, 223, 0.3) !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+a.nav-link.btn:hover{
+    color: black !important;
+    border: 1px solid black !important;
+}
+
+/* --- PAGINATIONS ---- */
+
+li.page-item .page-link,  li.page-item:active{
+    color: white !important;
+    background: rgba(0, 0, 0, 0.45) !important;
+    border: 1px solid rgba(0, 0, 0, 0.25) !important;
+    border-radius: 5px;
+}
+
+li.page-item.active .page-link{
+    color: white !important;
+    background: rgba(0, 0, 0, 0.65) !important;
+    border: 1px solid rgba(0, 0, 0, 0.25) !important;
+    border-radius: 5px;
+}
+
+/* --- LOGIN / SIGNUP FORM ---- */
+
+.editContainer, .logSignForm{
+    background: rgba(223, 223, 223, 0.2);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.editBtn, .logSignBtn, .btnVote{
+    background: rgba(223, 223, 223, 0.8) !important;
+    border: 1px solid rgba(0, 0, 0, 0.35) !important;
+    border-radius: 5px !important;
+    color: #3D3D3D !important;
+    padding-left: 2em !important;
+    padding-right: 2em !important;
+}
+
+.logSignBtn:hover{
+    color: black !important;
+    background: rgba(160, 155, 155, 0.8) !important;
+    border: 1px solid black !important;
+}
+
+/* --- CARD VOTES ---- */
+
+.waiting{
+    color: #A07300;
+    font-weight: bold;
+}
+
+.inprogress{
+    color: #1B9FE9;
+    font-weight: bold;
+}
+
+.finished{
+    color: #0D9423;
+    font-weight: bold;
+}
+
+.resultBtn{
+    background: rgba(0, 197, 31, 0.6) !important;
+    font-weight: 600 !important;
+}
+
+.inprogressBar{
+    background: rgba(27, 159, 233, 0.6) !important;  
+    font-weight: 600 !important;
+}
+
+.waitingBar {
+    background: rgba(160, 115, 0, 0.6) !important;
+    font-weight: 600 !important;
+}
+
+.progress{
+    height: 25px !important;
+}
+
+.progress-bar{
+    font-size: 0.8rem !important;
+}
+
+.card-footer{
+    padding-top: 0.2rem !important;
+    padding-bottom: 0.2rem !important;
+}
+
+/* --- SINGLE VOTE ---- */
+
+#detail{
+    background: rgba(223, 223, 223, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.detail__subject{
+    background: rgba(223, 223, 223, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+/* --- FOOTER ---- */
+
+footer .footer{
+    background-color: #F8F9FA !important;
+}
+
+/* --- MEDIA QUERIES ---- */
+
+@media (max-width: 575.98px) { 
+    main {
+        min-height: calc(33px + 20vh);
+    }
+    
+    main .logSignForm, main .editContainer {
+        width: 100% !important;
+    }
+
+    .flashMessage{
+        font-size: calc(0.5em + 1vw);
+        width: 100% !important;
+    }
+
+    .editBtn, .logSignBtn, .btnVote {
+        font-size: calc(0.5em + 1vw);
+    }
+}
+
+@media (max-width: 767.98px) { 
+    main {
+        min-height: calc(33px + 73vh);
+    }
+
+    .logSignForm, .editContainer {
+        width: 80% !important;
+    }
+
+    .flashMessage{
+        font-size: calc(0.5em + 1vw);
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 991.98px) { 
+    main {
+        min-height: calc(33px + 73vh);
+    }
+
+    .logSignForm, .editContainer {
+        width: 80% !important;
+    }
+
+    .flashMessage{
+        font-size: calc(0.4em + 1vw);
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 1199.98px) { 
+    main {
+        min-height: calc(33px + 73vh);
+    }
+
+    .logSignForm, .editContainer {
+        width: 70% !important;
+    }
+}
+
+@media (min-width: 1200px) AND (max-width: 1799px){ 
+    main {
+        min-height: calc(28px + 64vh);
+    }
+
+    .logSignForm, .editContainer {
+        width: 50% !important;
+    }
+}
+
+@media (min-width: 1800px) {
+    main {
+        min-height: calc(35px + 71vh);
+    }
+
+    .logSignForm, .editContainer {
+        width: 50% !important;
+    }
+}

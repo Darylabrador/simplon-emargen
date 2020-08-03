@@ -11,8 +11,16 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const flash        = require('connect-flash');
 const helmet       = require('helmet');
 
+// mongoDB configutation
+var configDB = require('./config/database.js');
+
 // error controller 
 const errorController = require('./controllers/errorController');
+const User            = require('./models/users');
+
+// routes
+const authRoutes  = require('./routes/auth');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
@@ -26,8 +34,8 @@ const store = new MongoDBStore({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(helmet());
-app.disable('x-powered-by');
+// app.use(helmet());
+// app.disable('x-powered-by');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -39,7 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({
     name: 'default',
-    secret: 'asq4b4PRJhpo025HjqeZaEasdz68D',
+    secret: 'IdHmkktis01rEQ9BDwBgaFfEVV9mZuiIOUazV0Jd',
     resave: false,
     saveUninitialized: false,
     store: store,
@@ -52,14 +60,37 @@ app.use(
 
 app.use(flash());
 
+// pass variables locally
+app.use((req, res, next) => {
+  if (!req.session.userId) {
+    return next();
+  }
+  User.findById(req.session.userId)
+    .then(user => {
+      if (!user) {
+        return next();
+      }
+      req.user = user;
+      res.locals.currentUserId   = user._id;
+      res.locals.isAuthenticated = req.session.isLoggedIn;
+      next();
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      next(error);
+    });
+});
+
 app.use((req, res, next) => {
   res.locals.success_message = req.flash('success');
   res.locals.error_message   = req.flash('error');
   next();
 });
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// route handler
+app.use(authRoutes);
+app.use('/admin', adminRoutes);
 
 // catch 404 and forward to error handler
 app.use(errorController.get404);
@@ -70,8 +101,22 @@ app.use((error, req, res, next) => {
   res.status(error.httpStatusCode).render('error', {
     title: 'Une erreur est servenue',
     path: '/errors',
-    statusCode: error.httpStatusCode
+    statusCode: error.httpStatusCode,
+    page: ''
   });
 });
+
+// Connection to mongoDB using moongose
+mongoose.connect(configDB.url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false
+})
+  .then(() => {
+    console.log('connection to database established successfully');
+  })
+  .catch(err => {
+    console.log('An error occursed ', err);
+  });
 
 module.exports = app;
