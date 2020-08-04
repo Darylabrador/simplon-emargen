@@ -9,7 +9,6 @@ const dotenv       = require('dotenv').config();
 const session      = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const flash        = require('connect-flash');
-const helmet       = require('helmet');
 
 // mongoDB configutation
 var configDB = require('./config/database.js');
@@ -33,9 +32,6 @@ const store = new MongoDBStore({
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-// app.use(helmet());
-// app.disable('x-powered-by');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -110,7 +106,8 @@ app.use((error, req, res, next) => {
 mongoose.connect(configDB.url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useCreateIndex: true
 })
   .then(() => {
     console.log('connection to database established successfully');

@@ -1,3 +1,8 @@
+const fs          = require('fs');
+const path        = require('path');
+
+const PDFDocument = require('pdfkit');
+
 const { validationResult } = require('express-validator');
 const axios                = require('axios');
 
@@ -78,12 +83,48 @@ exports.postSignOffShettPdf = async (req, res) => {
             }
         });
 
-        console.log(apprenants);
-        console.log(joursFormation);
-        console.log(formateur);
-        console.log(image);
+
+        const signoffPDF = 'emargement-' + new Date().getTime() + '.pdf';
+        const signoffPath = path.join('data', 'pdf', signoffPDF);
+
+        const doc = new PDFDocument({
+            size: 'legal',
+            layout: 'landscape'
+        });
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename="' + signoffPDF + '"');
+
+        doc.pipe(fs.createWriteStream(signoffPath));
+        doc.pipe(res);
+
+        doc.image(imageUploaded, 80, 50, {width: 150});
+        doc.fontSize(16);
+        doc
+            .font('Helvetica-Bold')
+            .text('FEUILLE D\'EMARGEMENT -> PERIODE DE FORMATION', 250, 65);
+
+        doc.fontSize(9)
+
+        doc
+            .font('Helvetica-Bold')
+            .text(`Intitulé : ${intitule}`);
+
+        doc
+            .font('Helvetica-Bold')
+            .text(`Organisme de formation : `);
+
+        doc
+            .font('Helvetica')
+            .text('SIMPLON REUNION', 400, 95);
+    
+ 
+
+        doc.end();
+
 
     } catch (error) {
+        console.log(error);
         res.json({
             success: false,
             message: "Une erreur est survenue lors de la génération du PDF !"
