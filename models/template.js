@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId; 
 
-const signoffsheetSchema = mongoose.Schema({
+const templateSchema = mongoose.Schema({
     name: {
         type: String,
         require: true
@@ -20,4 +20,4 @@ const signoffsheetSchema = mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('signoffsheet', signoffsheetSchema);
+module.exports = mongoose.model('templates', templateSchema);

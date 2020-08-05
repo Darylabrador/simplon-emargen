@@ -9,6 +9,8 @@ const axios                = require('axios');
 const Template     = require('../models/template');
 const Signoffsheet = require('../models/signoffsheet');
 
+const pdfFunction = require('../utils/pdfGenerator');
+
 /** get admin dashboard
  * @name getDashboard
  * @function
@@ -134,15 +136,40 @@ exports.postSignOffShettPdf = async (req, res, next) => {
         });
 
         const templateInfo = await Template.findById(template);
-        const signoffPDF = 'emargement-' + new Date().getTime() + '.pdf';
-        const signoffPath = path.join('data', 'pdf', signoffPDF);
+        const signoffPDF   = 'emargement-' + new Date().getTime() + '.pdf';
+        const signoffPath  = path.join('data', 'pdf', signoffPDF);
 
-        const imageUpl = 'public/' + templateInfo.logo;
+        // stock data
+        const createdPdf = new Signoffsheet({
+            name: signoffPDF,
+            templateId: templateInfo._id
+        });
 
+        const newPdfFile = await createdPdf.save();
+
+        apprenants.forEach(appr =>{
+            newPdfFile.apprenants.push(appr);
+        })
+
+        joursFormation.forEach(jour =>{
+            newPdfFile.jours.push(jour);
+        })
+       
+        formateur.forEach(formatr =>{
+            newPdfFile.formateur.push(formatr);
+        })
+
+        await newPdfFile.save();
+
+        
+        // Créer le PDF
         const doc = new PDFDocument({
             size: 'A4',
-            layout: 'landscape'
+            layout: 'landscape',
+            autoFirstPage: false
         });
+
+        const imageUpl = 'public/' + templateInfo.logo;
 
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'inline; filename="' + signoffPDF + '"');
@@ -150,106 +177,26 @@ exports.postSignOffShettPdf = async (req, res, next) => {
         doc.pipe(fs.createWriteStream(signoffPath));
         doc.pipe(res);
 
-        doc.image(imageUpl, 60, 50, {width: 150});
-        doc.fontSize(14);
-        doc
-            .font('Helvetica-Bold')
-            .text('FEUILLE D\'EMARGEMENT -> PERIODE DE FORMATION', 230, 65);
-
-        doc.fontSize(8)
-
-        doc
-            .font('Helvetica-Bold')
-            .text(`Intitulé : ${templateInfo.intitule}`);
-
-        doc
-            .font('Helvetica-Bold')
-            .text(`Organisme de formation : `);
-
-        doc
-            .font('Helvetica')
-            .text(templateInfo.organisme, 340, 92);
-    
-        let xEntete = 200;
-        let yEntete = 160;
         
-        joursFormation.forEach(jour =>{
-            // La date
-            doc.lineJoin('miter')
-                .rect(xEntete, yEntete, 120, 22)
-                .stroke()
-                .font('Helvetica-Bold')
-                .text(`Le ${jour}`, xEntete + 30, yEntete + 8);
-                xEntete += 120; // pour décalage par rapport à la largeur
 
-        });
-
+        let xEntete    = 200;
+        let yEntete    = 160;
         let xApprenant = 30;
         let yApprenant = 182;
 
-        doc.lineJoin('miter')
-            .rect(xApprenant, yApprenant, 170, 30)
-            .stroke()
-            .font('Helvetica-Bold')
-            .text(`NOM PRENOM Apprenant`, 60, 195);
+        var compteurInitPlage = 0;
+        var compteurFinPlage  = 5;
 
-    
-        // Notion matin / apres midi
-        for (let i = 0; i < 10; i++){
-            doc.fontSize(6);
-            if(i%2 == 0) {
-                doc.lineJoin('miter')
-                    .rect(200 + (60 * i), yApprenant, 60, 30)
-                    .stroke()
-                    .font('Helvetica-Bold')
-                    .text('MATIN', 205 + (60 * i), yApprenant + 8, {width: 60, align: 'left'})
-                    .text('Durée en h : 4', 205 + (60 * i), yApprenant + 16, {width: 60, align: 'left'});
-            }else {
-                doc.lineJoin('miter')
-                    .rect(200 + (60 * i), yApprenant, 60, 30)
-                    .stroke()
-                    .font('Helvetica-Bold')
-                    .text('APRES-MIDI', 205 + (60 * i), yApprenant + 8, {width: 60, align: 'left'})
-                    .text('Durée en h : 3', 205 + (60 * i), yApprenant + 16, {width: 60, align: 'left'});
-            }
+        for(let y = 0; y < apprenants.length; y++){
+
+            if(y % 5 == 0) {
+                doc.addPage();
+                pdfFunction.headerPdf(doc, imageUpl, templateInfo.intitule, templateInfo.organisme);
+                pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, joursFormation, apprenants, formateur, compteurInitPlage, compteurFinPlage);
+                compteurInitPlage += 5;
+                compteurFinPlage  += 5;
+            } 
         }
-
-        apprenants.forEach(apprenant =>{
-            doc.fontSize(7);
-
-            // Les nom prenom des apprenants
-            doc.lineJoin('miter')
-                .rect(xApprenant, yApprenant + 30, 170, 40)
-                .stroke()
-                .font('Helvetica-Bold')
-                .text(`${apprenant}`, xApprenant + 8, yApprenant + 48);
-
-            // emplacement signature
-            for (let j = 0; j < 10; j++) {
-                doc.lineJoin('miter')
-                    .rect(xApprenant + (170 + 60 * j), yApprenant + 30, 60, 40)
-                    .stroke()
-            }
-            yApprenant += 40;
-        });
-
-        // nom prénom formateur
-        for(let k = 0; k < formateur.length; k++){
-            doc.fontSize(8);
-            doc.lineJoin('miter')
-                .rect(xApprenant + 170 + (120 * k), yApprenant + 30, 120, 60)
-                .stroke()
-                .font('Helvetica-Bold')
-                .text('NOM Prénom formateur.rice', xApprenant  + 170 + (120 * k), yApprenant + 38, {width: 120, align: 'center'})
-                .text(`${formateur[k]}`, xApprenant + 170 + (120 * k), yApprenant + 58, {width: 120, align: 'center'});
-        }
-
-        // Emplacement cachet de l'organisme de formation
-        doc.lineJoin('miter')
-            .rect(xApprenant + 550, yApprenant + 110, 220, 80)
-            .stroke()
-            .font('Helvetica')
-            .text(`Cachet organisme de formation :`, 585, yApprenant + 118);
 
         doc.end();
 
