@@ -79,9 +79,8 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
     }
 
     for (let m = compteurInitPlage; m < compteurFinPlage; m++){
-       
         // Les nom prenom des apprenants
-        if (apprenants[m] != undefined) {
+        if (apprenants[m]) {
             doc.fontSize(7);
 
             doc.lineJoin('miter')
@@ -99,25 +98,6 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
             yApprenant += 40;
         }
     }
-
-    // apprenants.forEach(apprenant => {
-    //     doc.fontSize(7);
-
-    //     // Les nom prenom des apprenants
-    //     doc.lineJoin('miter')
-    //         .rect(xApprenant, yApprenant + 30, 170, 40)
-    //         .stroke()
-    //         .font('Helvetica-Bold')
-    //         .text(`${apprenant}`, xApprenant + 8, yApprenant + 48);
-
-    //     // emplacement signature
-    //     for (let j = 0; j < 10; j++) {
-    //         doc.lineJoin('miter')
-    //             .rect(xApprenant + (170 + 60 * j), yApprenant + 30, 60, 40)
-    //             .stroke()
-    //     }
-    //     yApprenant += 40;
-    // });
 
     // nom prénom formateur
     for (let k = 0; k < formateur.length; k++) {

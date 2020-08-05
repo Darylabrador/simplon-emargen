@@ -174,10 +174,13 @@ exports.postSignOffShettPdf = async (req, res, next) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'inline; filename="' + signoffPDF + '"');
 
-        doc.pipe(fs.createWriteStream(signoffPath));
-        doc.pipe(res);
-
-        
+        doc.pipe(fs.createWriteStream(signoffPath).on("close", () => {
+            res.json({
+                success: true,
+                message: "Vous pouvez à présent consulter le PDF !"
+            });
+            doc.pipe(res);
+        }));
 
         let xEntete    = 200;
         let yEntete    = 160;
@@ -188,7 +191,6 @@ exports.postSignOffShettPdf = async (req, res, next) => {
         var compteurFinPlage  = 5;
 
         for(let y = 0; y < apprenants.length; y++){
-
             if(y % 5 == 0) {
                 doc.addPage();
                 pdfFunction.headerPdf(doc, imageUpl, templateInfo.intitule, templateInfo.organisme);
