@@ -6,23 +6,27 @@ const PDFDocument = require('pdfkit');
 const { validationResult } = require('express-validator');
 const axios                = require('axios');
 
-
+const Template     = require('../models/template');
+const Signoffsheet = require('../models/signoffsheet');
 
 /** get admin dashboard
  * @name getDashboard
  * @function
- * @param {string} voteId
- * @param {string} userId
  * @throws Will throw an error if one error occursed
  */
 exports.getDashboard = async (req, res) => {
     try {
+
+        const templateInfo = await Template.find();
+
         res.render('index', {
             title: 'Dashboard',
             path: '/dashboard',
             errorMessage: null,
-            page: ""
-        })
+            page: "",
+            templateInfo: templateInfo
+        });
+
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -30,14 +34,71 @@ exports.getDashboard = async (req, res) => {
     }
 };
 
+
+/** Handle post add template
+ * @name addtemplate
+ * @function
+ * @param {string} nom
+ * @param {string} intitule
+ * @param {string} organisme
+ * @param image logo de l'organisme
+ * @throws Will throw an error if one error occursed
+ */
+exports.addtemplate = async (req, res) => {
+    const { name, intitule, organisme } = req.body;
+    const imageFile = req.file;
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.json({
+            success: false,
+            message: errors.array()[0].msg
+        });
+    }
+
+    if (!imageFile) {
+        return res.json({
+            success: false,
+            message: 'Veuillez ajouter un logo'
+        });
+    }
+
+    const imageUploaded = imageFile.path.replace("\\", "/"); // uniquement sous windows
+    const image = imageFile.path.split('public')[1];
+
+    try {
+        const newTemplate = new Template({
+            name: name,
+            intitule: intitule,
+            organisme: organisme,
+            logo: image
+        });
+
+        await newTemplate.save();
+
+        return res.json({
+            success: true,
+            message: 'Le template a bien été ajouté'
+        });
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: 'Une erreur est survenue lors de l\'ajout du nouveau template'
+        });
+    }
+};
+
+
 /** handle post generated pdf
  * @name postSignOffShettPdf
  * @function
- * @param {string} voteId
- * @param {string} userId
+ * @param {object} template
+ * @param {string} dataSheetUrl
  * @throws Will throw an error if one error occursed
  */
-exports.postSignOffShettPdf = async (req, res) => {
+exports.postSignOffShettPdf = async (req, res, next) => {
     const apprenants     = [];
     const joursFormation = [];
     const formateur      = [];
@@ -51,20 +112,8 @@ exports.postSignOffShettPdf = async (req, res) => {
         });
     }
 
-    const { createdBy, intitule, dataSheetUrl } = req.body;
-    const imageFile = req.file;
-
-    if (!imageFile) {
-        return res.json({
-            success: false,
-            message: 'Veuillez ajouter un logo'
-        });
-    }
-
-    const imageUploaded = imageFile.path.replace("\\", "/"); // uniquement sous windows
-    const image = imageFile.path.split('public')[1];
-
-    const infoUrl = dataSheetUrl.split('/')[5];
+    const { template, dataSheet } = req.body;
+    const infoUrl = dataSheet.split('/')[5];
 
     try {
         const response = await axios.get(`https://spreadsheets.google.com/feeds/cells/${infoUrl}/1/public/full?alt=json`); 
@@ -84,9 +133,11 @@ exports.postSignOffShettPdf = async (req, res) => {
             }
         });
 
-
+        const templateInfo = await Template.findById(template);
         const signoffPDF = 'emargement-' + new Date().getTime() + '.pdf';
         const signoffPath = path.join('data', 'pdf', signoffPDF);
+
+        const imageUpl = 'public/' + templateInfo.logo;
 
         const doc = new PDFDocument({
             size: 'A4',
@@ -99,7 +150,7 @@ exports.postSignOffShettPdf = async (req, res) => {
         doc.pipe(fs.createWriteStream(signoffPath));
         doc.pipe(res);
 
-        doc.image(imageUploaded, 60, 50, {width: 150});
+        doc.image(imageUpl, 60, 50, {width: 150});
         doc.fontSize(14);
         doc
             .font('Helvetica-Bold')
@@ -109,7 +160,7 @@ exports.postSignOffShettPdf = async (req, res) => {
 
         doc
             .font('Helvetica-Bold')
-            .text(`Intitulé : ${intitule}`);
+            .text(`Intitulé : ${templateInfo.intitule}`);
 
         doc
             .font('Helvetica-Bold')
@@ -117,10 +168,10 @@ exports.postSignOffShettPdf = async (req, res) => {
 
         doc
             .font('Helvetica')
-            .text('SIMPLON REUNION', 340, 92);
+            .text(templateInfo.organisme, 340, 92);
     
         let xEntete = 200;
-        let yEntete = 200;
+        let yEntete = 160;
         
         joursFormation.forEach(jour =>{
             // La date
@@ -134,13 +185,13 @@ exports.postSignOffShettPdf = async (req, res) => {
         });
 
         let xApprenant = 30;
-        let yApprenant = 222;
+        let yApprenant = 182;
 
         doc.lineJoin('miter')
             .rect(xApprenant, yApprenant, 170, 30)
             .stroke()
             .font('Helvetica-Bold')
-            .text(`NOM PRENOM Apprenant`, 60, 234);
+            .text(`NOM PRENOM Apprenant`, 60, 195);
 
     
         // Notion matin / apres midi
@@ -195,10 +246,10 @@ exports.postSignOffShettPdf = async (req, res) => {
 
         // Emplacement cachet de l'organisme de formation
         doc.lineJoin('miter')
-            .rect(xApprenant + 550, yApprenant + 100, 220, 80)
+            .rect(xApprenant + 550, yApprenant + 110, 220, 80)
             .stroke()
             .font('Helvetica')
-            .text(`Cachet organisme de formation :`, 585, yApprenant + 108);
+            .text(`Cachet organisme de formation :`, 585, yApprenant + 118);
 
         doc.end();
 

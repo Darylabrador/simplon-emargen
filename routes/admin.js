@@ -47,6 +47,33 @@ router.get('/dashboard', isAuth, adminController.getDashboard);
 
 
 /**
+ * Create template for sign-off sheet PDF
+ * @name addtemplate POST
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} 'admin/addtemplate' - uri
+ * @param {function} adminController.addtemplate
+ */
+router.post(
+    '/addtemplate',
+    isAuth,
+    uploadImage,
+    [
+        body('name', 'Veuillez renseigner un nom pour le template')
+            .not()
+            .isEmpty(),
+        body('intitule', 'Veuillez renseigner l\'intitulé')
+            .not()
+            .isEmpty(),
+        body('organisme', 'Veuillez renseigner un organisme de formation')
+            .not()
+            .isEmpty(),
+    ],
+    adminController.addtemplate
+);
+
+
+/**
  * Generate Sign-off Sheet PDF
  * @name postSignOffShettPdf POST
  * @function
@@ -57,20 +84,7 @@ router.get('/dashboard', isAuth, adminController.getDashboard);
 router.post(
     '/signoffsheet', 
     isAuth,
-    uploadImage,
-    [
-        body('createdBy', 'Une erreur est survenue, veuillez ressayé')
-            .trim()
-            .not()
-            .isEmpty(),
-        body('intitule', 'Veuillez renseigné l\'intitulé')
-            .not()
-            .isEmpty(),
-        body('dataSheetUrl', 'Veuillez renseigner une URL valide')
-            .isURL()
-    ],
     adminController.postSignOffShettPdf
 );
-
 
 module.exports = router;

@@ -11,9 +11,14 @@
                 </div>
             </div>
         </main>
+        
     <% include ./includes/footer %>
-    <% include ./includes/modals %>
-    <script src="/js/script.js"></script>
+
+    <% include ./includes/modals , {templateInfo: templateInfo} %>
+    <% include ./includes/modalsTemplate %>
+
+    <script src="/js/modal.js"></script>
+    <script src="/js/modalTemplate.js"></script>
 </body>
 
 </html>

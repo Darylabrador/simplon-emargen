@@ -1,7 +1,7 @@
 let emargementForm   = document.querySelector('#emargementForm');
 let generateBtn      = document.querySelector('#generateBtn');
 let messageInterface = document.querySelector('#error');
-let data;
+let data, dataSend;
 
 /**
  * Show error message
@@ -37,25 +37,24 @@ function showError(message) {
 if (emargementForm !== null){
     emargementForm.addEventListener('submit', evt =>{
         evt.preventDefault();
-        const formData   = new FormData();
 
-        let userId       = document.querySelector('#userId').value;
+        let templateName = document.querySelector('#templateName').value;
         let dataSheetUrl = document.querySelector('#url').value;
-        let intitule     = document.querySelector('#intitule').value;
-        let image        = document.querySelector('#image').files[0];
+
         generateBtn.classList.add('d-none');
        
-        formData.set('createdBy', userId);
-        formData.set('intitule', intitule);
-        formData.set('dataSheetUrl', dataSheetUrl);
-        formData.set('image', image);
+        dataSend = {
+            template: templateName,
+            dataSheet: dataSheetUrl
+        }
 
         $.ajax({
             type: "POST",
             url: "/admin/signoffsheet",
-            data: formData,
-            processData: false,
-            contentType: false,
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            data: JSON.stringify(dataSend),
             dataType: "json",
             success: function (response) {
                 if(response != null){
