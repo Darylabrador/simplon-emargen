@@ -1,0 +1,56 @@
+<% include ../includes/head %>
+</head>
+
+<body>
+    <% include ../includes/navigation %>
+    <main class="container-fluid">
+        <div class="row no-gutters justify-content-center align-items-center mt-2 mb-5">
+            <form class="col-5 px-2 my-5" action="/admin/template/update" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="templateId" value="<%= templateSingle._id %>">
+                <div class="card border border-secondary">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center">
+                            <img class="img-fluid" src="<%= templateSingle.logo %>" alt="Logo <%= templateSingle.organisme %>" style="max-width: 250px;">
+                        </div>
+
+                        <% include ../includes/messageFlash %>
+
+                        <div class="form-group">
+                            <label>Modifier le logo</label>
+                            <input class="form-control" type="file" name="image">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nom template</label>
+                            <input type="text" class="form-control" name="nameUpdate" value="<%= templateSingle.name %>">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Organisme</label>
+                            <input type="text" class="form-control" name="organismeUpdate" value="<%= templateSingle.organisme %>">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Intitule</label>
+                            <input type="text" class="form-control" name="intituleUpdate" value="<%= templateSingle.intitule %>">
+                        </div>
+                    </div>
+
+                    <div class="card-footer border-top bg-secondary d-flex justify-content-center">
+                        <button type="submit" class="btn btn-outline-light px-5">Mettre à jour</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <% include ../includes/footer %>
+
+    <% include ../includes/modals , {templateInfo: templateInfo} %>
+    <% include ../includes/modalsTemplate %>
+
+    <script src="/js/modal.js"></script>
+    <script src="/js/modalTemplate.js"></script>
+</body>
+
+</html>

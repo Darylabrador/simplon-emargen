@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId; 
 
 const signoffsheetSchema = mongoose.Schema({
+    urlSheet: {
+        type: String,
+        require: true
+    },
     name: {
         type: String,
         require: true
@@ -19,6 +23,12 @@ const signoffsheetSchema = mongoose.Schema({
     },
     formateur: {
         type: Array
+    },
+    periodeDebut: {
+        type: String
+    },
+    periodeFin: {
+        type: String
     }
 }, { timestamps: true });
 

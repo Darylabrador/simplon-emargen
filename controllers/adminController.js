@@ -9,6 +9,7 @@ const axios                = require('axios');
 const Template     = require('../models/template');
 const Signoffsheet = require('../models/signoffsheet');
 
+const { deleteFile } = require('../utils/file');
 const pdfFunction = require('../utils/pdfGenerator');
 
 /** get admin dashboard
@@ -16,17 +17,72 @@ const pdfFunction = require('../utils/pdfGenerator');
  * @function
  * @throws Will throw an error if one error occursed
  */
-exports.getDashboard = async (req, res) => {
+exports.getDashboard = async (req, res, next) => {
     try {
+        const templateInfo    = await Template.find();
+        const signoffsheetPdf = await Signoffsheet.find().populate('templateId');
 
-        const templateInfo = await Template.find();
-
-        res.render('index', {
+        res.render('emargements/index', {
             title: 'Dashboard',
             path: '/dashboard',
             errorMessage: null,
-            page: "",
+            page: "dashboard",
+            templateInfo: templateInfo,
+            signoffsheetData: signoffsheetPdf
+        });
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+};
+
+
+/** get all templates
+ * @name getAllTemplate
+ * @function
+ * @throws Will throw an error if one error occursed
+ */
+exports.getAllTemplate = async (req, res, next) => {
+    try {
+        const templateInfo = await Template.find();
+        res.render('emargements/templates', {
+            title: 'Templates',
+            path: '/templates',
+            errorMessage: null,
+            page: "templates",
             templateInfo: templateInfo
+        });
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+};
+
+
+
+/** get specific templates
+ * @name getSpecificTemplate
+ * @function
+ * @throws Will throw an error if one error occursed
+ */
+exports.getSpecificTemplate = async (req, res, next) => {
+    const templateId = req.params.templateId;
+
+    try {
+        const template       = await Template.find();
+        const templateSingle = await Template.findById(templateId);
+    
+        res.render('emargements/editTemplate', {
+            title: 'Modification template',
+            path: '/templates',
+            errorMessage: null,
+            page: "templates",
+            templateInfo: template,
+            templateSingle: templateSingle
         });
 
     } catch (error) {
@@ -46,7 +102,7 @@ exports.getDashboard = async (req, res) => {
  * @param image logo de l'organisme
  * @throws Will throw an error if one error occursed
  */
-exports.addtemplate = async (req, res) => {
+exports.addtemplate = async (req, res, next) => {
     const { name, intitule, organisme } = req.body;
     const imageFile = req.file;
 
@@ -89,6 +145,86 @@ exports.addtemplate = async (req, res) => {
             success: false,
             message: 'Une erreur est survenue lors de l\'ajout du nouveau template'
         });
+    }
+};
+
+
+/** get update specific template
+ * @name updateTemplate
+ * @function
+ * @throws Will throw an error if one error occursed
+ */
+exports.updateTemplate = async (req, res, next) => {
+    const { templateId, nameUpdate, organismeUpdate, intituleUpdate} = req.body;
+    const logoUpdate = req.file;
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        req.flash('error', errors.array()[0].msg);
+        return res.redirect(`/admin/template/${templateId}`);
+    }
+
+    try {
+        const updatedTemplate = await Template.findById(templateId);
+
+        if (!updatedTemplate){
+            req.flash('error', 'Le template n\'a pas été trouvé');
+            return res.redirect(`/admin/templates`);
+        }
+
+        if (logoUpdate) {
+            const oldLogoDelete = 'public/' + updatedTemplate.logo;
+            deleteFile(oldLogoDelete);
+            const newLogoUploaded = logoUpdate.path.replace("\\", "/"); // uniquement sous windows
+            const newLogo         = logoUpdate.path.split('public')[1];
+            updatedTemplate.logo  = newLogo;
+        }
+
+        updatedTemplate.name      = nameUpdate;
+        updatedTemplate.intitule  = intituleUpdate;
+        updatedTemplate.organisme = organismeUpdate;
+        await updatedTemplate.save();
+
+        req.flash('success', 'Le template a bien été mise à jour !');
+        return res.redirect('/admin/templates');
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+};
+
+
+/** Delete specific template
+ * @name deleteTemplate
+ * @function
+ * @throws Will throw an error if one error occursed
+ */
+exports.deleteTemplate = async (req, res, next) => {
+    const { templateId } = req.body;
+
+    try {
+        const deletedTemplate = await Template.findById(templateId);
+
+        if (!deletedTemplate) {
+            req.flash('error', 'Le template n\'a pas été trouvé');
+            return res.redirect(`/admin/templates`);
+        }
+
+        const deletedLogo = 'public/' + deletedTemplate.logo;
+        deleteFile(deletedLogo);
+
+        await deletedTemplate.deleteOne();
+        
+        req.flash('success', 'Le template a bien été supprimé !');
+        return res.redirect('/admin/templates');
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
     }
 };
 
@@ -141,8 +277,11 @@ exports.postSignOffShettPdf = async (req, res, next) => {
 
         // stock data
         const createdPdf = new Signoffsheet({
+            urlSheet: `https://spreadsheets.google.com/feeds/cells/${infoUrl}/1/public/full?alt=json`,
             name: signoffPDF,
-            templateId: templateInfo._id
+            templateId: templateInfo._id,
+            periodeDebut: joursFormation[0],
+            periodeFin: joursFormation[joursFormation.length - 1]
         });
 
         const newPdfFile = await createdPdf.save();
@@ -211,3 +350,18 @@ exports.postSignOffShettPdf = async (req, res, next) => {
         return error;
     }
 };
+
+
+/**
+ * 
+ * @param {string} signoffId 
+ */
+exports.regeneratePdf = async (req, res, next) => {
+    try {
+        
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err); 
+    }
+}

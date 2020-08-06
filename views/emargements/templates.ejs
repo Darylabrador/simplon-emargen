@@ -1,0 +1,70 @@
+<% include ../includes/head %>
+</head>
+
+<body>
+    <% include ../includes/navigation %>
+
+
+    
+    <main class="container-fluid">
+
+        <div class="row no-gutters justify-content-center align-items-center">
+            <div class="col-4">
+                <% include ../includes/messageFlash %>
+            </div>
+        </div>
+
+        <div class="row no-gutters justify-content-center align-items-center py-5">
+
+            <% if (templateInfo.length == 0) { %>
+            <div class="d-flex justify-content-center w-100">
+                <h5 class="alert alert-info my-5"> Aucun template disponible ! </h5>
+            </div>
+            <% } else { %>
+
+            <div class="row no-gutters justify-content-center align-items-center">
+                <% templateInfo.forEach(template => { %>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center"><%= template.name %></h5>
+                            <hr>
+                            <div class="row">
+                                <div class="col-3">
+                                    <img class="img-fluid" src="<%= template.logo %>" alt="<%= template.organisme %>">
+                                </div>
+                                <div class="col">
+                                    <p class="card-text"><%= template.intitule %></p>
+                                    <p class="card-text"><%= template.organisme %></p>
+                                    <p class="card-text">Créer le
+                                        <%= new Date(template.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-around mt-3">
+                                <a href="/admin/template/<%= template._id %>" class="btn btn-primary">Modifier</a>
+                                <form action="/admin/template/delete/<%= template._id %>" method="POST">
+                                    <input type="hidden" name="templateId" value="<%= template._id %>">
+                                    <button type="submit" class="btn btn-danger"> Supprimer </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+            <% } %>
+        </div>
+    </main>
+
+    <% include ../includes/footer %>
+
+    <% include ../includes/modals , {templateInfo: templateInfo, info: info} %>
+    <% include ../includes/modalsTemplate %>
+
+    <script src="/js/modal.js"></script>
+    <script src="/js/modalTemplate.js"></script>
+</body>
+
+</html>

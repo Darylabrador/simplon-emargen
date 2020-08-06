@@ -87,4 +87,79 @@ router.post(
     adminController.postSignOffShettPdf
 );
 
+
+/**
+ * Generate Specific Sign-off Sheet PDF
+ * @name regeneratePdf POST
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} 'admin/signoffsheet/signoffId' - uri
+ * @param {function} adminController.regeneratePdf
+ */
+router.get('/signoffsheet/:signoffId', isAuth, adminController.regeneratePdf);
+
+
+/**
+ * Get all templates
+ * @name getAllTemplate GET
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} 'admin/templates' - uri
+ * @param {function} adminController.getAllTemplate
+ */
+router.get('/templates', isAuth, adminController.getAllTemplate);
+
+
+/**
+ * Get get Specific template
+ * @name getSpecificTemplate GET
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} 'admin/templates/templateId' - uri
+ * @param {function} adminController.getSpecificTemplate
+ */
+router.get('/template/:templateId', isAuth, adminController.getSpecificTemplate);
+
+
+/**
+ * Update Template
+ * @name updateTemplate POST
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} 'admin/template/update' - uri
+ * @param {function} adminController.updateTemplate
+ */
+router.post(
+    '/template/update',
+    isAuth,
+    uploadImage,
+    [
+        body('templateId', 'Une erreur est survenue veuillez reessayé !')
+            .not()
+            .isEmpty(),
+        body('nameUpdate', 'Le champ du nom du template ne peut pas être vide')
+            .not()
+            .isEmpty(),
+        body('intituleUpdate', 'L\'intitulé ne peut pas être vide')
+            .not()
+            .isEmpty(),
+        body('organismeUpdate', 'Le champ organisme de formation ne peut pas être vide')
+            .not()
+            .isEmpty(),
+    ],
+    adminController.updateTemplate
+);
+
+
+/**
+ * delete Template
+ * @name deleteTemplate POST
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} 'admin/template/delete/:templateId' - uri
+ * @param {function} adminController.deleteTemplate
+ */
+router.post('/template/delete/:templateId', isAuth, adminController.deleteTemplate);
+
+
 module.exports = router;
