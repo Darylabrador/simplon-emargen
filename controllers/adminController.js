@@ -217,7 +217,7 @@ exports.deleteTemplate = async (req, res, next) => {
         deleteFile(deletedLogo);
 
         await deletedTemplate.deleteOne();
-        
+
         req.flash('success', 'Le template a bien été supprimé !');
         return res.redirect('/admin/templates');
 
@@ -230,13 +230,13 @@ exports.deleteTemplate = async (req, res, next) => {
 
 
 /** handle post generated pdf
- * @name postSignOffShettPdf
+ * @name getDataFromSheet
  * @function
  * @param {object} template
  * @param {string} dataSheetUrl
  * @throws Will throw an error if one error occursed
  */
-exports.postSignOffShettPdf = async (req, res, next) => {
+exports.getDataFromSheet = async (req, res, next) => {
     const apprenants     = [];
     const joursFormation = [];
     const formateur      = [];
@@ -273,7 +273,6 @@ exports.postSignOffShettPdf = async (req, res, next) => {
 
         const templateInfo = await Template.findById(template);
         const signoffPDF   = 'emargement-' + new Date().getTime() + '.pdf';
-        const signoffPath  = path.join('data', 'pdf', signoffPDF);
 
         // stock data
         const createdPdf = new Signoffsheet({
@@ -300,49 +299,12 @@ exports.postSignOffShettPdf = async (req, res, next) => {
 
         await newPdfFile.save();
 
-        
-        // Créer le PDF
-        const doc = new PDFDocument({
-            size: 'A4',
-            layout: 'landscape',
-            autoFirstPage: false
+        res.json({
+            success: true,
+            message: "La feuille d'émargement est prête !"
         });
 
-        const imageUpl = 'public/' + templateInfo.logo;
-
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'inline; filename="' + signoffPDF + '"');
-
-        doc.pipe(fs.createWriteStream(signoffPath).on("close", () => {
-            res.json({
-                success: true,
-                message: "Vous pouvez à présent consulter le PDF !"
-            });
-            doc.pipe(res);
-        }));
-
-        let xEntete    = 200;
-        let yEntete    = 160;
-        let xApprenant = 30;
-        let yApprenant = 182;
-
-        var compteurInitPlage = 0;
-        var compteurFinPlage  = 5;
-
-        for(let y = 0; y < apprenants.length; y++){
-            if(y % 5 == 0) {
-                doc.addPage();
-                pdfFunction.headerPdf(doc, imageUpl, templateInfo.intitule, templateInfo.organisme);
-                pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, joursFormation, apprenants, formateur, compteurInitPlage, compteurFinPlage);
-                compteurInitPlage += 5;
-                compteurFinPlage  += 5;
-            } 
-        }
-
-        doc.end();
-
     } catch (error) {
-        console.log(error);
         res.json({
             success: false,
             message: "Une erreur est survenue lors de la génération du PDF !"
@@ -353,15 +315,104 @@ exports.postSignOffShettPdf = async (req, res, next) => {
 
 
 /**
- * 
+ * Synchronise Google Sheet and our app Sign-off Sheet
  * @param {string} signoffId 
  */
-exports.regeneratePdf = async (req, res, next) => {
+exports.synchronisationToSheet = async (req, res, next) => {
+    const { signoffId } = req.body;
+
     try {
+        const synchroInfo = await Signoffsheet.findById(signoffId);
+
+        if (!synchroInfo) {
+            req.flash('error', 'La feuile d\'émargement n\'a pas été trouvé !');
+            return res.redirect('/admin/dashboard');
+        }
+
+        synchroInfo.apprenants = [];
+        synchroInfo.jours      = [];
+        synchroInfo.formateur  = [];
+
+        const dataUpdate = await synchroInfo.save();
+
+        const response = await axios.get(dataUpdate.urlSheet);
+        const infoJson = response.data.feed.entry;
+
+        infoJson.forEach(data => {
+            if (data.gs$cell.col == 1 && data.gs$cell.row != 1) {
+                dataUpdate.apprenants.push(data.gs$cell.inputValue);
+            }
+
+            if (data.gs$cell.col != 1 && data.gs$cell.row == 1) {
+                dataUpdate.jours.push(data.gs$cell.inputValue);
+            }
+
+            if (data.gs$cell.col != 1 && data.gs$cell.row == 2) {
+                dataUpdate.formateur.push(data.gs$cell.inputValue);
+            }
+        });
+
+        await dataUpdate.save();
         
+        req.flash('success', 'La synchronisation a bien été faite !');
+        return res.redirect('/admin/dashboard');
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+/**
+ * generate SignOff sheet PDF
+ * @param {string} signoffId 
+ */
+exports.generatePdf = async (req, res, next) => {
+    const signoffId = req.params.signoffId;
+
+    try {
+        const signoffSheetData = await Signoffsheet.findById(signoffId).populate('templateId').exec();
+        const logoTemplate = path.join('public', signoffSheetData.templateId.logo);
+        const signoffPath  = path.join('data', 'pdf', signoffSheetData.name);
+
+        // Créer le PDF
+        const doc = new PDFDocument({
+            size: 'A4',
+            layout: 'landscape',
+            autoFirstPage: false
+        });
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'inline; filename="' + signoffSheetData.name + '"');
+
+        doc.pipe(fs.createWriteStream(signoffPath));
+        doc.pipe(res);
+
+        let xEntete = 200;
+        let yEntete = 160;
+        let xApprenant = 30;
+        let yApprenant = 182;
+
+        var compteurInitPlage = 0;
+        var compteurFinPlage = 5;
+
+        for (let y = 0; y < signoffSheetData.apprenants.length; y++) {
+            if (y % 5 == 0) {
+                doc.addPage();
+                pdfFunction.headerPdf(doc, logoTemplate, signoffSheetData.templateId.intitule, signoffSheetData.templateId.organisme);
+                pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.jours, signoffSheetData.apprenants, signoffSheetData.formateur, compteurInitPlage, compteurFinPlage);
+                compteurInitPlage += 5;
+                compteurFinPlage += 5;
+            }
+        }
+        doc.end();
+
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
         return next(err); 
     }
 }
+

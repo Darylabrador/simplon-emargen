@@ -74,32 +74,6 @@ router.post(
 
 
 /**
- * Generate Sign-off Sheet PDF
- * @name postSignOffShettPdf POST
- * @function
- * @memberof module:routers/admin
- * @param {string} 'admin/signoffsheet' - uri
- * @param {function} adminController.postSignOffShettPdf
- */
-router.post(
-    '/signoffsheet', 
-    isAuth,
-    adminController.postSignOffShettPdf
-);
-
-
-/**
- * Generate Specific Sign-off Sheet PDF
- * @name regeneratePdf POST
- * @function
- * @memberof module:routers/admin
- * @param {string} 'admin/signoffsheet/signoffId' - uri
- * @param {function} adminController.regeneratePdf
- */
-router.get('/signoffsheet/:signoffId', isAuth, adminController.regeneratePdf);
-
-
-/**
  * Get all templates
  * @name getAllTemplate GET
  * @function
@@ -150,7 +124,6 @@ router.post(
     adminController.updateTemplate
 );
 
-
 /**
  * delete Template
  * @name deleteTemplate POST
@@ -161,5 +134,36 @@ router.post(
  */
 router.post('/template/delete/:templateId', isAuth, adminController.deleteTemplate);
 
+/**
+ * Generate data for Sign-off Sheet PDF
+ * @name getDataFromSheet POST
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} 'admin/signoffsheet' - uri
+ * @param {function} adminController.getDataFromSheet
+ */
+router.post('/signoffsheet', isAuth, adminController.getDataFromSheet);
+
+
+/**
+ * Synchronise Google Sheet and our app Sign-off Sheet
+ * @name synchronisationToSheet POST
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} 'admin/signoffsheet/synchro' - uri
+ * @param {function} adminController.synchronisationToSheet
+ */
+router.post('/signoffsheet/synchro', isAuth, adminController.synchronisationToSheet);
+
+
+/**
+ * Generate Specific Sign-off Sheet PDF
+ * @name generatePdf GET
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} 'admin/signoffsheet/generate/:signoffId' - uri
+ * @param {function} adminController.generatePdf
+ */
+router.get('/signoffsheet/generate/:signoffId', isAuth, adminController.generatePdf);
 
 module.exports = router;

@@ -27,7 +27,10 @@
                         </div>
                         <div class="card-footer border-top bg-white d-flex justify-content-around py-2">
                             <a class="btn btn-primary px-3 font-weight-bold" href="/admin/signoffsheet/generate/<%= signoffInfo._id %>"> Générer </a>
-                            <a class="btn btn-info px-3 font-weight-bold" href="/admin/signoffsheet/synchro/<%= signoffInfo._id %>"> Synchroniser </a>
+                            <form action="/admin/signoffsheet/synchro" method="POST">
+                                <input type="hidden" name="signoffId" value="<%= signoffInfo._id %>">
+                                <button type="submit" class="btn btn-info px-3 font-weight-bold" href=> Synchroniser</button>
+                            </form>
                         </div>
                     </div>
                 </div>
