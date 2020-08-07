@@ -6,8 +6,8 @@ const PDFDocument = require('pdfkit');
 const { validationResult } = require('express-validator');
 const axios                = require('axios');
 
-const Template     = require('../models/template');
-const Signoffsheet = require('../models/signoffsheet');
+const Template           = require('../models/template');
+const Signoffsheet       = require('../models/signoffsheet');
 
 const { deleteFile } = require('../utils/file');
 const pdfFunction = require('../utils/pdfGenerator');
