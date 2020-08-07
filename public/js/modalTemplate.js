@@ -62,7 +62,7 @@ if (templateForm) {
                         showSuccessTemplate(response.message);
                         generateTemplateBtn.classList.remove('d-none');
                         templateForm.reset();
-                        location.href = '/admin/dashboard';
+                        location.href = '/admin/templates';
                     } else {
                         generateTemplateBtn.classList.remove('d-none');
                         showErrorTemplate(response.message);

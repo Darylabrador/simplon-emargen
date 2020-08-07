@@ -143,7 +143,7 @@ exports.addtemplate = async (req, res, next) => {
     } catch (error) {
         return res.json({
             success: false,
-            message: 'Une erreur est survenue lors de l\'ajout du nouveau template'
+            message: 'Une erreur est survenue lors de l\'ajout du template'
         });
     }
 };
@@ -186,7 +186,7 @@ exports.updateTemplate = async (req, res, next) => {
         updatedTemplate.organisme = organismeUpdate;
         await updatedTemplate.save();
 
-        req.flash('success', 'Le template a bien été mise à jour !');
+        req.flash('success', 'Mise à jour effectuée !');
         return res.redirect('/admin/templates');
 
     } catch (error) {
@@ -218,7 +218,7 @@ exports.deleteTemplate = async (req, res, next) => {
 
         await deletedTemplate.deleteOne();
 
-        req.flash('success', 'Le template a bien été supprimé !');
+        req.flash('success', 'Template supprimé !');
         return res.redirect('/admin/templates');
 
     } catch (error) {
@@ -272,7 +272,7 @@ exports.getDataFromSheet = async (req, res, next) => {
         });
 
         const templateInfo = await Template.findById(template);
-        const signoffPDF   = 'emargement-' + new Date().getTime() + '.pdf';
+        const signoffPDF   = 'emargement-' + new Date().getTime() + '-v1.pdf';
 
         // stock data
         const createdPdf = new Signoffsheet({
@@ -333,6 +333,9 @@ exports.synchronisationToSheet = async (req, res, next) => {
         synchroInfo.jours      = [];
         synchroInfo.formateur  = [];
 
+        synchroInfo.version   = synchroInfo.version + 1;
+        synchroInfo.fileExist = false;
+
         const dataUpdate = await synchroInfo.save();
 
         const response = await axios.get(dataUpdate.urlSheet);
@@ -352,9 +355,13 @@ exports.synchronisationToSheet = async (req, res, next) => {
             }
         });
 
+        const pdfname = dataUpdate.name.split('-')[1];
+        const signoffPDF = 'emargement-' + pdfname + '-v' + synchroInfo.version +'.pdf';
+        dataUpdate.name = signoffPDF;
+
         await dataUpdate.save();
         
-        req.flash('success', 'La synchronisation a bien été faite !');
+        req.flash('success', 'Synchronisation effectuée !');
         return res.redirect('/admin/dashboard');
 
     } catch (error) {
@@ -384,11 +391,11 @@ exports.generatePdf = async (req, res, next) => {
             autoFirstPage: false
         });
 
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'inline; filename="' + signoffSheetData.name + '"');
-
-        doc.pipe(fs.createWriteStream(signoffPath));
-        doc.pipe(res);
+        doc.pipe(fs.createWriteStream(signoffPath).on('close', () => {
+            res.redirect('/admin/dashboard');
+            doc.pipe(res);
+        }));
+       
 
         let xEntete = 200;
         let yEntete = 160;
@@ -408,6 +415,9 @@ exports.generatePdf = async (req, res, next) => {
             }
         }
         doc.end();
+
+        signoffSheetData.fileExist = true;
+        await signoffSheetData.save();
 
     } catch (error) {
         const err = new Error(error);

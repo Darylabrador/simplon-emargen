@@ -17,19 +17,28 @@
                 <% signoffsheetData.forEach(signoffInfo => { %>
                 <div class="col-3 px-2">
                     <div class="card bg-light">
+                        <div class="card-header bg-white font-weight-bold" style="font-size: 10px;">
+                            Version <%= signoffInfo.version %>
+                        </div>
                         <div class="card-body">
                             <h6 class="card-title text-center font-weight-bold">Feuille émargement <br>
-                                <%=signoffInfo.periodeDebut %> au <%=signoffInfo.periodeFin %></h6>
+                                <%= signoffInfo.periodeDebut %> au <%=signoffInfo.periodeFin %></h6>
                             <div class="text-center">
                                 <p class="card-text"><%= signoffInfo.templateId.intitule %></p>
                                 <p class="card-text"><%= signoffInfo.templateId.organisme %></p>
                             </div>
                         </div>
                         <div class="card-footer border-top bg-white d-flex justify-content-around py-2">
+
+                            <% if (signoffInfo.fileExist) { %>
+                            <a class="btn btn-primary px-3 font-weight-bold" href="/data/pdf/<%= signoffInfo.name %>"> Télécharger </a>
+                            <% } else  { %>
                             <a class="btn btn-primary px-3 font-weight-bold" href="/admin/signoffsheet/generate/<%= signoffInfo._id %>"> Générer </a>
+                            <% } %>
+
                             <form action="/admin/signoffsheet/synchro" method="POST">
                                 <input type="hidden" name="signoffId" value="<%= signoffInfo._id %>">
-                                <button type="submit" class="btn btn-info px-3 font-weight-bold" href=> Synchroniser</button>
+                                <button type="submit" class="btn btn-info px-3 font-weight-bold" onclick="return confirm('Attention les données vont être écrasées');"> Synchroniser</button>
                             </form>
                         </div>
                     </div>

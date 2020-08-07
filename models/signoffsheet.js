@@ -29,6 +29,14 @@ const signoffsheetSchema = mongoose.Schema({
     },
     periodeFin: {
         type: String
+    },
+    version: {
+        type: Number,
+        default: 1
+    },
+    fileExist: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 
