@@ -250,11 +250,11 @@ exports.getDataFromSheet = async (req, res, next) => {
         });
     }
 
-    const { template, dataSheet } = req.body;
+    const { template, dataSheet, number } = req.body;
     const infoUrl = dataSheet.split('/')[5];
 
     try {
-        const response = await axios.get(`https://spreadsheets.google.com/feeds/cells/${infoUrl}/1/public/full?alt=json`); 
+        const response = await axios.get(`https://spreadsheets.google.com/feeds/cells/${infoUrl}/${number}/public/full?alt=json`); 
         const infoJson = response.data.feed.entry;
 
         infoJson.forEach(data => {
@@ -276,7 +276,7 @@ exports.getDataFromSheet = async (req, res, next) => {
 
         // stock data
         const createdPdf = new Signoffsheet({
-            urlSheet: `https://spreadsheets.google.com/feeds/cells/${infoUrl}/1/public/full?alt=json`,
+            urlSheet: `https://spreadsheets.google.com/feeds/cells/${infoUrl}/${number}/public/full?alt=json`,
             name: signoffPDF,
             templateId: templateInfo._id,
             timeStart: days[0],
@@ -307,7 +307,7 @@ exports.getDataFromSheet = async (req, res, next) => {
     } catch (error) {
         res.json({
             success: false,
-            message: "Une erreur est survenue lors de la génération du PDF !"
+            message: error.message
         });
         return error;
     }
@@ -380,6 +380,10 @@ exports.generatePdf = async (req, res, next) => {
     const signoffId = req.params.signoffId;
 
     try {
+        const versionning      = await Signoffsheet.findById(signoffId);
+        versionning.versionningHistory.push(versionning.name);
+        await versionning.save();
+
         const signoffSheetData = await Signoffsheet.findById(signoffId).populate('templateId').exec();
         const logoTemplate = path.join('public', signoffSheetData.templateId.logo);
         const signoffPath  = path.join('data', 'pdf', signoffSheetData.name);

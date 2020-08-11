@@ -40,12 +40,14 @@ if (emargementForm !== null){
 
         let templateName = document.querySelector('#templateName').value;
         let dataSheetUrl = document.querySelector('#url').value;
+        let number       = document.querySelector('#number').value;
 
         generateBtn.classList.add('d-none');
        
         dataSend = {
             template: templateName,
-            dataSheet: dataSheetUrl
+            dataSheet: dataSheetUrl, 
+            number
         }
 
         $.ajax({
