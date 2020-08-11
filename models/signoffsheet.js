@@ -15,32 +15,32 @@ const signoffsheetSchema = mongoose.Schema({
         require: true, 
         ref: 'templates'
     },
-    apprenants: {
+    learners: {
         type: Array
     },
-    jours: {
+    days: {
         type: Array
     },
-    formateur: {
+    trainers: {
         type: Array
     },
-    periodeDebut: {
+    timeStart: {
         type: String
     },
-    periodeFin: {
+    timeEnd: {
         type: String
     },
     version: {
         type: Number,
         default: 1
     },
+    versionningHistory: {
+        type: Array,
+        default: null
+    },
     fileExist: {
         type: Boolean,
         default: false
-    },
-    versionFile : {
-        type: Array,
-        default: null
     }
 }, { timestamps: true });
 

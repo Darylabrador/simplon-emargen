@@ -233,13 +233,13 @@ exports.deleteTemplate = async (req, res, next) => {
  * @name getDataFromSheet
  * @function
  * @param {object} template
- * @param {string} dataSheetUrl
+ * @param {string} dataSheet
  * @throws Will throw an error if one error occursed
  */
 exports.getDataFromSheet = async (req, res, next) => {
-    const apprenants     = [];
-    const joursFormation = [];
-    const formateur      = [];
+    const learners   = [];
+    const days       = [];
+    const trainers   = [];
 
     const errors = validationResult(req);
 
@@ -259,15 +259,15 @@ exports.getDataFromSheet = async (req, res, next) => {
 
         infoJson.forEach(data => {
             if (data.gs$cell.col == 1 && data.gs$cell.row != 1){
-                apprenants.push(data.gs$cell.inputValue);
+                learners.push(data.gs$cell.inputValue);
             }
 
-            if (data.gs$cell.col != 1 && data.gs$cell.row == 1) {
-                joursFormation.push(data.gs$cell.inputValue);
+            if (data.gs$cell.col > 1 && data.gs$cell.col <= 6 && data.gs$cell.row == 1) {
+                days.push(data.gs$cell.inputValue);
             }
 
-            if (data.gs$cell.col != 1 && data.gs$cell.row == 2){
-                formateur.push(data.gs$cell.inputValue);
+            if (data.gs$cell.col > 1 && data.gs$cell.col <= 6 && data.gs$cell.row == 2){
+                trainers.push(data.gs$cell.inputValue);
             }
         });
 
@@ -279,22 +279,22 @@ exports.getDataFromSheet = async (req, res, next) => {
             urlSheet: `https://spreadsheets.google.com/feeds/cells/${infoUrl}/1/public/full?alt=json`,
             name: signoffPDF,
             templateId: templateInfo._id,
-            periodeDebut: joursFormation[0],
-            periodeFin: joursFormation[joursFormation.length - 1]
+            timeStart: days[0],
+            timeEnd: days[days.length - 1]
         });
 
         const newPdfFile = await createdPdf.save();
 
-        apprenants.forEach(appr =>{
-            newPdfFile.apprenants.push(appr);
+        learners.forEach(appr =>{
+            newPdfFile.learners.push(appr);
         })
 
-        joursFormation.forEach(jour =>{
-            newPdfFile.jours.push(jour);
+        days.forEach(jour =>{
+            newPdfFile.days.push(jour);
         })
        
-        formateur.forEach(formatr =>{
-            newPdfFile.formateur.push(formatr);
+        trainers.forEach(formatr =>{
+            newPdfFile.trainers.push(formatr);
         })
 
         await newPdfFile.save();
@@ -329,9 +329,9 @@ exports.synchronisationToSheet = async (req, res, next) => {
             return res.redirect('/admin/dashboard');
         }
 
-        synchroInfo.apprenants = [];
-        synchroInfo.jours      = [];
-        synchroInfo.formateur  = [];
+        synchroInfo.learners  = [];
+        synchroInfo.days      = [];
+        synchroInfo.trainers  = [];
 
         synchroInfo.version   = synchroInfo.version + 1;
         synchroInfo.fileExist = false;
@@ -343,15 +343,15 @@ exports.synchronisationToSheet = async (req, res, next) => {
 
         infoJson.forEach(data => {
             if (data.gs$cell.col == 1 && data.gs$cell.row != 1) {
-                dataUpdate.apprenants.push(data.gs$cell.inputValue);
+                dataUpdate.learners.push(data.gs$cell.inputValue);
             }
 
-            if (data.gs$cell.col != 1 && data.gs$cell.row == 1) {
-                dataUpdate.jours.push(data.gs$cell.inputValue);
+            if (data.gs$cell.col > 1 && data.gs$cell.col <= 6 && data.gs$cell.row == 1) {
+                dataUpdate.days.push(data.gs$cell.inputValue);
             }
 
-            if (data.gs$cell.col != 1 && data.gs$cell.row == 2) {
-                dataUpdate.formateur.push(data.gs$cell.inputValue);
+            if (data.gs$cell.col > 1 && data.gs$cell.col <= 6 && data.gs$cell.row == 2) {
+                dataUpdate.trainers.push(data.gs$cell.inputValue);
             }
         });
 
@@ -405,11 +405,11 @@ exports.generatePdf = async (req, res, next) => {
         var compteurInitPlage = 0;
         var compteurFinPlage = 5;
 
-        for (let y = 0; y < signoffSheetData.apprenants.length; y++) {
+        for (let y = 0; y < signoffSheetData.learners.length; y++) {
             if (y % 5 == 0) {
                 doc.addPage();
                 pdfFunction.headerPdf(doc, logoTemplate, signoffSheetData.templateId.intitule, signoffSheetData.templateId.organisme);
-                pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.jours, signoffSheetData.apprenants, signoffSheetData.formateur, compteurInitPlage, compteurFinPlage);
+                pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.days, signoffSheetData.learners, signoffSheetData.trainers, compteurInitPlage, compteurFinPlage);
                 compteurInitPlage += 5;
                 compteurFinPlage += 5;
             }
