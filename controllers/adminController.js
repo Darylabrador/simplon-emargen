@@ -305,9 +305,17 @@ exports.getDataFromSheet = async (req, res, next) => {
         });
 
     } catch (error) {
+        let errorMessage = "";
+
+        if (error.message == "Request failed with status code 400") {
+            errorMessage = "Cette feuille n'existe pas";
+        }else{
+            errorMessage = "Une erreur est survenue";
+        }
+
         res.json({
             success: false,
-            message: error.message
+            message: errorMessage
         });
         return error;
     }
