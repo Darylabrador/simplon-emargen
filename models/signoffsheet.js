@@ -44,4 +44,4 @@ const signoffsheetSchema = mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('signoffsheet', signoffsheetSchema);
+module.exports = mongoose.model('signoffsheets', signoffsheetSchema);
