@@ -1,5 +1,5 @@
 /**
- * Pour créer le header des pages PDF
+ * To create header PDF
  * @param {object} doc
  * @param {string} intitulePdf 
  * @param {string} nomOrganisme 
@@ -30,7 +30,7 @@ exports.headerPdf = (doc, logoOrganisme, intitulePdf, nomOrganisme) => {
 
 
 /**
- * Création du corps du pdf
+ * To create body PDF
  * @param {object} doc 
  * @param {number} xEntete 
  * @param {number} yEntete 
@@ -42,13 +42,13 @@ exports.headerPdf = (doc, logoOrganisme, intitulePdf, nomOrganisme) => {
  */
 exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormation, apprenants, formateur, compteurInitPlage, compteurFinPlage) => {
     joursFormation.forEach(jour => {
-        // La date
+        // the date
         doc.lineJoin('miter')
             .rect(xEntete, yEntete, 120, 22)
             .stroke()
             .font('Helvetica-Bold')
             .text(`Le ${jour}`, xEntete + 30, yEntete + 8);
-        xEntete += 120; // pour décalage par rapport à la largeur
+        xEntete += 120;
     });
 
     doc.lineJoin('miter')
@@ -58,7 +58,7 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
         .text(`NOM PRENOM Apprenant`, 60, 195);
 
 
-    // Notion matin / apres midi
+    // Morning / afternoon
     for (let i = 0; i < 10; i++) {
         doc.fontSize(6);
         if (i % 2 == 0) {
@@ -79,7 +79,7 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
     }
 
     for (let m = compteurInitPlage; m < compteurFinPlage; m++){
-        // Les nom prenom des apprenants
+        // learner's identity
         if (apprenants[m]) {
             doc.fontSize(7);
 
@@ -89,7 +89,7 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
                 .font('Helvetica-Bold')
                 .text(`${apprenants[m]}`, xApprenant + 8, yApprenant + 48);
 
-            // emplacement signature
+            // signature location
             for (let j = 0; j < 10; j++) {
                 doc.lineJoin('miter')
                     .rect(xApprenant + (170 + 60 * j), yApprenant + 30, 60, 40)
@@ -99,7 +99,7 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
         }
     }
 
-    // nom prénom formateur
+    // trainer's identity
     for (let k = 0; k < formateur.length; k++) {
         doc.fontSize(8);
         doc.lineJoin('miter')

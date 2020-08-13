@@ -89,7 +89,7 @@ router.get('/templates', isAuth, adminController.getAllTemplate);
  * @name getSpecificTemplate GET
  * @function
  * @memberof module:routers/admin
- * @param {string} 'admin/templates/templateId' - uri
+ * @param {string} 'admin/templates/:templateId' - uri
  * @param {function} adminController.getSpecificTemplate
  */
 router.get('/template/:templateId', isAuth, adminController.getSpecificTemplate);

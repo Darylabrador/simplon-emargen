@@ -67,6 +67,7 @@ exports.getAllTemplate = async (req, res, next) => {
 /** get specific templates
  * @name getSpecificTemplate
  * @function
+ * @param {number} templateId
  * @throws Will throw an error if one error occursed
  */
 exports.getSpecificTemplate = async (req, res, next) => {
@@ -99,7 +100,7 @@ exports.getSpecificTemplate = async (req, res, next) => {
  * @param {string} nom
  * @param {string} intitule
  * @param {string} organisme
- * @param image logo de l'organisme
+ * @param image logo
  * @throws Will throw an error if one error occursed
  */
 exports.addtemplate = async (req, res, next) => {
@@ -122,7 +123,7 @@ exports.addtemplate = async (req, res, next) => {
         });
     }
 
-    const imageUploaded = imageFile.path.replace("\\", "/"); // uniquement sous windows
+    const imageUploaded = imageFile.path.replace("\\", "/"); // only with window
     const image = imageFile.path.split('public')[1];
 
     try {
@@ -152,6 +153,11 @@ exports.addtemplate = async (req, res, next) => {
 /** get update specific template
  * @name updateTemplate
  * @function
+ * @param {number} templateId
+ * @param {String} nameUpdate
+ * @param {String} organismeUpdate
+ * @param {String} intituleUpdate
+ * @param logoUpdate logo
  * @throws Will throw an error if one error occursed
  */
 exports.updateTemplate = async (req, res, next) => {
@@ -200,6 +206,7 @@ exports.updateTemplate = async (req, res, next) => {
 /** Delete specific template
  * @name deleteTemplate
  * @function
+ * @param {number} templateId
  * @throws Will throw an error if one error occursed
  */
 exports.deleteTemplate = async (req, res, next) => {
@@ -232,8 +239,9 @@ exports.deleteTemplate = async (req, res, next) => {
 /** handle post generated pdf
  * @name getDataFromSheet
  * @function
- * @param {object} template
- * @param {string} dataSheet
+ * @param {object} template template (logo etc.)
+ * @param {string} dataSheet url
+ * @param {number} number sheet number's page
  * @throws Will throw an error if one error occursed
  */
 exports.getDataFromSheet = async (req, res, next) => {
@@ -324,7 +332,10 @@ exports.getDataFromSheet = async (req, res, next) => {
 
 /**
  * Synchronise Google Sheet and our app Sign-off Sheet
+ * @name synchronisationToSheet
+ * @function
  * @param {string} signoffId 
+ * @throws Will throw an error if one error occursed
  */
 exports.synchronisationToSheet = async (req, res, next) => {
     const { signoffId } = req.body;
@@ -382,7 +393,10 @@ exports.synchronisationToSheet = async (req, res, next) => {
 
 /**
  * generate SignOff sheet PDF
+ * @name generatePdf
+ * @function
  * @param {string} signoffId 
+ * @throws Will throw an error if one error occursed
  */
 exports.generatePdf = async (req, res, next) => {
     const signoffId = req.params.signoffId;

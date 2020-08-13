@@ -4,12 +4,15 @@ let messageInterface = document.querySelector('#error');
 let data, dataSend;
 
 /**
- * Show error message
+ * Show message
+ * @name showMessage
+ * @function
  * @param {string} message 
+ * @param {string} type
  */
-function showSuccess(message) {
+function showMessage(message, type) {
     messageInterface.innerHTML = `
-    <div class="alert alert-success alert-dismissible fade show mt-0 flashMessage" role="alert">
+    <div class="alert alert-${type} alert-dismissible fade show mt-0 flashMessage" role="alert">
         <strong>${message}</strong>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -17,22 +20,6 @@ function showSuccess(message) {
     </div>
     `;
 }
-
-/**
- * Show success message
- * @param {string} message 
- */
-function showError(message) {
-    messageInterface.innerHTML = `
-    <div class="alert alert-danger alert-dismissible fade show mt-0 flashMessage" role="alert">
-        <strong>${message}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    `;
-}
-
 
 if (emargementForm !== null){
     emargementForm.addEventListener('submit', evt =>{
@@ -61,13 +48,13 @@ if (emargementForm !== null){
             success: function (response) {
                 if(response != null){
                     if (response.success){
-                        showSuccess(response.message);
+                        showMessage(response.message, 'success');
                         generateBtn.classList.remove('d-none');
                         emargementForm.reset();
                         location.href = '/admin/dashboard';
                     }else{
                         generateBtn.classList.remove('d-none');
-                        showError(response.message);
+                        showMessage(response.message, 'danger');
                     }
                 }
             }

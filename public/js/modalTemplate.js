@@ -1,31 +1,16 @@
 let templateForm = document.querySelector('#templateForm');
-
-// Compléments d'informations
 let errorTemplateMessage = document.querySelector('#errorTemplate');
 let generateTemplateBtn  = document.querySelector('#generateTemplateBtn');
 
 /**
- * Show error message
+ * Show message for template
+ * @name showMessgeTemplate
+ * @function
  * @param {string} message 
  */
-function showSuccessTemplate(message) {
+function showMessgeTemplate(message, type) {
     errorTemplateMessage.innerHTML = `
-    <div class="alert alert-success alert-dismissible fade show mt-0 flashMessage" role="alert">
-        <strong>${message}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    `;
-}
-
-/**
- * Show success message
- * @param {string} message 
- */
-function showErrorTemplate(message) {
-    errorTemplateMessage.innerHTML = `
-    <div class="alert alert-danger alert-dismissible fade show mt-0 flashMessage" role="alert">
+    <div class="alert alert-${type} alert-dismissible fade show mt-0 flashMessage" role="alert">
         <strong>${message}</strong>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -59,13 +44,13 @@ if (templateForm) {
             success: function (response) {
                 if (response != null) {
                     if (response.success) {
-                        showSuccessTemplate(response.message);
+                        showMessgeTemplate(response.message, 'success');
                         generateTemplateBtn.classList.remove('d-none');
                         templateForm.reset();
                         location.href = '/admin/templates';
                     } else {
                         generateTemplateBtn.classList.remove('d-none');
-                        showErrorTemplate(response.message);
+                        showMessgeTemplate(response.message, 'danger');
                     }
                 }
             }

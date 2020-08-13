@@ -1,3 +1,6 @@
+/**
+ * Database informations
+ */
 let dbUrl;
 
 if (process.env.DB_URL) {
