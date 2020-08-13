@@ -5,7 +5,7 @@
 1. Copier le fichier **.env.example** et renommer le fichier copié en **.env**
 2. Remplacer le contenu de la variable d'environnement **DB_URL** avec celui fournis de la base de donnée
 3. Ne pas push l'adresse de la base de donnée dans le fichier **.env.example**
-4. Les informations de la base de donnée sont dans le fichier config/database.js.
+4. Les informations de la base de donnée sont dans le fichier **./config/database.js**
 5. Si vous faites des test unitaires utiliser une base externe de test et non celui de l'application, vous devez donc ajouter le contenu dans **DB_URL_TEST**
 
 ### Migration
