@@ -437,10 +437,12 @@ exports.generatePdf = async (req, res, next) => {
                 doc.addPage();
                 pdfFunction.headerPdf(doc, logoTemplate, signoffSheetData.templateId.intitule, signoffSheetData.templateId.organisme);
                 pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.days, signoffSheetData.learners, signoffSheetData.trainers, compteurInitPlage, compteurFinPlage, signoffId);
+                // pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.days, signoffSheetData.learners, signoffSheetData.trainers, compteurInitPlage, compteurFinPlage, signoffId, logoTemplate);
                 compteurInitPlage += 5;
                 compteurFinPlage += 5;
             }
         }
+
         doc.end();
 
         signoffSheetData.fileExist = true;
@@ -451,9 +453,9 @@ exports.generatePdf = async (req, res, next) => {
         const generalSignArray = generalSign.signLocation;
 
         // reset the document
-        const signature = await Signoffsheet.findById(signoffId);
-        signature.signLocation = [];
-        await signature.save();
+        const sign = await Signoffsheet.findById(signoffId);
+        sign.signLocation = [];
+        await sign.save();
 
         // iterate to get coordinates
         let arrayTest = [];
@@ -473,10 +475,9 @@ exports.generatePdf = async (req, res, next) => {
                     arrayTest = [];
                 }
             }
-        })
+        });
 
         await generalSign.save();
-        
 
     } catch (error) {
         const err = new Error(error);

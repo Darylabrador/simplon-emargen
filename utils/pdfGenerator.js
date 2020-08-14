@@ -41,6 +41,7 @@ exports.headerPdf = (doc, logoOrganisme, intitulePdf, nomOrganisme) => {
  * @param {Array} joursFormation 
  * @param {Array} apprenants 
  * @param {Array} formateur 
+ * @param {String} signoffId
  */
 exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormation, apprenants, formateur, compteurInitPlage, compteurFinPlage, signoffId) => {
 
@@ -94,6 +95,11 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
                 .font('Helvetica-Bold')
                 .text(`${apprenants[m]}`, xApprenant + 8, yApprenant + 48);
 
+            // Example to set sign location
+            // if (apprenants[m] == "ABRADOR Daryl") {
+            //     doc.image(logoOrganisme, 200, 212, { width: 50 });
+            // }
+
             // signature location
             for (let j = 0; j < 10; j++) {
                 doc.lineJoin('miter')
@@ -101,9 +107,9 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
                     .stroke()
 
                 if (j % 2 == 0) {
-                    arrayAssoc.push([apprenants[m], 'morning', xApprenant + (170 + 60 * j), (yApprenant + 30)])
+                    arrayAssoc.push([apprenants[m], 'morning', xApprenant + (170 + 60 * j), (yApprenant + 30), 'nosign'])
                 } else {
-                    arrayAssoc.push([apprenants[m], 'afternoon', xApprenant + (170 + 60 * j), (yApprenant + 30)])
+                    arrayAssoc.push([apprenants[m], 'afternoon', xApprenant + (170 + 60 * j), (yApprenant + 30), 'nosign'])
                 }
             }
             yApprenant += 40;
