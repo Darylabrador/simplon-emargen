@@ -5,7 +5,7 @@
     <% include ../includes/navigation %>
         <main class="container-fluid">
             <% include ../includes/messageFlash %>
-
+            <div id="waitingMessage"></div>
             <% if (signoffsheetData.length == 0) { %>
             <div class="row no-gutters justify-content-center align-items-center py-5">
                 <div class="d-flex justify-content-center w-100">
@@ -33,7 +33,7 @@
                             <% if (signoffInfo.fileExist) { %>
                             <a class="btn btn-primary px-3 font-weight-bold" href="/data/pdf/<%= signoffInfo.name %>"> Télécharger </a>
                             <% } else  { %>
-                            <a class="btn btn-primary px-3 font-weight-bold" href="/admin/signoffsheet/generate/<%= signoffInfo._id %>"> Générer </a>
+                            <a class="btn btn-primary px-3 font-weight-bold generatePdfBtn" href="/admin/signoffsheet/generate/<%= signoffInfo._id %>"> Générer </a>
                             <% } %>
 
                             <form action="/admin/signoffsheet/synchro" method="POST">
@@ -53,6 +53,7 @@
     <% include ../includes/modals , {templateInfo: templateInfo} %>
     <% include ../includes/modalsTemplate %>
 
+    <script src="/js/script.js"></script>
     <script src="/js/modal.js"></script>
     <script src="/js/modalTemplate.js"></script>
 </body>

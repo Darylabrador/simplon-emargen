@@ -404,6 +404,7 @@ exports.generatePdf = async (req, res, next) => {
     try {
         const versionning      = await Signoffsheet.findById(signoffId);
         versionning.versionningHistory.push(versionning.name);
+        versionning.signLocation = [];
         await versionning.save();
 
         const signoffSheetData = await Signoffsheet.findById(signoffId).populate('templateId').exec();
@@ -435,7 +436,7 @@ exports.generatePdf = async (req, res, next) => {
             if (y % 5 == 0) {
                 doc.addPage();
                 pdfFunction.headerPdf(doc, logoTemplate, signoffSheetData.templateId.intitule, signoffSheetData.templateId.organisme);
-                pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.days, signoffSheetData.learners, signoffSheetData.trainers, compteurInitPlage, compteurFinPlage);
+                pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.days, signoffSheetData.learners, signoffSheetData.trainers, compteurInitPlage, compteurFinPlage, signoffId);
                 compteurInitPlage += 5;
                 compteurFinPlage += 5;
             }
@@ -444,6 +445,38 @@ exports.generatePdf = async (req, res, next) => {
 
         signoffSheetData.fileExist = true;
         await signoffSheetData.save();
+
+        // storage data before reset
+        const generalSign      = await Signoffsheet.findById(signoffId);
+        const generalSignArray = generalSign.signLocation;
+
+        // reset the document
+        const signature = await Signoffsheet.findById(signoffId);
+        signature.signLocation = [];
+        await signature.save();
+
+        // iterate to get coordinates
+        let arrayTest = [];
+        generalSignArray.forEach(element =>{
+            for (let a = 0; a < element.length; a++) {
+                if (element[a+1]){
+                    if (element[a][0] != element[a+1][0]){
+                        arrayTest.push(element[a])
+                        generalSignArray.push(arrayTest)
+                        arrayTest = [];
+                    }else{
+                        arrayTest.push(element[a])
+                    }
+                }else{
+                    arrayTest.push(element[a]);
+                    generalSignArray.push(arrayTest)
+                    arrayTest = [];
+                }
+            }
+        })
+
+        await generalSign.save();
+        
 
     } catch (error) {
         const err = new Error(error);

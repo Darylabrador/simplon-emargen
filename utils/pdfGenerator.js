@@ -1,3 +1,5 @@
+const Signoffsheet = require('../models/signoffsheet');
+
 /**
  * To create header PDF
  * @param {object} doc
@@ -40,7 +42,8 @@ exports.headerPdf = (doc, logoOrganisme, intitulePdf, nomOrganisme) => {
  * @param {Array} apprenants 
  * @param {Array} formateur 
  */
-exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormation, apprenants, formateur, compteurInitPlage, compteurFinPlage) => {
+exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormation, apprenants, formateur, compteurInitPlage, compteurFinPlage, signoffId) => {
+
     joursFormation.forEach(jour => {
         // the date
         doc.lineJoin('miter')
@@ -78,6 +81,8 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
         }
     }
 
+    const arrayAssoc = [];
+
     for (let m = compteurInitPlage; m < compteurFinPlage; m++){
         // learner's identity
         if (apprenants[m]) {
@@ -94,10 +99,22 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
                 doc.lineJoin('miter')
                     .rect(xApprenant + (170 + 60 * j), yApprenant + 30, 60, 40)
                     .stroke()
+
+                if (j % 2 == 0) {
+                    arrayAssoc.push([apprenants[m], 'morning', xApprenant + (170 + 60 * j), (yApprenant + 30)])
+                } else {
+                    arrayAssoc.push([apprenants[m], 'afternoon', xApprenant + (170 + 60 * j), (yApprenant + 30)])
+                }
             }
             yApprenant += 40;
         }
     }
+
+    Signoffsheet.findById(signoffId).then(signoff =>{
+        signoff.signLocation.push(arrayAssoc);
+        signoff.save();
+    })
+    
 
     // trainer's identity
     for (let k = 0; k < formateur.length; k++) {
@@ -115,4 +132,6 @@ exports.corpsPdf = (doc, xEntete, yEntete, xApprenant, yApprenant, joursFormatio
         .stroke()
         .font('Helvetica')
         .text(`Cachet organisme de formation :`, 585, yApprenant + 118);
+
 }
+

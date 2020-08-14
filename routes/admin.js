@@ -166,4 +166,5 @@ router.post('/signoffsheet/synchro', isAuth, adminController.synchronisationToSh
  */
 router.get('/signoffsheet/generate/:signoffId', isAuth, adminController.generatePdf);
 
+
 module.exports = router;

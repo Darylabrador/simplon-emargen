@@ -41,6 +41,9 @@ const signoffsheetSchema = mongoose.Schema({
     fileExist: {
         type: Boolean,
         default: false
+    },
+    signLocation: {
+        type: Array
     }
 }, { timestamps: true });
 

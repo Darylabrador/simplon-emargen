@@ -25,6 +25,7 @@ if (emargementForm !== null){
     emargementForm.addEventListener('submit', evt =>{
         evt.preventDefault();
 
+        showMessage('Préparation de la feuille d\'émargement...', 'success');
         let templateName = document.querySelector('#templateName').value;
         let dataSheetUrl = document.querySelector('#url').value;
         let number       = document.querySelector('#number').value;
