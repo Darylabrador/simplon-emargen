@@ -351,6 +351,7 @@ exports.synchronisationToSheet = async (req, res, next) => {
         synchroInfo.learners  = [];
         synchroInfo.days      = [];
         synchroInfo.trainers  = [];
+        synchroInfo.signLocation = [];
 
         synchroInfo.version   = synchroInfo.version + 1;
         synchroInfo.fileExist = false;
@@ -404,7 +405,7 @@ exports.generatePdf = async (req, res, next) => {
     try {
         const versionning      = await Signoffsheet.findById(signoffId);
         versionning.versionningHistory.push(versionning.name);
-        versionning.signLocation = [];
+        
         await versionning.save();
 
         const signoffSheetData = await Signoffsheet.findById(signoffId).populate('templateId').exec();
@@ -449,7 +450,7 @@ exports.generatePdf = async (req, res, next) => {
         await signoffSheetData.save();
 
         // storage data before reset
-        const generalSign      = await Signoffsheet.findById(signoffId);
+        const generalSign = await Signoffsheet.findById(signoffId);
         const generalSignArray = generalSign.signLocation;
 
         // reset the document
@@ -458,18 +459,18 @@ exports.generatePdf = async (req, res, next) => {
         await sign.save();
 
         // iterate to get coordinates
-        let arrayTest = [];
-        generalSignArray.forEach(element =>{
+        let arrayTest = [];       
+        generalSignArray.forEach((element) => {
             for (let a = 0; a < element.length; a++) {
-                if (element[a+1]){
-                    if (element[a][0] != element[a+1][0]){
+                if (element[a + 1]) {
+                    if (element[a][0] != element[a + 1][0]) {
                         arrayTest.push(element[a])
                         generalSignArray.push(arrayTest)
                         arrayTest = [];
-                    }else{
+                    } else {
                         arrayTest.push(element[a])
                     }
-                }else{
+                } else {
                     arrayTest.push(element[a]);
                     generalSignArray.push(arrayTest)
                     arrayTest = [];
@@ -478,7 +479,7 @@ exports.generatePdf = async (req, res, next) => {
         });
 
         await generalSign.save();
-
+        
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;

@@ -29,6 +29,8 @@ const store = new MongoDBStore({
   collection: 'sessions'
 });
 
+// mongoose.set('debug', true)
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
