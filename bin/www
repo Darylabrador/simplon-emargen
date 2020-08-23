@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('nodejs-template-nosql:server');
+var debug = require('debug')('emargen-front-version2:server');
 var http = require('http');
 
 /**
