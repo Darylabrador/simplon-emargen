@@ -1,0 +1,89 @@
+@use "../vendors/bootstrap-4-5-2.min.css";
+@use "../utils/colors";
+@use "../utils/mixins";
+@use "../pages/authentification";
+
+// GENERAL
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: colors.$background;
+}
+
+.iconify {
+    color: #000;
+    font-size: 24px;
+}
+
+.form-control:focus {
+    border-style: none none inset none !important; 
+    box-shadow: none !important;
+}
+
+.btn {
+    box-shadow: none !important;
+}
+
+.inputBorder {
+    border-style: none none inset none !important; 
+    background: white !important;
+    border-radius: 0;
+    border-color: colors.$black;
+    padding-bottom: 0px !important;
+}
+
+.leftBorder {
+    border-radius: 0px 0px 0px 5px !important;
+    @include mixins.formButton;
+}
+
+.rightBorder {
+    border-radius: 0px 0px 5px 0px !important;
+    @include mixins.formButton;
+}
+
+.btnDivider {
+    width: 3px; 
+    background: white;
+}
+
+
+
+
+// ---------------- Responsivity -------------------------
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) { 
+    .formWidth {
+        width: 90% !important;
+    }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) and (max-width: 767.98px) { 
+    .formWidth {
+        width: 75% !important;
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .formWidth {
+        width: 65% !important;
+    }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) and (max-width: 1199.98px) { 
+    .formWidth {
+        width: 50% !important;
+    }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { 
+    .formWidth {
+        width: 40% !important;
+    }
+}

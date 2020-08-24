@@ -1,9 +1,41 @@
 <% include ../includes/head %>
     </head>
 
-    <body>
-        <% include ../includes/navigation %>
+    <body class="d-flex flex-column align-items-center justify-content-center authentification" >
+        <div class="bg-white rounded formWidth">
+          <div class="text-center w-100 my-3">
+            <img class="img-fluid" src="/images/logowebsite.png" alt="Logo Simplon.co">
+          </div>
+
+          <form action="/login" method="POST">
+            <div class="px-5">
+              <div class="my-5 input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text inputBorder">
+                    <span class="iconify" data-inline="false" data-icon="ic:outline-mail-outline"></span>
+                  </div>
+                </div>
+                <input type="email" class="form-control inputBorder" placeholder="Adresse email">
+              </div>
+              
+              <div class="my-5 input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text inputBorder">
+                    <span class="iconify" data-inline="false" data-icon="uil:padlock"></span>
+                  </div>
+                </div>
+                <input type="password" class="form-control inputBorder" placeholder="Mot de passe">
+              </div>
+            </div>
+
+            <div class="w-100 d-flex">
+              <a href="/reinitialisation" class="btn btn-primary w-50 leftBorder py-3">Mot de passe oublié</a>
+              <div class="btnDivider"></div>
+              <button type="submit" class="btn btn-secondary w-50 rightBorder py-3">Connexion</button>
+            </div>
+
+          </form>
+        </div>
     </body>
 
-    <% include ../includes/footer %>
 </html>
