@@ -11,9 +11,28 @@ html, body {
     background: colors.$background;
 }
 
+main {
+    min-height: 70vh;
+}
+
+a {
+    text-decoration: none !important;
+}
+
 .iconify {
-    color: #000;
     font-size: 24px;
+
+    &.iconify__black {
+        color: colors.$black;
+    }
+
+    &.iconify__white {
+        color: colors.$white;
+
+        &:hover {
+            color: colors.$redHover;
+        }
+    }
 }
 
 .form-control:focus {
@@ -48,8 +67,96 @@ html, body {
     background: white;
 }
 
+.btnSetting {
+    background: colors.$btnSettingColor;
+    border-radius: 25px;
+    padding: 0px 15px 0px 15px !important;
+    border: 2px solid transparent;
 
+    .btnSetting__white {
+        color: colors.$white !important;
 
+        &:hover {
+            color: colors.$red !important;
+        }
+    }
+
+    &:hover {
+        border: 2px solid colors.$red;
+    }
+}
+
+.dropdown-menu {
+    background: colors.$red !important;
+
+    .dropdown-item {
+        color: colors.$white !important;
+        &:hover {
+            background: none !important;
+            font-weight: 600 !important;
+        }
+    }
+}
+
+.dropdown-toggle {
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+
+    &:focus, &:hover {
+        color: colors.$red !important;
+    }
+
+    &:after {
+        border: none;
+        font-size: 18px;
+        font-weight: bold;
+        content: ">";
+        rotate: 90deg;
+        vertical-align: middle !important;
+    }
+}
+
+li.page-item {
+    
+    a.page-link {
+         color: colors.$white !important;
+        background: colors.$paginationInactive !important;
+        border: none !important;
+        border-radius: 5px !important;
+        padding: 7px 13px 7px 13px !important;
+
+        &:hover {
+            color: colors.$redHover !important;
+        }
+    }
+
+    &.active {
+        background: colors.$red !important;
+        border-radius: 5px !important;
+    }
+}
+
+.breadcrumb {
+    background: transparent !important;
+
+    .breadcrumb-item {
+        & {
+            color: colors.$black !important;
+        }
+        &.active {
+            font-weight: bold;
+        }
+    }
+}
+
+.version {
+    padding: 2px 10px;
+    border-radius: 25px;
+    color: colors.$white;
+    background: colors.$btnGeneralColor;
+    font-size: 11px;
+}
 
 // ---------------- Responsivity -------------------------
 

@@ -1,0 +1,60 @@
+<% include includes/head %>
+</head>
+    <body>
+        <% include includes/navigation %>
+        <main>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 pb-1">
+                    <% breadcrumb.forEach(element => { %>
+                        <li class="breadcrumb-item active"><%= element %></li>
+                    <% }) %>
+                </ol>
+            </nav>
+
+            <div class="row no-gutters px-5 mt-0 justify-content-around">
+                <div class="card col-12 col-lg-3 col-sm-6 col-xl-3 my-2 mx-3">
+                    <div class="card-header mb-0 bg-transparent p-0 d-flex justify-content-end border-0">
+                        <p class="mt-2 mr-4 mb-0 version"> version 1 </p>
+                    </div>
+                    <div class="card-body mb-0">
+                        <h5 class="card-title mt-0 font-weight-bold text-center">Emargement</h5>
+                        <p class="text-center my-1"> SIMPLON RUN <br> 03/08/2020 au 07/08/2020 <br>
+                        </p>
+                        <p class="text-center my-0">
+                            Contrat d’apprentissage - TP Développeur web et web mobiles - 2020
+                        </p>
+                    </div>
+                    <div class="card-footer p-0 d-flex">
+                        <button class="btn btn-primary w-50 leftBorder py-2">Générer</button>
+                        <div class="btnDivider"></div>
+                        <button class="btn btn-secondary w-50 rightBorder py-2">Synchroniser</button>
+                    </div>
+                </div>
+
+                <div class="card col-12 col-lg-3 col-sm-6 col-xl-3 my-2 mx-3">
+                    <div class="card-header mb-0 bg-transparent p-0 d-flex justify-content-end border-0">
+                        <p class="mt-2 mr-4 mb-0 version"> version 1 </p>
+                    </div>
+                    <div class="card-body mb-0">
+                        <h5 class="card-title mt-0 font-weight-bold text-center">Emargement</h5>
+                        <p class="text-center my-1"> SIMPLON RUN <br> 03/08/2020 au 07/08/2020 <br>
+                        </p>
+                        <p class="text-center my-0">
+                            Contrat d’apprentissage - TP Développeur web et web mobiles - 2020
+                        </p>
+                    </div>
+                    <div class="card-footer p-0 d-flex">
+                        <button class="btn btn-primary w-50 leftBorder py-2">Visualiser</button>
+                        <div class="btnDivider"></div>
+                        <button class="btn btn-secondary w-50 rightBorder py-2">Synchroniser</button>
+                    </div>
+                </div>
+
+                
+            </div>
+
+        </main>
+        <% include includes/paginations %>
+        <% include includes/footer %>
+    </body>
+</html>
