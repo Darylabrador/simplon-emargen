@@ -11,6 +11,12 @@ const router = express.Router();
 
 router.get('/', adminController.getIndex);
 
+router.get('/settings', adminController.getGeneralSettings);
+
+router.get('/settings/informations', adminController.getInformationSettings);
+
+router.get('/settings/password', adminController.getPasswordSettings);
+
 router.get('/templates');
 
 router.get('/emargements');

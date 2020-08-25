@@ -10478,6 +10478,10 @@ li.page-item.active {
   font-size: 11px;
 }
 
+.settingHeight {
+  height: 60vh !important;
+}
+
 @media (max-width: 575.98px) {
   .formWidth {
     width: 90% !important;

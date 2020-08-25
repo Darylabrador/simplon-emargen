@@ -1,0 +1,23 @@
+<% include ../includes/head %>
+</head>
+
+<body>
+    <% include ../includes/navigation %>
+    <main>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 pb-1">
+                <% breadcrumb.forEach(element => { %>
+                <li class="breadcrumb-item active"><%= element %></li>
+                <% }) %>
+            </ol>
+        </nav>
+
+        <div class="d-flex bg-dark justify-content-center align-items-center flex-column settingHeight">
+            <a href="/admin/settings/informations" class="my-3 btn btn-outline-secondary"> Modifier des informations </a>
+            <a href="/admin/settings/password" class="my-3 btn btn-outline-secondary"> Changer votre mot de passe </a>
+        </div>
+    </main>
+    <% include ../includes/footer %>
+</body>
+
+</html>

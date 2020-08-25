@@ -158,6 +158,10 @@ li.page-item {
     font-size: 11px;
 }
 
+.settingHeight {
+    @include mixins.heightvh(60);
+}
+
 // ---------------- Responsivity -------------------------
 
 // Extra small devices (portrait phones, less than 576px)
