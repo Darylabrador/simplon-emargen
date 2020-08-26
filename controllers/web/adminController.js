@@ -105,3 +105,35 @@ exports.getEditTemplate = (req, res, next) => {
         isApprenantPage: false
     });
 }
+
+exports.getEmargements = (req, res, next) => {
+    let breadcrumb = [];
+    breadcrumb.push("Emargements");
+    breadcrumb.push("Tous");
+
+    res.render('emargements/emargementAll', {
+        title: "Emargements",
+        breadcrumb: breadcrumb,
+        isTemplatePage: false,
+        isEmargementPage: true,
+        isPromotionPage: false,
+        isApprenantPage: false
+    });
+}
+
+exports.getEmargementsIframe = (req, res, next) => {
+    let breadcrumb = [];
+    breadcrumb.push("Emargements");
+    breadcrumb.push("Détails");
+
+    let emargementId = req.params.emargementId;
+
+    res.render('emargements/emargementSingle', {
+        title: "Emargements",
+        breadcrumb: breadcrumb,
+        isTemplatePage: false,
+        isEmargementPage: true,
+        isPromotionPage: false,
+        isApprenantPage: false
+    });
+}

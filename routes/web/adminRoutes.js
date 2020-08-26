@@ -23,7 +23,9 @@ router.get('/templates/add', adminController.getAddTemplate);
 
 router.get('/templates/edit/:templateId', adminController.getEditTemplate);
 
-router.get('/emargements');
+router.get('/emargements', adminController.getEmargements);
+
+router.get('/emargements/:emargementId', adminController.getEmargementsIframe);
 
 router.get('/apprenants');
 
