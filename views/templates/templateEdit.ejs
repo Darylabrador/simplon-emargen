@@ -17,34 +17,43 @@
             </ol>
         </nav>
 
-        <div class="settingHeight d-flex justify-content-center align-items-center">
+        <div class="settingHeight d-flex justify-content-center align-items-center mt-5">
             <div class="formWidth bg-white rounded">
-                <h5 class="text-center pt-5 mb-5">Modifications du mot de passe</h5>
 
-                <form action="/admin/settings/password" method="POST">
-                    <div class="my-3 input-group mb-2 mr-sm-2 px-5">
-                        <input type="password" class="form-control inputBorder" name="oldpass" placeholder="Ancien mot de passe">
-                    </div>
-                    
-                    <div class="my-3 input-group mb-2 mr-sm-2 px-5">
-                        <input type="password" class="form-control inputBorder" name="newpass" placeholder="Nouveau mot de passe">
-                    </div>
+                <div class="mx-auto my-4 d-flex justify-content-center align-items-center">
+                    <img id="previewLogo" src="/images/logowebsite.png" class="img-fluid" alt="Logo preview" style="max-width: 300px; max-height: 150px;">
+                </div>
 
+                <form action="/admin/templates/add" method="POST">
                     <div class="my-3 input-group mb-2 mr-sm-2 px-5">
-                        <input type="password" class="form-control inputBorder" name="newpassconfirm" placeholder="Confirmer le mot de passe">
+                        <input type="text" class="form-control inputBorder" name="name" placeholder="Nom du template">
                     </div>
 
+                    <div class="my-3 input-group mb-2 mr-sm-2 px-5">
+                        <input type="text" class="form-control inputBorder" name="organisme" placeholder="Organisme">
+                    </div>
+
+                    <div class="my-3 input-group mb-2 mr-sm-2 px-5">
+                        <input type="text" class="form-control inputBorder" name="intitule" placeholder="Intitule">
+                    </div>
+
+                    <div class="my-3 input-group mb-2 mr-sm-2 px-5">
+                        <input type="file" id="logo" class="form-control inputBorder" name="logo">
+                    </div>
                     <div class="w-100 d-flex mt-5">
                         <a href="/admin" class="btn btn-primary w-50 leftBorder py-3">Annuler</a>
                         <div class="btnDivider"></div>
-                        <button type="submit" class="btn btn-secondary w-50 rightBorder py-3"> Modifier </button>
+                        <button type="submit" class="btn btn-secondary w-50 rightBorder py-3"> Mettre à jour </button>
                     </div>
 
                 </form>
             </div>
         </div>
     </main>
+
     <% include ../includes/footer %>
+
+    <script src="/js/template/previewLogo.js"></script>
 </body>
 
 </html>

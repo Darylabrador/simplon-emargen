@@ -1,0 +1,69 @@
+<% include ../includes/head %>
+</head>
+
+<body>
+    <% include ../includes/navigation , {
+                        isTemplatePage: isTemplatePage, 
+                        isEmargementPage: isEmargementPage, 
+                        isPromotionPage: isPromotionPage, 
+                        isApprenantPage: isApprenantPage
+                    } %>
+    <main>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 pb-1">
+                <% breadcrumb.forEach(element => { %>
+                <li class="breadcrumb-item active"><%= element %></li>
+                <% }) %>
+            </ol>
+        </nav>
+
+        <div class="row no-gutters px-5 mt-0 justify-content-around">
+            <div class="card col-12 col-lg-3 col-sm-6 col-xl-3 my-2 mx-3">
+                <div class="card-header mb-0 bg-transparent p-0 d-flex justify-content-center border-bottom">
+                    <img class="img-fluid logo" src="/images/logowebsite.png" alt="Logo simplon" style="max-width: 140px">
+                </div>
+                <div class="card-body mb-0">
+                    <h6 class="card-title mt-0 font-weight-bold text-center">DWWM 2020</h6>
+                    <p class="text-center my-1"> SIMPLON RUN </p>
+                    <p class="text-center my-0">
+                        Contrat d’apprentissage - TP Développeur web et web mobiles - 2020
+                    </p>
+                </div>
+                <div class="card-footer p-0 d-flex">
+                    <button class="btn btn-primary w-50 leftBorder py-2">Modifier</button>
+                    <div class="btnDivider"></div>
+                    <button class="btn btn-secondary w-50 rightBorder py-2 btnDeleteInfo" data-id="1" data-toggle="modal" data-target="#modalDelete">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <% include ../includes/paginations %>
+
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0">
+
+                <h5 class="font-weight-bold p-0 text-center my-5"> Voulez-vous vraiment supprimer ce template ? </h5>
+                <p class="text-center mb-5">La suppression est irréversible</p>
+
+                <form class="modal-body w-100 p-0" action="/admin/templates/delete" method="POST">
+                    <input type="hidden" id="templateId" name="templateId" value="">
+                    <div class="card-footer p-0 d-flex">
+                        <button class="btn btn-primary w-50 leftBorder py-2" data-dismiss="modal">Non</button>
+                        <div class="btnDivider"></div>
+                        <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Oui</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+    <% include ../includes/footer %>
+
+    <script src="/js/template/templateDelete.js"></script>
+</body>
+
+</html>

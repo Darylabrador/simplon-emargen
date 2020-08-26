@@ -162,6 +162,24 @@ li.page-item {
     @include mixins.heightvh(60);
 }
 
+.btnModalRed {
+    background: colors.$red !important;
+    color: colors.$white !important;
+    border-radius: 5px !important;
+    padding: 0px 7px 3px 7px !important;
+    margin-left: 15px;
+
+    &:hover {
+        background: colors.$redHover !important;
+    }
+}
+
+.image-preview {
+    width: 300px;
+    min-height: 100px;
+    border: 2px solid #ccc;
+}
+
 // ---------------- Responsivity -------------------------
 
 // Extra small devices (portrait phones, less than 576px)

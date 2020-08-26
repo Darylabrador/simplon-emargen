@@ -17,7 +17,11 @@ router.get('/settings/informations', adminController.getInformationSettings);
 
 router.get('/settings/password', adminController.getPasswordSettings);
 
-router.get('/templates');
+router.get('/templates', adminController.getTemplates);
+
+router.get('/templates/add', adminController.getAddTemplate);
+
+router.get('/templates/edit/:templateId', adminController.getEditTemplate);
 
 router.get('/emargements');
 

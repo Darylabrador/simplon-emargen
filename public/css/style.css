@@ -10482,6 +10482,23 @@ li.page-item.active {
   height: 60vh !important;
 }
 
+.btnModalRed {
+  background: #CE0033 !important;
+  color: #fff !important;
+  border-radius: 5px !important;
+  padding: 0px 7px 3px 7px !important;
+  margin-left: 15px;
+}
+.btnModalRed:hover {
+  background: #A4082F !important;
+}
+
+.image-preview {
+  width: 300px;
+  min-height: 100px;
+  border: 2px solid #ccc;
+}
+
 @media (max-width: 575.98px) {
   .formWidth {
     width: 90% !important;
