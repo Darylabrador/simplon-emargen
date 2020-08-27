@@ -84,28 +84,22 @@
                 <div class="card-header bg-transparent font-weight-bold">
                     Ajouter une feuille d’émargement
                 </div>
-               
                 <form class="modal-body w-100 p-0" action="/admin/emargements/add" method="POST">
-
                     <div class="p-4">
                         <div class="my-3 input-group mb-2 mr-sm-2">
                             <select class="form-control inputBorder inputSelect" name="template">
                                 <option value="">Choix du template à utiliser</option>
                             </select>
                         </div>
-                        
                         <div class="my-3 input-group mb-2 mr-sm-2">
                             <select class="form-control inputBorder inputSelect" name="promotion">
                             <option value="">Choix de la promotion</option>
                             </select>
                         </div>
-                        
                         <div class="mb-4 input-group mb-2 mr-sm-2">
                             <input type="url" class="form-control inputBorder" name="googleSheetUrl" placeholder="Coller le lien ici">
                         </div>
                     </div>
-
-
                     <div class="card-footer p-0 d-flex">
                         <button class="btn btn-primary w-50 leftBorder py-2" data-dismiss="modal">Annuler</button>
                         <div class="btnDivider"></div>

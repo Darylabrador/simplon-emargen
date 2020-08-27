@@ -27,8 +27,8 @@ router.get('/emargements', adminController.getEmargements);
 
 router.get('/emargements/:emargementId', adminController.getEmargementsIframe);
 
-router.get('/apprenants');
+router.get('/promotions', adminController.getPromotions);
 
-router.get('/promotions');
+router.get('/apprenants', adminController.getApprenants);
 
 module.exports = router;

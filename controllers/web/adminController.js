@@ -137,3 +137,33 @@ exports.getEmargementsIframe = (req, res, next) => {
         isApprenantPage: false
     });
 }
+
+exports.getPromotions = (req, res, next) => {
+    let breadcrumb = [];
+    breadcrumb.push("Promotions");
+    breadcrumb.push("Tous");
+
+    res.render('promotions/promotions', {
+        title: "Promotions",
+        breadcrumb: breadcrumb,
+        isTemplatePage: false,
+        isEmargementPage: false,
+        isPromotionPage: true,
+        isApprenantPage: false
+    });
+}
+
+exports.getApprenants = (req, res, next) => {
+    let breadcrumb = [];
+    breadcrumb.push("Apprenants");
+    breadcrumb.push("Tous");
+
+    res.render('apprenants/apprenants', {
+        title: "Apprenants",
+        breadcrumb: breadcrumb,
+        isTemplatePage: false,
+        isEmargementPage: false,
+        isPromotionPage: false,
+        isApprenantPage: true
+    });
+}
