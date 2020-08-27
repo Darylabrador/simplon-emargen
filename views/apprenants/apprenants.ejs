@@ -1,4 +1,4 @@
-<% include ../includes/head %>
+<% include ../includes/headDatatable %>
 </head>
 
 <body>
@@ -17,11 +17,164 @@
             </ol>
         </nav>
 
-        <div class="settingHeight60 d-flex justify-content-center align-items-center">
-
+        <div class="settingHeight60 d-flex justify-content-center align-items-center py-5 my-5">
+            <div id="datatableApprenant" class="container bg-white rounded pb-2 pt-3 px-0">
+                <table id="apprenanTable" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Prénom</th>
+                            <th scope="col">Adresse email</th>
+                            <th scope="col">Signatures</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ABRADOR</td>
+                            <td>Daryl</td>
+                            <td>abrador.daryl@gmail.com</td>
+                            <td>Configurer</td>
+                            <td>
+                                <span class="iconify iconify__black mx-1 editLearnersBtn" data-id="1" data-inline="false" data-icon="clarity:pencil-solid"></span>
+                                <span class="iconify iconify__red mx-1 deleteLearnersBtn" data-id="1" data-inline="false" data-icon="fa-solid:trash"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>DOE</td>
+                            <td>John</td>
+                            <td>doe.john@gmail.com</td>
+                            <td>Non configurer</td>
+                            <td>
+                                <span class="iconify iconify__black mx-1 editLearnersBtn" data-id="2" data-inline="false" data-icon="clarity:pencil-solid"></span>
+                                <span class="iconify iconify__red mx-1 deleteLearnersBtn" data-id="2" data-inline="false" data-icon="fa-solid:trash"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>HOAREAU</td>
+                            <td>Emmanuel</td>
+                            <td>hoareau.emmanuel@gmail.com</td>
+                            <td>Non configurer</td>
+                            <td>
+                                <span class="iconify iconify__black mx-1 editLearnersBtn" data-id="3" data-inline="false" data-icon="clarity:pencil-solid"></span>
+                                <span class="iconify iconify__red mx-1 deleteLearnersBtn" data-id="3" data-inline="false" data-icon="fa-solid:trash"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
     </main>
+    
+    <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0">
+                <div class="card-header bg-transparent font-weight-bold">
+                    Créer un compte apprenant
+                </div>
+                <form class="modal-body w-100 p-0" action="/admin/apprenants/add" method="POST">
+                    <div class="p-4">
+                        <div class="mb-4 mb-2 mr-sm-2">
+                            <label class="mb-0" for="nom" style="margin-left: 13px;">Nom</label>
+                            <input id="nom" type="text" class="form-control inputBorder" name="nom" placeholder="Nom de l'apprenant">
+                        </div>
+              
+                        <div class="mb-4 mb-2 mr-sm-2">
+                            <label class="mb-0" for="prenom" style="margin-left: 13px;">Prénom</label>
+                            <input id="prenom" type="text" class="form-control inputBorder" name="prenom" placeholder="Prénom de l’apprenant">
+                        </div>
+                  
+                        <div class="mb-4 mb-2 mr-sm-2">
+                            <label class="mb-0" for="email" style="margin-left: 13px;">Adresse email</label>
+                            <input id="email" type="email" class="form-control inputBorder" name="email" placeholder="Adresse email de l’apprenant">
+                        </div>
+
+                        <div class="mb-2 mb-2 mr-sm-2">
+                            <label class="mb-0" for="promotion" style="margin-left: 13px;">Promotion</label>
+                            <select class="form-control inputBorder inputSelect" id="promotion" name="promotion">
+                                <option value="">Choix de la promotion</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card-footer p-0 d-flex">
+                        <button class="btn btn-primary w-50 leftBorder py-2" data-dismiss="modal">Annuler</button>
+                        <div class="btnDivider"></div>
+                        <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0">
+                <div class="card-header bg-transparent font-weight-bold">
+                    Modifier les informations d'un apprenant
+                </div>
+                <form class="modal-body w-100 p-0" action="/admin/apprenants/add" method="POST">
+                    <div class="p-4">
+                        <div class="mb-4 mb-2 mr-sm-2">
+                            <label class="mb-0" for="nom" style="margin-left: 13px;">Nom</label>
+                            <input id="nomEdit" type="text" class="form-control inputBorder" name="nom" value="ABRADOR" >
+                        </div>
+    
+                        <div class="mb-4 mb-2 mr-sm-2">
+                            <label class="mb-0" for="prenom" style="margin-left: 13px;">Prénom</label>
+                            <input id="prenomEdit" type="text" class="form-control inputBorder" name="prenom" value="Daryl" >
+                        </div>
+    
+                        <div class="mb-4 mb-2 mr-sm-2">
+                            <label class="mb-0" for="email" style="margin-left: 13px;">Adresse email</label>
+                            <input id="emailEdit" type="email" class="form-control inputBorder" name="email" value="abrador.daryl@gmail.com" >
+                        </div>
+    
+                        <div class="mb-2 mb-2 mr-sm-2">
+                            <label class="mb-0" for="promotion" style="margin-left: 13px;">Promotion</label>
+                            <select class="form-control inputBorder inputSelect" id="promotionEdit" name="promotion">
+                                <option value="">Choix de la promotion</option>
+                                <option selected value=""> CDA Cybersécurité 2020 </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card-footer p-0 d-flex">
+                        <button class="btn btn-primary w-50 leftBorder py-2" data-dismiss="modal">Annuler</button>
+                        <div class="btnDivider"></div>
+                        <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0">
+                <div class="card-header bg-transparent font-weight-bold">
+                    Suppression
+                </div>
+    
+                <h5 class="font-weight-bold p-0 text-center my-5"> Voulez-vous vraiment supprimer cet(te) apprenant(e) ? </h5>
+                <p class="text-center mb-5">Attention, la suppression est irréversible</p>
+    
+                <form class="modal-body w-100 p-0" action="/admin/apprenants/delete" method="POST">
+                    <input type="hidden" id="learnerId" name="learnerId" value="">
+                    <div class="card-footer p-0 d-flex">
+                        <button class="btn btn-primary w-50 leftBorder py-2" data-dismiss="modal">Non</button>
+                        <div class="btnDivider"></div>
+                        <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Oui</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <% include ../includes/footer %>
+
+    <script src="/js/apprenants/gestionapprenants.js"></script>
 </body>
 
 </html>

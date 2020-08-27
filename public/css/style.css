@@ -10351,9 +10351,13 @@ iframe {
 
 .iconify {
   font-size: 24px;
+  cursor: pointer;
 }
 .iconify.iconify__black {
   color: #000;
+}
+.iconify.iconify__red {
+  color: #CE0033;
 }
 .iconify.iconify__white {
   color: #fff;
@@ -10497,7 +10501,7 @@ li.page-item.active {
   font-size: 11px;
 }
 
-.settingHeight {
+.settingHeight60 {
   height: 60vh !important;
 }
 
@@ -10518,14 +10522,121 @@ li.page-item.active {
   border: 2px solid #ccc;
 }
 
+#datatableApprenant {
+  border: 2px solid rgba(0, 0, 0, 0.42) !important;
+}
+#datatableApprenant #apprenanTable {
+  border-right: 1px solid rgba(0, 0, 0, 0.42) !important;
+}
+#datatableApprenant th {
+  border-top: 2px solid rgba(0, 0, 0, 0.42) !important;
+}
+#datatableApprenant #apprenanTable_previous, #datatableApprenant #apprenanTable_next {
+  display: none !important;
+}
+#datatableApprenant #apprenanTable_paginate {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+#datatableApprenant #apprenanTable_paginate ul li {
+  margin: 0px 2px;
+}
+
+#datatablePromotion {
+  border: 2px solid rgba(0, 0, 0, 0.42) !important;
+}
+#datatablePromotion #promotionTable {
+  border-right: 1px solid rgba(0, 0, 0, 0.42) !important;
+}
+#datatablePromotion th {
+  border-top: 2px solid rgba(0, 0, 0, 0.42) !important;
+}
+#datatablePromotion #promotionTable_paginate {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+#datatablePromotion #promotionTable_paginate ul li {
+  margin: 0px 2px;
+}
+
 @media (max-width: 575.98px) {
   .formWidth {
     width: 90% !important;
   }
+
+  .py-5 {
+    padding-top: 80px !important;
+    padding-bottom: 120px !important;
+  }
+
+  .my-5 {
+    margin-top: 80px !important;
+    margin-bottom: 120px !important;
+  }
+
+  #datatableApprenant {
+    font-size: 3.4vw;
+    width: 85% !important;
+  }
+  #datatableApprenant .iconify {
+    font-size: calc(2vw + 15px);
+  }
+  #datatableApprenant #apprenanTable {
+    width: 100% !important;
+  }
+  #datatableApprenant th:nth-child(1), #datatableApprenant td:nth-child(1), #datatableApprenant th:nth-child(2), #datatableApprenant td:nth-child(2), #datatableApprenant th:nth-child(4), #datatableApprenant td:nth-child(4) {
+    display: none;
+  }
+
+  #datatablePromotion {
+    font-size: 3vw;
+    width: 85% !important;
+  }
+  #datatablePromotion .iconify {
+    font-size: calc(2vw + 15px);
+  }
+  #datatablePromotion #promotionTable {
+    width: 100% !important;
+  }
+  #datatablePromotion th:nth-child(2), #datatablePromotion td:nth-child(2) {
+    display: none;
+  }
 }
 @media (min-width: 576px) and (max-width: 767.98px) {
+  .py-5 {
+    padding-top: calc(2vw + 120px) !important;
+    padding-bottom: 200px !important;
+  }
+
+  .my-5 {
+    margin-top: calc(2vw + 110px) !important;
+    margin-bottom: calc(2vw + 120px) !important;
+  }
+
   .formWidth {
     width: 75% !important;
+  }
+
+  #datatableApprenant {
+    width: 85% !important;
+  }
+  #datatableApprenant #apprenanTable {
+    width: 100% !important;
+  }
+  #datatableApprenant th:nth-child(1), #datatableApprenant td:nth-child(1), #datatableApprenant th:nth-child(2), #datatableApprenant td:nth-child(2), #datatableApprenant th:nth-child(4), #datatableApprenant td:nth-child(4) {
+    display: none;
+  }
+
+  #datatablePromotion {
+    width: 85% !important;
+  }
+  #datatablePromotion #promotionTable {
+    width: 100% !important;
+  }
+  #datatablePromotion th:nth-child(2), #datatablePromotion td:nth-child(2) {
+    display: none;
   }
 }
 @media (min-width: 768px) and (max-width: 991.98px) {
