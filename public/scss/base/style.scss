@@ -271,10 +271,18 @@ li.page-item {
     }
 }
 
+.formWidth {
+    font-family: 'Roboto', sans-serif;
+
+    h5 {
+        font-family: 'Domine', sans-serif;
+    }
+}
 // ---------------- Responsivity -------------------------
 
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) { 
+
     .btn, .btnSetting {
         font-size: 12px !important;
     }
@@ -340,7 +348,7 @@ li.page-item {
             margin-bottom: 30px !important;
         }
 
-        input {
+        input, p{
             font-size: 12px !important;
         }
     }
@@ -439,7 +447,7 @@ li.page-item {
             margin-bottom: 30px !important;
         }
 
-        input {
+        input, p {
             font-size: 12px !important;
         }
     }

@@ -1,5 +1,10 @@
 $(function () {
     $('#promotionTable').DataTable({
+        "language": {
+            "sSearch": "Rechercher",
+            "infoEmpty" : "Aucune donnée disponible",
+            "zeroRecords" : "Aucun élément n'a été trouvé"
+        },
         responsive: true,
         pageLength: 6,
     });

@@ -10580,6 +10580,13 @@ li.page-item.active {
   margin: 0px 2px;
 }
 
+.formWidth {
+  font-family: "Roboto", sans-serif;
+}
+.formWidth h5 {
+  font-family: "Domine", sans-serif;
+}
+
 @media (max-width: 575.98px) {
   .btn, .btnSetting {
     font-size: 12px !important;
@@ -10635,7 +10642,7 @@ li.page-item.active {
     margin-top: 10px !important;
     margin-bottom: 30px !important;
   }
-  .formWidth input {
+  .formWidth input, .formWidth p {
     font-size: 12px !important;
   }
 
@@ -10716,7 +10723,7 @@ li.page-item.active {
     margin-top: 10px !important;
     margin-bottom: 30px !important;
   }
-  .formWidth input {
+  .formWidth input, .formWidth p {
     font-size: 12px !important;
   }
 
