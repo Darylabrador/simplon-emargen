@@ -3,12 +3,17 @@
 @use "../utils/mixins";
 @use "../pages/authentification";
 
+// FONTS 
+@include mixins.googleFonts(Domine);
+@include mixins.googleFonts(Roboto);
+
 // GENERAL
 html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     background: colors.$background;
+    font-family: 'Domine', serif;
 }
 
 main {
@@ -22,6 +27,10 @@ a {
 iframe {
     width: 70%;
     height: 100vh;
+}
+
+footer {
+    font-family: 'Rototo', sans-serif;
 }
 
 .iconify {
@@ -52,6 +61,12 @@ iframe {
 
 .btn {
     box-shadow: none !important;
+    font-family: 'Rototo', sans-serif;
+    font-weight: bold !important;
+}
+
+.card, .modal, #detailEmargement {
+    font-family: 'Rototo', sans-serif;
 }
 
 .inputBorder {
@@ -161,6 +176,7 @@ li.page-item {
 }
 
 .breadcrumb {
+    font-family: 'Rototo', sans-serif;
     background: transparent !important;
 
     .breadcrumb-item {
@@ -204,6 +220,7 @@ li.page-item {
 }
 
 #datatableApprenant {
+    font-family: 'Rototo', sans-serif;
     border: 2px solid colors.$btnGeneralColor !important;
 
     #apprenanTable {
@@ -229,12 +246,17 @@ li.page-item {
 }
 
 #datatablePromotion {
+    font-family: 'Rototo', sans-serif;
     border: 2px solid colors.$btnGeneralColor !important;
 
     #promotionTable {
         border-right: 1px solid colors.$btnGeneralColor !important;
     }
     
+    #promotionTable_previous, #promotionTable_next {
+        display: none !important;
+    }
+
     th {
         border-top: 2px solid colors.$btnGeneralColor !important;
     }
@@ -253,8 +275,8 @@ li.page-item {
 
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) { 
-    .formWidth {
-        width: 90% !important;
+    .btn, .btnSetting {
+        font-size: 12px !important;
     }
 
     .py-5 {
@@ -304,10 +326,67 @@ li.page-item {
             display: none;
         }
     }
+
+    .formWidth {
+        width: 90% !important;
+        margin-top: 60px !important;
+        margin-bottom: 80px !important;
+
+        .img-fluid {
+            width: 50vw !important ;
+        }
+        .my-5 {
+            margin-top: 10px !important;
+            margin-bottom: 30px !important;
+        }
+
+        input {
+            font-size: 12px !important;
+        }
+    }
+
+    #modalDelete, #modalSynchro {
+        .my-5 {
+            margin-top: 40px !important;
+            margin-bottom: 80px !important;
+        }
+    }
+
+    #detailEmargement {
+        font-size: 12px !important;
+        margin-bottom: 80px !important;
+
+        &.mt-5 {
+            margin-top: 20px !important;
+        }
+    }
+
+    .datable {
+        &.my-5{
+            margin-top: 30px !important;
+            margin-bottom: 30px !important;
+        }
+        &.py-5{
+            padding-top: 20px !important;
+            padding-bottom: 80px !important;
+        }
+    }
+
+    #navbarNav, .dropdown-menu {
+        font-size: 13px !important;
+
+        .btnSetting__white {
+            margin-top: 5px !important;
+            margin-right: 20px !important;
+        }
+    }
 }
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) { 
+    .btn, .btnSetting{
+        font-size: 12px !important;
+    }
 
     .py-5 {
         padding-top: calc(2vw + 120px) !important;
@@ -317,10 +396,6 @@ li.page-item {
     .my-5 {
         margin-top: calc(2vw + 110px) !important;
         margin-bottom: calc(2vw + 120px) !important;
-    }
-
-    .formWidth {
-        width: 75% !important;
     }
 
     #datatableApprenant {
@@ -348,6 +423,60 @@ li.page-item {
 
         th:nth-child(2), td:nth-child(2) {
             display: none;
+        }
+    }
+
+    .formWidth {
+        width: 75% !important;
+        padding-top: 25px !important;
+        padding-bottom: 25px !important;
+
+        .img-fluid {
+            width: 40vw !important ;
+        }
+        .my-5 {
+            margin-top: 10px !important;
+            margin-bottom: 30px !important;
+        }
+
+        input {
+            font-size: 12px !important;
+        }
+    }
+
+    #modalDelete, #modalSynchro {
+        .my-5 {
+            margin-top: 40px !important;
+            margin-bottom: 80px !important;
+        }
+    }
+
+    #detailEmargement {
+        font-size: 12px !important;
+        margin-bottom: 80px !important;
+
+        &.mt-5 {
+            margin-top: 20px !important;
+        }
+    }
+
+    .datable {
+        &.my-5{
+            margin-top: 80px !important;
+            margin-bottom: 160px !important;
+        }
+        &.py-5{
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
+        }
+    }
+
+    #navbarNav, .dropdown-menu {
+        font-size: 13px !important;
+
+        .btnSetting__white {
+            margin-top: 5px !important;
+            margin-right: 20px !important;
         }
     }
 }

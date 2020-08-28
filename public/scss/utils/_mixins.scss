@@ -14,3 +14,7 @@
 @mixin heightvh($height) {
     height: #{$height}vh !important;
 }
+
+@mixin googleFonts($font) {
+	@import url('https://fonts.googleapis.com/css2?family=#{$font}');
+}

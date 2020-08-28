@@ -86,18 +86,21 @@
                 </div>
                 <form class="modal-body w-100 p-0" action="/admin/emargements/add" method="POST">
                     <div class="p-4">
-                        <div class="my-3 input-group mb-2 mr-sm-2">
-                            <select class="form-control inputBorder inputSelect" name="template">
+                        <div class="my-3 mb-2 mr-sm-2">
+                            <label class="mb-1" for="template" style="margin-left: 16px;">Le template</label>
+                            <select class="form-control inputBorder inputSelect" name="template" id="template">
                                 <option value="">Choix du template à utiliser</option>
                             </select>
                         </div>
-                        <div class="my-3 input-group mb-2 mr-sm-2">
-                            <select class="form-control inputBorder inputSelect" name="promotion">
+                        <div class="my-3 mb-2 mr-sm-2">
+                            <label class="mb-1" for="promotion" style="margin-left: 16px;">La promotion</label>
+                            <select class="form-control inputBorder inputSelect" name="promotion" id="promotion">
                                 <option value="">Choix de la promotion</option>
                             </select>
                         </div>
-                        <div class="mb-4 input-group mb-2 mr-sm-2">
-                            <input type="url" class="form-control inputBorder" name="googleSheetUrl" placeholder="Coller le lien ici">
+                        <div class="mb-4 mb-2 mr-sm-2">
+                            <label class="mb-1" for="googleSheetUrl" style="margin-left: 16px;">Lien du Google Sheet</label>
+                            <input style="padding-left: 16px !important;" type="url" class="form-control inputBorder" id="googleSheetUrl" name="googleSheetUrl" placeholder="Coller le lien ici" >
                         </div>
                     </div>
                     <div class="card-footer p-0 d-flex">

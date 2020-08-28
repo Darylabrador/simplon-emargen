@@ -33,7 +33,7 @@
                     <div class="card-footer p-0 d-flex">
                         <button class="btn btn-primary w-50 leftBorder py-2">Générer</button>
                         <div class="btnDivider"></div>
-                        <button class="btn btn-secondary w-50 rightBorder py-2">Synchroniser</button>
+                        <button class="btn btn-secondary w-50 rightBorder py-2 btnSynchroInfo" data-id="1" data-toggle="modal" data-target="#modalSynchro">Synchroniser</button>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                     <div class="card-footer p-0 d-flex">
                         <a href="/admin/emargements/1" class="btn btn-primary w-50 leftBorder py-2">Visualiser</a>
                         <div class="btnDivider"></div>
-                        <button class="btn btn-secondary w-50 rightBorder py-2">Synchroniser</button>
+                        <button class="btn btn-secondary w-50 rightBorder py-2 btnSynchroInfo" data-id="2" data-toggle="modal" data-target="#modalSynchro">Synchroniser</button>
                     </div>
                 </div>
 
@@ -61,6 +61,25 @@
 
         </main>
         <% include includes/paginations %>
+
+        <div class="modal fade" id="modalSynchro" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content p-0">
+                    <h5 class="font-weight-bold p-0 text-center my-5"> Voulez-vous vraiment synchroniser les données ?</h5>
+                    <p class="text-center mb-5">Attention, la synchronisation écrase les données existantes</p>
+                    <form class="modal-body w-100 p-0" action="/admin/emargements/synchro" method="POST">
+                        <input type="hidden" id="emargementId" name="emargementId" value="">
+                        <div class="card-footer p-0 d-flex">
+                            <button class="btn btn-primary w-50 leftBorder py-2" data-dismiss="modal">Non</button>
+                            <div class="btnDivider"></div>
+                            <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Oui</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <% include includes/footer %>
+        <script src="/js/emargements/emargementSynchro.js"></script>
     </body>
 </html>

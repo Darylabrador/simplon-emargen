@@ -1,4 +1,6 @@
 @charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Domine");
+@import url("https://fonts.googleapis.com/css2?family=Roboto");
 /*!
  * Bootstrap v4.5.2 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
@@ -10334,6 +10336,7 @@ html, body {
   padding: 0;
   box-sizing: border-box;
   background: #F1F5F8;
+  font-family: "Domine", serif;
 }
 
 main {
@@ -10347,6 +10350,10 @@ a {
 iframe {
   width: 70%;
   height: 100vh;
+}
+
+footer {
+  font-family: "Rototo", sans-serif;
 }
 
 .iconify {
@@ -10373,6 +10380,12 @@ iframe {
 
 .btn {
   box-shadow: none !important;
+  font-family: "Rototo", sans-serif;
+  font-weight: bold !important;
+}
+
+.card, .modal, #detailEmargement {
+  font-family: "Rototo", sans-serif;
 }
 
 .inputBorder {
@@ -10484,6 +10497,7 @@ li.page-item.active {
 }
 
 .breadcrumb {
+  font-family: "Rototo", sans-serif;
   background: transparent !important;
 }
 .breadcrumb .breadcrumb-item {
@@ -10523,6 +10537,7 @@ li.page-item.active {
 }
 
 #datatableApprenant {
+  font-family: "Rototo", sans-serif;
   border: 2px solid rgba(0, 0, 0, 0.42) !important;
 }
 #datatableApprenant #apprenanTable {
@@ -10544,10 +10559,14 @@ li.page-item.active {
 }
 
 #datatablePromotion {
+  font-family: "Rototo", sans-serif;
   border: 2px solid rgba(0, 0, 0, 0.42) !important;
 }
 #datatablePromotion #promotionTable {
   border-right: 1px solid rgba(0, 0, 0, 0.42) !important;
+}
+#datatablePromotion #promotionTable_previous, #datatablePromotion #promotionTable_next {
+  display: none !important;
 }
 #datatablePromotion th {
   border-top: 2px solid rgba(0, 0, 0, 0.42) !important;
@@ -10562,8 +10581,8 @@ li.page-item.active {
 }
 
 @media (max-width: 575.98px) {
-  .formWidth {
-    width: 90% !important;
+  .btn, .btnSetting {
+    font-size: 12px !important;
   }
 
   .py-5 {
@@ -10603,8 +10622,58 @@ li.page-item.active {
   #datatablePromotion th:nth-child(2), #datatablePromotion td:nth-child(2) {
     display: none;
   }
+
+  .formWidth {
+    width: 90% !important;
+    margin-top: 60px !important;
+    margin-bottom: 80px !important;
+  }
+  .formWidth .img-fluid {
+    width: 50vw !important;
+  }
+  .formWidth .my-5 {
+    margin-top: 10px !important;
+    margin-bottom: 30px !important;
+  }
+  .formWidth input {
+    font-size: 12px !important;
+  }
+
+  #modalDelete .my-5, #modalSynchro .my-5 {
+    margin-top: 40px !important;
+    margin-bottom: 80px !important;
+  }
+
+  #detailEmargement {
+    font-size: 12px !important;
+    margin-bottom: 80px !important;
+  }
+  #detailEmargement.mt-5 {
+    margin-top: 20px !important;
+  }
+
+  .datable.my-5 {
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+  }
+  .datable.py-5 {
+    padding-top: 20px !important;
+    padding-bottom: 80px !important;
+  }
+
+  #navbarNav, .dropdown-menu {
+    font-size: 13px !important;
+  }
+  #navbarNav .btnSetting__white, .dropdown-menu .btnSetting__white {
+    margin-top: 5px !important;
+    margin-right: 20px !important;
+  }
 }
 @media (min-width: 576px) and (max-width: 767.98px) {
+  .btn, .btnSetting {
+    font-size: 12px !important;
+  }
+
   .py-5 {
     padding-top: calc(2vw + 120px) !important;
     padding-bottom: 200px !important;
@@ -10613,10 +10682,6 @@ li.page-item.active {
   .my-5 {
     margin-top: calc(2vw + 110px) !important;
     margin-bottom: calc(2vw + 120px) !important;
-  }
-
-  .formWidth {
-    width: 75% !important;
   }
 
   #datatableApprenant {
@@ -10637,6 +10702,52 @@ li.page-item.active {
   }
   #datatablePromotion th:nth-child(2), #datatablePromotion td:nth-child(2) {
     display: none;
+  }
+
+  .formWidth {
+    width: 75% !important;
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+  }
+  .formWidth .img-fluid {
+    width: 40vw !important;
+  }
+  .formWidth .my-5 {
+    margin-top: 10px !important;
+    margin-bottom: 30px !important;
+  }
+  .formWidth input {
+    font-size: 12px !important;
+  }
+
+  #modalDelete .my-5, #modalSynchro .my-5 {
+    margin-top: 40px !important;
+    margin-bottom: 80px !important;
+  }
+
+  #detailEmargement {
+    font-size: 12px !important;
+    margin-bottom: 80px !important;
+  }
+  #detailEmargement.mt-5 {
+    margin-top: 20px !important;
+  }
+
+  .datable.my-5 {
+    margin-top: 80px !important;
+    margin-bottom: 160px !important;
+  }
+  .datable.py-5 {
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+  }
+
+  #navbarNav, .dropdown-menu {
+    font-size: 13px !important;
+  }
+  #navbarNav .btnSetting__white, .dropdown-menu .btnSetting__white {
+    margin-top: 5px !important;
+    margin-right: 20px !important;
   }
 }
 @media (min-width: 768px) and (max-width: 991.98px) {
