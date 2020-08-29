@@ -10356,6 +10356,35 @@ footer {
   font-family: "Rototo", sans-serif;
 }
 
+select {
+  -moz-appearance: none;
+  /* Firefox */
+  -webkit-appearance: none;
+  /* Safari and Chrome */
+  appearance: none;
+}
+select.inputSelect {
+  background-image: url("https://api.iconify.design/dashicons/arrow-down-alt2.svg") !important;
+  background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), 100% 0 !important;
+  background-size: 15px 15px, 15px 15px, 2.5em 2.5em !important;
+  background-repeat: no-repeat !important;
+}
+
+li.page-item a.page-link {
+  color: #fff !important;
+  background: rgba(206, 0, 51, 0.7) !important;
+  border: none !important;
+  border-radius: 5px !important;
+  padding: 7px 13px 7px 13px !important;
+}
+li.page-item a.page-link:hover {
+  color: #A4082F !important;
+}
+li.page-item.active {
+  background: #CE0033 !important;
+  border-radius: 5px !important;
+}
+
 .iconify {
   font-size: 24px;
   cursor: pointer;
@@ -10423,6 +10452,17 @@ footer {
   background: white;
 }
 
+.formWidth {
+  font-family: "Roboto", sans-serif;
+}
+.formWidth h5 {
+  font-family: "Domine", sans-serif;
+}
+
+.settingHeight60 {
+  height: 60vh !important;
+}
+
 .btnSetting {
   background: rgba(0, 0, 0, 0.65);
   border-radius: 25px;
@@ -10467,35 +10507,6 @@ footer {
   vertical-align: middle !important;
 }
 
-select {
-  -moz-appearance: none;
-  /* Firefox */
-  -webkit-appearance: none;
-  /* Safari and Chrome */
-  appearance: none;
-}
-select.inputSelect {
-  background-image: url("https://api.iconify.design/dashicons/arrow-down-alt2.svg") !important;
-  background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), 100% 0 !important;
-  background-size: 15px 15px, 15px 15px, 2.5em 2.5em !important;
-  background-repeat: no-repeat !important;
-}
-
-li.page-item a.page-link {
-  color: #fff !important;
-  background: rgba(206, 0, 51, 0.7) !important;
-  border: none !important;
-  border-radius: 5px !important;
-  padding: 7px 13px 7px 13px !important;
-}
-li.page-item a.page-link:hover {
-  color: #A4082F !important;
-}
-li.page-item.active {
-  background: #CE0033 !important;
-  border-radius: 5px !important;
-}
-
 .breadcrumb {
   font-family: "Rototo", sans-serif;
   background: transparent !important;
@@ -10513,10 +10524,6 @@ li.page-item.active {
   color: #fff;
   background: rgba(0, 0, 0, 0.42);
   font-size: 11px;
-}
-
-.settingHeight60 {
-  height: 60vh !important;
 }
 
 .btnModalRed {
@@ -10580,13 +10587,6 @@ li.page-item.active {
   margin: 0px 2px;
 }
 
-.formWidth {
-  font-family: "Roboto", sans-serif;
-}
-.formWidth h5 {
-  font-family: "Domine", sans-serif;
-}
-
 @media (max-width: 575.98px) {
   .btn, .btnSetting {
     font-size: 12px !important;
@@ -10632,7 +10632,7 @@ li.page-item.active {
 
   .formWidth {
     width: 90% !important;
-    margin-top: 60px !important;
+    margin-top: 80px !important;
     margin-bottom: 80px !important;
   }
   .formWidth .img-fluid {
@@ -10714,7 +10714,7 @@ li.page-item.active {
   .formWidth {
     width: 75% !important;
     padding-top: 25px !important;
-    padding-bottom: 25px !important;
+    padding-bottom: 0px !important;
   }
   .formWidth .img-fluid {
     width: 40vw !important;
@@ -10755,6 +10755,11 @@ li.page-item.active {
   #navbarNav .btnSetting__white, .dropdown-menu .btnSetting__white {
     margin-top: 5px !important;
     margin-right: 20px !important;
+  }
+
+  #templateEdit {
+    margin-top: 130px !important;
+    margin-bottom: 190px !important;
   }
 }
 @media (min-width: 768px) and (max-width: 991.98px) {

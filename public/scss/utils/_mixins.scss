@@ -18,3 +18,17 @@
 @mixin googleFonts($font) {
 	@import url('https://fonts.googleapis.com/css2?family=#{$font}');
 }
+
+@mixin widthPourcentage($width){
+    width: #{$width} !important;
+}
+
+@mixin paddingTopBottom($top, $bottom) {
+    padding-top: #{$top} !important;
+    padding-bottom: #{$bottom} !important;
+}
+
+@mixin marginTopBottom($top, $bottom) {
+    margin-top: #{$top} !important;
+    margin-bottom: #{$bottom} !important;
+}
