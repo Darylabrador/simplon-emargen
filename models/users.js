@@ -5,7 +5,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const userSchema = mongoose.Schema({
     promoId: {
         type: ObjectId,
-        required: true
+        default: null
     },
     name: {
         type: String,

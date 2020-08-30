@@ -1,0 +1,31 @@
+<% include ../includes/head %>
+</head>
+
+<body class="d-flex flex-column align-items-center justify-content-center authentification">
+    <div class="bg-white rounded formWidth">
+        <h5 class="text-black-50 text-center pt-4">Inscription</h5>
+        <form action="/signup" method="POST">
+            <div class="px-5 mb-4">
+                <div class="my-3 mr-sm-2">
+                    <input type="text" class="form-control inputBorder" name="name" placeholder="Saisir le nom">
+                </div>
+                <div class="my-3 mr-sm-2">
+                    <input type="text" class="form-control inputBorder" name="surname" placeholder="Saisir le prénom">
+                </div>
+                <div class="my-3 mr-sm-2">
+                    <input type="email" class="form-control inputBorder" name="email" placeholder="Saisir l'adresse email">
+                </div>
+                <div class="my-3 mr-sm-2">
+                    <input type="password" class="form-control inputBorder" name="password" placeholder="Sasir le mot de passe">
+                </div>
+            </div>
+            <div class="w-100 d-flex">
+                <a href="/login" class="btn btn-primary w-50 leftBorder py-3">Connexion</a>
+                <div class="btnDivider"></div>
+                <button type="submit" class="btn btn-secondary w-50 rightBorder py-3">Créer</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -2,16 +2,22 @@
 </head>
 
 <body class="d-flex flex-column align-items-center justify-content-center authentification">
+    
+   
+
     <div class="bg-white rounded formWidth">
         <div class="text-center w-100 my-3">
             <img class="img-fluid" src="/images/logowebsite.png" alt="Logo Simplon.co">
         </div>
-
+        
         <form action="<%= isReset ? '/reinitPass' : '/reinitialisation' %>" method="POST">
+           
+            <% include ../includes/messageFlash %>
 
             <% if(isReset) { %>
 
                 <div class="px-5">
+                    <input type="hidden" name="resetToken" value="<%= resetToken %>">
                     <div class="my-5 input-group mb-2 mr-sm-2">
                         <div class="input-group-prepend">
                             <div class="input-group-text inputBorder">
@@ -34,7 +40,7 @@
             <% } else { %>
 
                 <div class="px-5">
-                    <p style="margin-top: -12px;" class="text-center">Veuillez saisir votre adresse email pour réinitialiser votre mot de passe</p>
+                    <p class="text-center">Veuillez saisir votre adresse email pour réinitialiser votre mot de passe</p>
                     <div class="my-5 input-group mb-2 mr-sm-2">
                         <div class="input-group-prepend">
                             <div class="input-group-text inputBorder">

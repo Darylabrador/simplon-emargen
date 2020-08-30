@@ -6,6 +6,8 @@
           <div class="text-center w-100 my-3">
             <img class="img-fluid" src="/images/logowebsite.png" alt="Logo Simplon.co">
           </div>
+          
+          <% include ../includes/messageFlash %>
 
           <form action="/login" method="POST">
             <div class="px-5">
@@ -15,7 +17,10 @@
                     <span class="iconify iconify__black" data-inline="false" data-icon="ic:outline-mail-outline"></span>
                   </div>
                 </div>
-                <input type="email" class="form-control inputBorder" name="email" placeholder="Adresse email">
+                <input required type="email" name="email" 
+                placeholder="Adresse email"
+                class="form-control inputBorder <%= validationErrors.find(e => e.param === 'email') ? 'border-bottom border-danger' : '' %>"
+                value="<% if(hasError){%><%=oldInput.email%><% } %>">
               </div>
               
               <div class="my-5 input-group mb-2 mr-sm-2">
@@ -24,7 +29,9 @@
                     <span class="iconify iconify__black" data-inline="false" data-icon="uil:padlock"></span>
                   </div>
                 </div>
-                <input type="password" class="form-control inputBorder" name="password" placeholder="Mot de passe">
+                <input required type="password" name="password"
+                class="form-control inputBorder <%= validationErrors.find(e => e.param === 'password') ? 'border-bottom border-danger' : '' %>" 
+                placeholder="Mot de passe">
               </div>
             </div>
 
