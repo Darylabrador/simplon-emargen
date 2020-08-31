@@ -21,14 +21,24 @@
             <div class="formWidth bg-white rounded">
                 <h5 class="text-center pt-5 mb-5">Modifications des informations</h5>
 
+                <% include ../includes/messageFlash %>
+                
                 <form action="/admin/settings/informations" method="POST">
+                    <input type="hidden" name="currentuserId" value="<%= currentUserId %>">
                     <div class="my-3 input-group mb-2 mr-sm-2 px-5">
-                        <input type="text" class="form-control inputBorder mr-3" name="name" placeholder="Nom">
-                        <input type="text" class="form-control inputBorder ml-3" name="surname" placeholder="Prénom">
+                        <input type="text" name="name" 
+                        class="form-control inputBorder mr-3 <%= validationErrors.find(e => e.param === 'name') ? 'border-bottom border-danger' : '' %>"  
+                        value="<%= userInfo != null ? userInfo.name : oldInput.name %>">
+                        
+                        <input type="text" name="surname" 
+                        class="form-control inputBorder ml-3 <%= validationErrors.find(e => e.param === 'surname') ? 'border-bottom border-danger' : '' %>"  
+                        value="<%= userInfo != null ? userInfo.surname : oldInput.surname %>">
                     </div>
 
                     <div class="my-3 input-group mb-2 mr-sm-2 px-5">
-                        <input type="text" class="form-control inputBorder" name="email" placeholder="Adresse email">
+                        <input type="email" name="email" 
+                        class="form-control inputBorder <%= validationErrors.find(e => e.param === 'email') ? 'border-bottom border-danger' : '' %>"  
+                        value="<%= userInfo != null ? userInfo.email : oldInput.email %>">
                     </div>
 
                     <div class="w-100 d-flex mt-5">

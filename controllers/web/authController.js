@@ -48,6 +48,10 @@ exports.getLogin = (req, res, next) =>{
  * @returns {VIEW} reinitialisation view
  */
 exports.getReinitialisation = (req, res, next) => {
+    if (req.session.userId) {
+        return res.redirect('/admin');
+    }
+    
     res.render('auth/resetPass', {
         title: "Réinitialisation",
         isReset: false,

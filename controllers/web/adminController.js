@@ -1,15 +1,33 @@
-exports.getIndex = (req, res, next) => {
+const Template      = require('../../models/templates');
+const Signoffsheet  = require('../../models/signoffsheets');
+const User          = require('../../models/users');
+const Yeargroup     = require('../../models/users');
+
+exports.getIndex = async (req, res, next) => {
     let breadcrumb = [];
     breadcrumb.push("Accueil");
 
-    res.render('index', {
-        title: "Accueil",
-        breadcrumb: breadcrumb,
-        isTemplatePage: false,
-        isEmargementPage: false,
-        isPromotionPage: false,
-        isApprenantPage: false
-    });
+    try {
+        const signoffsheetPdf = await Signoffsheet.find().populate('templateId');
+        res.render('index', {
+            title: "Accueil",
+            breadcrumb: breadcrumb,
+            isTemplatePage: false,
+            isEmargementPage: false,
+            isPromotionPage: false,
+            isApprenantPage: false,
+            errorMessage: null,
+            hasError: false,
+            validationErrors: [],
+            signoffsheetData: signoffsheetPdf
+        });
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        next(err);
+        return err;
+    }
+
 }
 
 exports.getGeneralSettings = (req, res, next) => {
@@ -23,24 +41,40 @@ exports.getGeneralSettings = (req, res, next) => {
         isTemplatePage: false,
         isEmargementPage: false,
         isPromotionPage: false,
-        isApprenantPage: false
+        isApprenantPage: false,
+        errorMessage: null,
+        hasError: false,
+        validationErrors: [],
     });
 }
 
-exports.getInformationSettings = (req, res, next) => {
+exports.getInformationSettings = async (req, res, next) => {
     let breadcrumb = [];
     breadcrumb.push("Réglages");
     breadcrumb.push("Compte");
     breadcrumb.push("Informations");
 
-    res.render('account/informations', {
-        title: "Compte",
-        breadcrumb: breadcrumb,
-        isTemplatePage: false,
-        isEmargementPage: false,
-        isPromotionPage: false,
-        isApprenantPage: false
-    });
+    try {
+        const userInfo = await User.findOne({ _id: req.session.userId }, { name: 1, surname: 1, email: 1});
+ 
+        res.render('account/informations', {
+            title: "Compte",
+            breadcrumb: breadcrumb,
+            isTemplatePage: false,
+            isEmargementPage: false,
+            isPromotionPage: false,
+            isApprenantPage: false,
+            errorMessage: null,
+            hasError: false,
+            validationErrors: [],
+            userInfo: userInfo
+        });
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        next(err);
+        return err;
+    }
 }
 
 exports.getPasswordSettings = (req, res, next) => {
@@ -55,23 +89,38 @@ exports.getPasswordSettings = (req, res, next) => {
         isTemplatePage: false,
         isEmargementPage: false,
         isPromotionPage: false,
-        isApprenantPage: false
+        isApprenantPage: false,
+        errorMessage: null,
+        hasError: false,
+        validationErrors: []
     });
 }
 
-exports.getTemplates = (req, res, next) => {
+exports.getTemplates = async (req, res, next) => {
     let breadcrumb = [];
     breadcrumb.push("Templates");
     breadcrumb.push("Tous");
 
-    res.render('templates/templateAll', {
-        title: "Templates",
-        breadcrumb: breadcrumb,
-        isTemplatePage: true,
-        isEmargementPage: false,
-        isPromotionPage: false,
-        isApprenantPage: false
-    });
+    try {
+        const templateInfo = await Template.find();
+        res.render('templates/templateAll', {
+            title: "Templates",
+            breadcrumb: breadcrumb,
+            isTemplatePage: true,
+            isEmargementPage: false,
+            isPromotionPage: false,
+            isApprenantPage: false,
+            errorMessage: null,
+            hasError: false,
+            validationErrors: [],
+            templateInfo: templateInfo
+        });
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        next(err);
+        return err;
+    }
 }
 
 exports.getAddTemplate = (req, res, next) => {
@@ -85,25 +134,40 @@ exports.getAddTemplate = (req, res, next) => {
         isTemplatePage: true,
         isEmargementPage: false,
         isPromotionPage: false,
-        isApprenantPage: false
+        isApprenantPage: false,
+        errorMessage: null,
+        hasError: false,
+        validationErrors: []
     });
 }
 
-exports.getEditTemplate = (req, res, next) => {
+exports.getEditTemplate = async (req, res, next) => {
     let breadcrumb = [];
     breadcrumb.push("Templates");
     breadcrumb.push("Modifications");
 
-    let templateId = req.params.templateId;
+    const templateId = req.params.templateId;
 
-    res.render('templates/templateEdit', {
-        title: "Templates",
-        breadcrumb: breadcrumb,
-        isTemplatePage: true,
-        isEmargementPage: false,
-        isPromotionPage: false,
-        isApprenantPage: false
-    });
+    try {
+        const templateInfo = await Template.findOne({_id: templateId});
+        res.render('templates/templateEdit', {
+            title: "Templates",
+            breadcrumb: breadcrumb,
+            isTemplatePage: true,
+            isEmargementPage: false,
+            isPromotionPage: false,
+            isApprenantPage: false,
+            errorMessage: null,
+            hasError: false,
+            validationErrors: [],
+            templateInfo: templateInfo
+        });
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        next(err);
+        return err;
+    }
 }
 
 exports.getEmargements = (req, res, next) => {
@@ -117,7 +181,10 @@ exports.getEmargements = (req, res, next) => {
         isTemplatePage: false,
         isEmargementPage: true,
         isPromotionPage: false,
-        isApprenantPage: false
+        isApprenantPage: false,
+        errorMessage: null,
+        hasError: false,
+        validationErrors: []
     });
 }
 
@@ -134,7 +201,10 @@ exports.getEmargementsIframe = (req, res, next) => {
         isTemplatePage: false,
         isEmargementPage: true,
         isPromotionPage: false,
-        isApprenantPage: false
+        isApprenantPage: false,
+        errorMessage: null,
+        hasError: false,
+        validationErrors: []
     });
 }
 
@@ -149,7 +219,10 @@ exports.getPromotions = (req, res, next) => {
         isTemplatePage: false,
         isEmargementPage: false,
         isPromotionPage: true,
-        isApprenantPage: false
+        isApprenantPage: false,
+        errorMessage: null,
+        hasError: false,
+        validationErrors: []
     });
 }
 
@@ -164,6 +237,9 @@ exports.getApprenants = (req, res, next) => {
         isTemplatePage: false,
         isEmargementPage: false,
         isPromotionPage: false,
-        isApprenantPage: true
+        isApprenantPage: true,
+        errorMessage: null,
+        hasError: false,
+        validationErrors: []
     });
 }
