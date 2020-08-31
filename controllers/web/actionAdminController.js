@@ -8,6 +8,7 @@ const bcrypt               = require('bcryptjs');
 const nodemailer           = require('nodemailer');
 const sengridTransport     = require('nodemailer-sendgrid-transport');
 const dotenv               = require('dotenv').config();
+const crypto               = require('crypto');
 
 const { deleteFile } = require('../../utils/file');
 const pdfFunction    = require('../../utils/pdfGenerator');
@@ -375,7 +376,12 @@ exports.synchronisationToSheet = async (req, res, next) => {
  */
 exports.addPromotion = async (req, res, next) => {
     const { promotion } = req.body;
+    const errors = validationResult(req);
     try {
+        if (!errors.isEmpty()) {
+            req.flash('error', errors.array()[0].msg);
+            return res.redirect('/admin/promotions');
+        }
         const newPromotion = new Yeargroup({
             label: promotion
         });
@@ -400,12 +406,20 @@ exports.addPromotion = async (req, res, next) => {
  */
 exports.editPromotion = async (req, res, next) => {
     const { promotionId, promotionUpdate } = req.body;
+    const errors = validationResult(req);
+
     try {
+        if (!errors.isEmpty()) {
+            req.flash('error', errors.array()[0].msg);
+            return res.redirect('/admin/promotions');
+        }
+
         const promotions = await Yeargroup.findOne({ _id: promotionId });
         if(!promotions){
             req.flash('error', 'Promotion introuvable !');
             return res.redirect('/admin/promotions');
         }
+
         promotions.label = promotionUpdate;
         await promotions.save();
         req.flash('success', 'Mise à jour effectuée !');
@@ -448,15 +462,137 @@ exports.deletePromotion = async (req, res, next) => {
 
 
 exports.addAppprenant = async (req, res, next) => {
+    const { nom, prenom, email, promotion } = req.body;
+    const errors = validationResult(req);
 
+    try {
+        if (!errors.isEmpty()) {
+            req.flash('error', errors.array()[0].msg);
+            return res.redirect('/admin/apprenants');
+        }
+
+        const secretPass = await crypto.createHmac('sha256', 'm0MZyY48Ix9').update(email).digest('hex');
+        const password   = secretPass.slice(0, 10);
+        const hashedPwd  = await bcrypt.hash(password, 12);
+
+        const newLearner = new User({
+            promoId: promotion,
+            name: nom,
+            surname: prenom,
+            email: email,
+            password: hashedPwd
+        });
+        await newLearner.save();
+
+        await transporter.sendMail({
+            to: email,
+            from: `${process.env.EMAIL_USER}`,
+            subject: 'Compte application emargement',
+            html: `<p>
+                    Un compte a été créé sur l'application d'émargement de Simplon. <br> <br> 
+                    Vous trouverez ci-dessous vos identifiants de connexion: <br><br> 
+                    Identifiant  : ${email} <br>
+                    Mot de passe : ${password}
+                </p>
+                <br> 
+                <p> Vos identifiants sont valides uniquement sur l'application mobile. En cas d'oublie du mot de passe, il faut vous adresser à l'administration de Simplon</p>`
+        });
+
+        req.flash('success', "Compte apprenant créer avec succès");
+        return res.redirect('/admin/apprenants');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }
 
 
 exports.editApprenant = async (req, res, next) => {
+    const { learnerId, nom, prenom, email, promotion } = req.body;
+    const errors = validationResult(req);
 
+    try {
+        if (!errors.isEmpty()) {
+            req.flash('error', errors.array()[0].msg);
+            return res.redirect('/admin/apprenants');
+        }
+
+        const apprenantEdit = await User.findOne({_id: learnerId, role: 'apprenant'});
+        if(!apprenantEdit) {
+            req.flash('error', "Apprenant introuvable !");
+            return res.redirect('/admin/apprenants');
+        }
+
+        apprenantEdit.promoId = promotion;
+        apprenantEdit.name = nom;
+        apprenantEdit.surname = prenom;
+        apprenantEdit.email = email;
+        await apprenantEdit.save();
+
+        req.flash('success', "Compte apprenant mis à jour !");
+        return res.redirect('/admin/apprenants');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+exports.resetPassApprenant = async (req, res, next) => {
+    const { learnerId } = req.body;
+
+    try {
+        const updatePassLearner = await User.findOne({ _id: learnerId, role: 'apprenant' });
+        if (!updatePassLearner) {
+            req.flash('error', "Apprenant introuvable !");
+            return res.redirect('/admin/apprenants');
+        }
+
+        const secretPass   = await crypto.createHmac('sha256', 'm0MZyY48Ix9').update(updatePassLearner.email).digest('hex');
+        const newPassword  = secretPass.slice(0, 10);
+        const newHashedPwd = await bcrypt.hash(newPassword, 12);
+        updatePassLearner.password = newHashedPwd;
+        updatePassLearner.firstConnection = true;
+        await updatePassLearner.save();
+
+        await transporter.sendMail({
+            to: updatePassLearner.email,
+            from: `${process.env.EMAIL_USER}`,
+            subject: 'Réinitialisation du mot de passe',
+            html: `<p>
+                    Votre mot de passe a été réinitialisé par l'administration de simplon. <br> <br> 
+                    Vous trouverez ci-dessous le nouveau identifiant : <br><br> 
+                    Mot de passe : ${newPassword}
+                </p>
+                <br> 
+                <p> Vos identifiants sont valides uniquement sur l'application mobile. En cas d'oublie du mot de passe, il faut vous adresser à l'administration de Simplon</p>`
+        });
+
+        req.flash('success', "Mot de passe mis à jour !");
+        return res.redirect('/admin/apprenants');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }
 
 
 exports.deleteApprenant = async (req, res, next) => {
-
+    const { learnerId } = req.body;
+    try {
+        const learner = await User.findById(learnerId);
+        if(!learner){
+            req.flash('error', 'Apprenant introuvable');
+            res.redirect('/admin/apprenants');
+        }
+        await learner.deleteOne();
+        req.flash('success', 'Suppression effectué avec succès');
+        res.redirect('/admin/apprenants');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }

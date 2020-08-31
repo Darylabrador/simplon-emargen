@@ -212,9 +212,76 @@ router.post(
     adminActsController.postEditPassword
 );
 
+router.post(
+    '/promotions/add', 
+    isAuth,
+    [
+        body('promotion', 'Renseigner la promotion')
+            .not()
+            .isEmpty()
+    ],
+    adminActsController.addPromotion
+);
 
 router.post(
-    '/templates/add', 
+    '/promotions/update', 
+    isAuth,
+    [
+        body('promotionUpdate', 'Renseigner la promotion')
+            .not()
+            .isEmpty()
+    ],
+    adminActsController.editPromotion
+);
+
+router.post('/promotions/delete', isAuth,adminActsController.deletePromotion);
+
+router.post(
+    '/apprenants/add', 
+    isAuth, 
+    [
+        body('nom', 'Obligatoire: Nom de l\'apprenant')
+            .not()
+            .isEmpty(),
+        body('prenom', 'Obligatoire: Prénom de l\'apprenant')
+            .not()
+            .isEmpty(),
+        body('email', 'Adresse email invalide')
+            .trim()
+            .isEmail(),
+        body('promotion', 'Obligatoire: Promotion de l\'apprenant')
+            .not()
+            .isEmpty()
+    ],
+    adminActsController.addAppprenant
+);
+
+router.post(
+    '/apprenants/edit', 
+    isAuth, 
+    [
+        body('nom', 'Obligatoire: Nom de l\'apprenant')
+            .not()
+            .isEmpty(),
+        body('prenom', 'Obligatoire: Prénom de l\'apprenant')
+            .not()
+            .isEmpty(),
+        body('email', 'Adresse email invalide')
+            .trim()
+            .isEmail(),
+        body('promotion', 'Obligatoire: Promotion de l\'apprenant')
+            .not()
+            .isEmpty()
+    ],
+    adminActsController.editApprenant
+);
+
+router.post('/apprenants/reinitPass', isAuth, adminActsController.resetPassApprenant);
+
+router.post('/apprenants/delete', isAuth, adminActsController.deleteApprenant);
+
+router.post(
+    '/templates/add',
     isAuth,
     uploadImage,
     [
@@ -256,49 +323,5 @@ router.post('/emargements/add', isAuth, adminActsController.getDataFromSheet);
 router.post('/emargements/generate', isAuth, adminActsController.generatePdf);
 
 router.post('/emargements/synchro', isAuth, adminActsController.synchronisationToSheet);
-
-router.post(
-    '/promotions/add', 
-    isAuth,
-    [
-        body('promotion', 'Renseigner la promotion')
-            .not()
-            .isEmpty()
-    ],
-    adminActsController.addPromotion
-);
-
-router.post(
-    '/promotions/update', 
-    isAuth,
-    [
-        body('promotionUpdate', 'Renseigner la promotion')
-            .not()
-            .isEmpty()
-    ],
-    adminActsController.editPromotion
-);
-
-router.post('/promotions/delete', isAuth,adminActsController.deletePromotion);
-
-router.post(
-    '/apprenants/add', 
-    isAuth, 
-    [
-
-    ],
-    adminActsController.addAppprenant
-);
-
-router.post(
-    '/apprenants/edit', 
-    isAuth, 
-    [
-
-    ],
-    adminActsController.editApprenant
-);
-
-router.post('/apprenants/delete', isAuth, adminActsController.deleteApprenant);
 
 module.exports = router;

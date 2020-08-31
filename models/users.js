@@ -17,7 +17,8 @@ const userSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -34,9 +35,11 @@ const userSchema = mongoose.Schema({
     },
     signImage: {
         type: String,
+        default: null
     },
     resetToken: {
-        type: String
+        type: String,
+        default: null
     }
 }, {timestamps: true})
 

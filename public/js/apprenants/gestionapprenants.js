@@ -17,7 +17,9 @@ $(function () {
 
     var editLearnersBtn   = document.querySelectorAll(".editLearnersBtn");
     var deleteLearnersBtn = document.querySelectorAll(".deleteLearnersBtn");
+    var resetPassBtn      = document.querySelectorAll(".resetPassBtn");
     var learnerId         = document.querySelector("#learnerId");
+    var learnerIdReset    = document.querySelector("#learnerIdReinit");
 
     if (editLearnersBtn.length != 0) {
         editLearnersBtn.forEach(editBtn => {
@@ -28,14 +30,32 @@ $(function () {
                     url: `/admin/apprenants/${learnersIdEdit}`,
                     dataType: "json",
                     success: function (response) {
-                        console.log(response);
                         if (response != null) {
-                            // $('#promotionIdEdit').val(response.specificPromo._id);
-                            // $('#promotionUpdate').val(response.specificPromo.label);
+                            $('#learnerIdUpdate').val(response.apprenant._id);
+                            $('#nomEdit').val(response.apprenant.name);
+                            $('#prenomEdit').val(response.apprenant.surname);
+                            $('#emailEdit').val(response.apprenant.email);
+                            
+                            var promOptions = document.querySelector("#promotionEdit");
+                            for (let i = 0; i < promOptions.options.length; i++ ){
+                                if (promOptions.options[i].value == response.apprenant.promoId) {
+                                    promOptions.options[i].selected = true;
+                                }
+                            }
                         }
                     }
                 });
                 $('#modalEdit').modal('toggle');
+            });
+        });
+    };
+
+    if (resetPassBtn.length != 0) {
+        resetPassBtn.forEach(resetBtn => {
+            resetBtn.addEventListener('click', evt => {
+                var learnerIdReinitPass = resetBtn.getAttribute("data-id");
+                learnerIdReset.value = learnerIdReinitPass;
+                $('#modalReinit').modal('toggle');
             });
         });
     };

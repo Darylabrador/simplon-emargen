@@ -34,16 +34,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>ABRADOR</td>
-                            <td>Daryl</td>
-                            <td>abrador.daryl@gmail.com</td>
-                            <td>Configurer</td>
-                            <td>
-                                <span class="iconify iconify__black mx-1 editLearnersBtn" data-id="1" data-inline="false" data-icon="clarity:pencil-solid"></span>
-                                <span class="iconify iconify__red mx-1 deleteLearnersBtn" data-id="1" data-inline="false" data-icon="fa-solid:trash"></span>
-                            </td>
-                        </tr>
+
+                        <% if(apprenants.length != 0) { %>
+                            <% apprenants.forEach(apprenantInfo => { %>
+                                <tr>
+                                    <td><%= apprenantInfo.name %></td>
+                                    <td><%= apprenantInfo.surname %></td>
+                                    <td><%= apprenantInfo.email %></td>
+                                    <td><%= apprenantInfo.signImage != null ? 'configurer' : 'non configurer' %></td>
+                                    <td>
+                                        <span class="iconify iconify__black mx-1 editLearnersBtn" data-id="<%= apprenantInfo._id %>" data-inline="false" data-icon="clarity:pencil-solid"></span>
+                                        <span class="iconify iconify__blue mx-1 resetPassBtn" data-id="<%= apprenantInfo._id %>" data-inline="false" data-icon="mdi:lock-reset"></span>
+                                        <span class="iconify iconify__red mx-1 deleteLearnersBtn" data-id="<%= apprenantInfo._id %>" data-inline="false" data-icon="fa-solid:trash"></span>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } %>
+
                     </tbody>
                 </table>
             </div>
@@ -78,6 +85,9 @@
                             <label class="mb-0" for="promotion" style="margin-left: 13px;">Promotion</label>
                             <select class="form-control inputBorder inputSelect" id="promotion" name="promotion">
                                 <option value="">Choix de la promotion</option>
+                                <% promotions.forEach(promo => { %>
+                                    <option value="<%= promo._id %>"><%= promo.label %></option>
+                                <% }) %>
                             </select>
                         </div>
                     </div>
@@ -99,27 +109,30 @@
                     Modifier les informations d'un apprenant
                 </div>
                 <form class="modal-body w-100 p-0" action="/admin/apprenants/edit" method="POST">
+                    <input type="hidden" id="learnerIdUpdate" name="learnerId" value="">
                     <div class="p-4">
                         <div class="mb-4 mb-2 mr-sm-2">
                             <label class="mb-0" for="nom" style="margin-left: 13px;">Nom</label>
-                            <input id="nomEdit" type="text" class="form-control inputBorder" name="nom" value="ABRADOR" >
+                            <input id="nomEdit" type="text" class="form-control inputBorder" name="nom" value="" >
                         </div>
     
                         <div class="mb-4 mb-2 mr-sm-2">
                             <label class="mb-0" for="prenom" style="margin-left: 13px;">Prénom</label>
-                            <input id="prenomEdit" type="text" class="form-control inputBorder" name="prenom" value="Daryl" >
+                            <input id="prenomEdit" type="text" class="form-control inputBorder" name="prenom" value="" >
                         </div>
     
                         <div class="mb-4 mb-2 mr-sm-2">
                             <label class="mb-0" for="email" style="margin-left: 13px;">Adresse email</label>
-                            <input id="emailEdit" type="email" class="form-control inputBorder" name="email" value="abrador.daryl@gmail.com" >
+                            <input id="emailEdit" type="email" class="form-control inputBorder" name="email" value="" >
                         </div>
     
                         <div class="mb-2 mb-2 mr-sm-2">
                             <label class="mb-0" for="promotion" style="margin-left: 13px;">Promotion</label>
                             <select class="form-control inputBorder inputSelect" id="promotionEdit" name="promotion">
                                 <option value="">Choix de la promotion</option>
-                                <option selected value=""> CDA Cybersécurité 2020 </option>
+                                <% promotions.forEach(promo => { %>
+                                <option value="<%= promo._id %>"><%= promo.label %></option>
+                                <% }) %>
                             </select>
                         </div>
                     </div>
@@ -128,6 +141,29 @@
                         <button class="btn btn-primary w-50 leftBorder py-2" data-dismiss="modal">Annuler</button>
                         <div class="btnDivider"></div>
                         <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalReinit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0">
+                <div class="card-header bg-transparent font-weight-bold">
+                    Réinitialisation du mot de passe
+                </div>
+    
+                <h5 class="font-weight-bold p-0 text-center my-5"> Voulez-vous vraiment réinitialiser le mot de passe de cet(te) apprenant(e) ?
+                </h5>
+                <p class="text-center mb-5">Attention, la réinitialisation est irréversible</p>
+    
+                <form class="modal-body w-100 p-0" action="/admin/apprenants/reinitPass" method="POST">
+                    <input type="hidden" id="learnerIdReinit" name="learnerId" value="">
+                    <div class="card-footer p-0 d-flex">
+                        <button class="btn btn-primary w-50 leftBorder py-2" data-dismiss="modal">Non</button>
+                        <div class="btnDivider"></div>
+                        <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Oui</button>
                     </div>
                 </form>
             </div>

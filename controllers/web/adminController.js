@@ -254,7 +254,9 @@ exports.getApprenants = async (req, res, next) => {
     breadcrumb.push("Tous");
 
     try {
-        const apprenants = await User.find({ role: 'apprenant' });
+        const apprenants = await User.find({ role: "apprenant" });
+        const promotions = await Yeargroup.find({});
+
         res.render('apprenants/apprenants', {
             title: "Apprenants",
             breadcrumb: breadcrumb,
@@ -265,7 +267,8 @@ exports.getApprenants = async (req, res, next) => {
             errorMessage: null,
             hasError: false,
             validationErrors: [],
-            apprenants: apprenants
+            apprenants: apprenants,
+            promotions: promotions
         }); 
     } catch (error) {
         const err = new Error(error);
