@@ -18,8 +18,14 @@
             </ol>
         </nav>
 
+    
+
         <div class="settingHeight60 d-flex justify-content-center align-items-center py-5 my-5 datable">
             <div id="datatablePromotion" class="container bg-white rounded pb-2 pt-3 px-0">
+                <div class="my-3">
+                    <% include ../includes/messageFlash %>
+                </div>
+                
                 <table id="promotionTable" class="table table-bordered">
                     <thead>
                         <tr>
@@ -29,30 +35,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Développeur web et web mobile 2020</td>
-                            <td>20</td>
-                            <td>
-                                <span class="iconify iconify__black mx-1 editPromotionBtn" data-id="1" data-inline="false" data-icon="clarity:pencil-solid"></span>
-                                <span class="iconify iconify__red mx-1 deletePromotionBtn" data-id="1" data-inline="false" data-icon="fa-solid:trash"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Développeur web et web mobile 2020</td>
-                            <td>20</td>
-                            <td>
-                                <span class="iconify iconify__black mx-1 editPromotionBtn" data-id="2" data-inline="false" data-icon="clarity:pencil-solid"></span>
-                                <span class="iconify iconify__red mx-1 deletePromotionBtn" data-id="2" data-inline="false" data-icon="fa-solid:trash"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Développeur web et web mobile 2020</td>
-                            <td>20</td>
-                            <td>
-                                <span class="iconify iconify__black mx-1 editPromotionBtn" data-id="3" data-inline="false" data-icon="clarity:pencil-solid"></span>
-                                <span class="iconify iconify__red mx-1 deletePromotionBtn" data-id="3" data-inline="false" data-icon="fa-solid:trash"></span>
-                            </td>
-                        </tr>
+                        <% if(yeargroups.length != 0) { %>
+                            <% yeargroups.forEach(promo => { %>
+                            <tr>
+                                <td><%= promo.label %></td>
+                                <td>20</td>
+                                <td>
+                                    <span class="iconify iconify__black mx-1 editPromotionBtn" data-id="<%= promo._id %>" data-inline="false"
+                                        data-icon="clarity:pencil-solid"></span>
+                                    <span class="iconify iconify__red mx-1 deletePromotionBtn" data-id="<%= promo._id %>" data-inline="false"
+                                        data-icon="fa-solid:trash"></span>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        <% } %>
                     </tbody>
                 </table>
             </div>
@@ -89,6 +85,7 @@
                     Mise à jour
                 </div>
                 <form class="modal-body w-100 p-0" action="/admin/promotions/update" method="POST">
+                    <input type="hidden" id="promotionIdEdit" name="promotionId" value="">
                     <div class="p-4">
                         <div class="mb-4 mb-2 mr-sm-2">
                             <label class="mb-1" for="promotion" style="margin-left: 12px;">Nom de la promotion</label>

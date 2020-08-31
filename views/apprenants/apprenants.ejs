@@ -19,6 +19,10 @@
 
         <div class="settingHeight60 d-flex justify-content-center align-items-center py-5 my-5 datable">
             <div id="datatableApprenant" class="container bg-white rounded pb-2 pt-3 px-0">
+                <div class="my-3">
+                    <% include ../includes/messageFlash %>
+                </div>
+                
                 <table id="apprenanTable" class="table table-bordered">
                     <thead>
                         <tr>
@@ -38,26 +42,6 @@
                             <td>
                                 <span class="iconify iconify__black mx-1 editLearnersBtn" data-id="1" data-inline="false" data-icon="clarity:pencil-solid"></span>
                                 <span class="iconify iconify__red mx-1 deleteLearnersBtn" data-id="1" data-inline="false" data-icon="fa-solid:trash"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>DOE</td>
-                            <td>John</td>
-                            <td>doe.john@gmail.com</td>
-                            <td>Non configurer</td>
-                            <td>
-                                <span class="iconify iconify__black mx-1 editLearnersBtn" data-id="2" data-inline="false" data-icon="clarity:pencil-solid"></span>
-                                <span class="iconify iconify__red mx-1 deleteLearnersBtn" data-id="2" data-inline="false" data-icon="fa-solid:trash"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>HOAREAU</td>
-                            <td>Emmanuel</td>
-                            <td>hoareau.emmanuel@gmail.com</td>
-                            <td>Non configurer</td>
-                            <td>
-                                <span class="iconify iconify__black mx-1 editLearnersBtn" data-id="3" data-inline="false" data-icon="clarity:pencil-solid"></span>
-                                <span class="iconify iconify__red mx-1 deleteLearnersBtn" data-id="3" data-inline="false" data-icon="fa-solid:trash"></span>
                             </td>
                         </tr>
                     </tbody>
@@ -114,7 +98,7 @@
                 <div class="card-header bg-transparent font-weight-bold">
                     Modifier les informations d'un apprenant
                 </div>
-                <form class="modal-body w-100 p-0" action="/admin/apprenants/add" method="POST">
+                <form class="modal-body w-100 p-0" action="/admin/apprenants/edit" method="POST">
                     <div class="p-4">
                         <div class="mb-4 mb-2 mr-sm-2">
                             <label class="mb-0" for="nom" style="margin-left: 13px;">Nom</label>

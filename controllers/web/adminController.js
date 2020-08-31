@@ -1,7 +1,8 @@
 const Template      = require('../../models/templates');
 const Signoffsheet  = require('../../models/signoffsheets');
 const User          = require('../../models/users');
-const Yeargroup     = require('../../models/users');
+const Yeargroup     = require('../../models/yeargroups');
+const Assign        = require('../../models/assigns');
 
 exports.getIndex = async (req, res, next) => {
     let breadcrumb = [];
@@ -208,38 +209,79 @@ exports.getEmargementsIframe = (req, res, next) => {
     });
 }
 
-exports.getPromotions = (req, res, next) => {
+exports.getPromotions = async (req, res, next) => {
     let breadcrumb = [];
     breadcrumb.push("Promotions");
     breadcrumb.push("Tous");
 
-    res.render('promotions/promotions', {
-        title: "Promotions",
-        breadcrumb: breadcrumb,
-        isTemplatePage: false,
-        isEmargementPage: false,
-        isPromotionPage: true,
-        isApprenantPage: false,
-        errorMessage: null,
-        hasError: false,
-        validationErrors: []
-    });
+    try {
+        const yeargroups = await Yeargroup.find();
+ 
+        res.render('promotions/promotions', {
+            title: "Promotions",
+            breadcrumb: breadcrumb,
+            isTemplatePage: false,
+            isEmargementPage: false,
+            isPromotionPage: true,
+            isApprenantPage: false,
+            errorMessage: null,
+            hasError: false,
+            validationErrors: [],
+            yeargroups: yeargroups
+        });
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }
 
-exports.getApprenants = (req, res, next) => {
+exports.getSpecificPromotion = async (req, res, next) => {
+    const promoId = req.params.promoId;
+    try {
+        const specificPromo = await Yeargroup.findOne({_id: promoId});
+        return res.status(200).json({specificPromo});
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+exports.getApprenants = async (req, res, next) => {
     let breadcrumb = [];
     breadcrumb.push("Apprenants");
     breadcrumb.push("Tous");
 
-    res.render('apprenants/apprenants', {
-        title: "Apprenants",
-        breadcrumb: breadcrumb,
-        isTemplatePage: false,
-        isEmargementPage: false,
-        isPromotionPage: false,
-        isApprenantPage: true,
-        errorMessage: null,
-        hasError: false,
-        validationErrors: []
-    });
+    try {
+        const apprenants = await User.find({ role: 'apprenant' });
+        res.render('apprenants/apprenants', {
+            title: "Apprenants",
+            breadcrumb: breadcrumb,
+            isTemplatePage: false,
+            isEmargementPage: false,
+            isPromotionPage: false,
+            isApprenantPage: true,
+            errorMessage: null,
+            hasError: false,
+            validationErrors: [],
+            apprenants: apprenants
+        }); 
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+exports.getSpecificApprenant = async (req, res, next) => {
+    const learnersId = req.params.learnersId;
+    try {
+        const apprenant = await User.findOne({ _id: learnersId, role: "apprenant"});
+        return res.status(200).json({ apprenant });
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }

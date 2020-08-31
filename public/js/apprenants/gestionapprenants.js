@@ -23,6 +23,18 @@ $(function () {
         editLearnersBtn.forEach(editBtn => {
             editBtn.addEventListener("click", () =>{
                 var learnersIdEdit = editBtn.getAttribute("data-id");
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/apprenants/${learnersIdEdit}`,
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        if (response != null) {
+                            // $('#promotionIdEdit').val(response.specificPromo._id);
+                            // $('#promotionUpdate').val(response.specificPromo.label);
+                        }
+                    }
+                });
                 $('#modalEdit').modal('toggle');
             });
         });

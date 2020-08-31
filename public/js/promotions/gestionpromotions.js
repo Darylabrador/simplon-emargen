@@ -18,7 +18,6 @@ $(function () {
     $("#promotionTable_filter").addClass(["d-flex", "justify-content-start"]);
     $("#promotionTable_paginate").parent().removeClass("col-md-7").addClass("col-md-12");
     $("#promotionTable_paginate").addClass("mt-2");
-
     $(".pagination").addClass("justify-content-center");
 
     var editPromotionBtn = document.querySelectorAll(".editPromotionBtn");
@@ -29,6 +28,17 @@ $(function () {
         editPromotionBtn.forEach(editBtn => {
             editBtn.addEventListener("click", () => {
                 var promoId = editBtn.getAttribute("data-id");
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/promotionInfo/${promoId}`,
+                    dataType: "json",
+                    success: function (response) {
+                        if(response != null) {
+                            $('#promotionIdEdit').val(response.specificPromo._id);
+                            $('#promotionUpdate').val(response.specificPromo.label);
+                        }
+                    }
+                });
                 $('#modalEdit').modal('toggle');
             });
         });

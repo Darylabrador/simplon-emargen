@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-const ObjectId = mongoose.Types.ObjectId;
-
 const yeargroupSchema = mongoose.Schema({
     label: {
         type: String,

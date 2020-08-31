@@ -5,15 +5,25 @@ const PDFDocument = require('pdfkit');
 const { validationResult } = require('express-validator');
 const axios                = require('axios');
 const bcrypt               = require('bcryptjs');
+const nodemailer           = require('nodemailer');
+const sengridTransport     = require('nodemailer-sendgrid-transport');
+const dotenv               = require('dotenv').config();
 
 const { deleteFile } = require('../../utils/file');
 const pdfFunction    = require('../../utils/pdfGenerator');
 
 const User           = require('../../models/users');
-const Yeargroup      = require('../../models/users');
+const Yeargroup      = require('../../models/yeargroups');
 const Template       = require('../../models/templates');
 const Signoffsheet   = require('../../models/signoffsheets');
 const Assign         = require('../../models/assigns');
+
+// Send mail configuration
+const transporter = nodemailer.createTransport(sengridTransport({
+    auth: {
+        api_key: `${process.env.API_KEY}`
+    }
+}));
 
 /** Handle edit information's account
  * @name postEditInformations
@@ -286,3 +296,167 @@ exports.deleteTemplate = async (req, res, next) => {
         return next(err);
     }
 };
+
+
+/** handle post generated pdf
+ * @name getDataFromSheet
+ * @function
+ * @param {object} template template (logo etc.)
+ * @param {string} dataSheet url
+ * @param {number} number sheet number's page
+ * @throws Will throw an error if one error occursed
+ */
+exports.getDataFromSheet = async (req, res, next) => {
+
+    try {
+
+    } catch (error) {
+        let errorMessage = "";
+
+        if (error.message == "Request failed with status code 400") {
+            errorMessage = "Cette feuille n'existe pas";
+        } else {
+            errorMessage = "Une erreur est survenue";
+        }
+
+        res.json({
+            success: false,
+            message: errorMessage
+        });
+        return error;
+    }
+}
+
+
+/**
+ * generate SignOff sheet PDF
+ * @name generatePdf
+ * @function
+ * @param {string} signoffId
+ * @throws Will throw an error if one error occursed
+ */
+exports.generatePdf = async (req, res, next) => {
+
+    try {
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+/**
+ * Synchronise Google Sheet and our app Sign-off Sheet
+ * @name synchronisationToSheet
+ * @function
+ * @param {string} signoffId
+ * @throws Will throw an error if one error occursed
+ */
+exports.synchronisationToSheet = async (req, res, next) => {
+
+    try {
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+/**
+ * Add promotion
+ * @name addPromotion
+ * @function
+ * @param {string} promotion
+ * @throws Will throw an error if one error occursed
+ */
+exports.addPromotion = async (req, res, next) => {
+    const { promotion } = req.body;
+    try {
+        const newPromotion = new Yeargroup({
+            label: promotion
+        });
+        await newPromotion.save();
+        req.flash('success', 'Promotion ajouté !');
+        return res.redirect('/admin/promotions');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+/**
+ * Edit promotion
+ * @name editPromotion
+ * @function
+ * @param {string} promotion
+ * @param {string} promotionId
+ * @throws Will throw an error if one error occursed
+ */
+exports.editPromotion = async (req, res, next) => {
+    const { promotionId, promotionUpdate } = req.body;
+    try {
+        const promotions = await Yeargroup.findOne({ _id: promotionId });
+        if(!promotions){
+            req.flash('error', 'Promotion introuvable !');
+            return res.redirect('/admin/promotions');
+        }
+        promotions.label = promotionUpdate;
+        await promotions.save();
+        req.flash('success', 'Mise à jour effectuée !');
+        return res.redirect('/admin/promotions');
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+/**
+ * delete promotion
+ * @name deletePromotion
+ * @function
+ * @param {string} promotionId
+ * @throws Will throw an error if one error occursed
+ */
+exports.deletePromotion = async (req, res, next) => {
+    const { promotionId } = req.body;
+
+    try {
+        const oldpromo = await Yeargroup.findOne({ _id: promotionId });
+        if(!oldpromo) {
+            req.flash('error', 'Promotion introuvable !');
+            return res.redirect('/admin/promotions');
+        }
+        await oldpromo.deleteOne();
+        req.flash('success', 'Promotion supprimer !');
+        return res.redirect('/admin/promotions');
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+exports.addAppprenant = async (req, res, next) => {
+
+}
+
+
+exports.editApprenant = async (req, res, next) => {
+
+}
+
+
+exports.deleteApprenant = async (req, res, next) => {
+
+}

@@ -144,6 +144,17 @@ router.get('/promotions', isAuth, adminController.getPromotions);
 
 
 /**
+ * Get specific promotion page
+ * @name getSpecificPromotion POST
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} '/admin/promotionInfo/:promoId' - uri
+ * @param {function} adminController.getSpecificPromotion
+ */
+router.get('/promotionInfo/:promoId', isAuth, adminController.getSpecificPromotion);
+
+
+/**
  * Get apprenants page
  * @name getApprenants GET
  * @function
@@ -152,6 +163,16 @@ router.get('/promotions', isAuth, adminController.getPromotions);
  * @param {function} adminController.getApprenants
  */
 router.get('/apprenants', isAuth, adminController.getApprenants);
+
+/**
+ * Get specific apprenant info
+ * @name getSpecificApprenant GET
+ * @function
+ * @memberof module:routers/admin
+ * @param {string} '/admin/apprenants/:learnersId' - uri
+ * @param {function} adminController.getSpecificApprenant
+ */
+router.get('/apprenants/:learnersId', isAuth, adminController.getSpecificApprenant);
 
 router.post(
     '/settings/informations', 
@@ -228,19 +249,56 @@ router.post(
     adminActsController.editTemplate
 );
 
-
 router.post('/templates/delete', isAuth, adminActsController.deleteTemplate);
 
-router.post('');
+router.post('/emargements/add', isAuth, adminActsController.getDataFromSheet);
 
-router.post('');
+router.post('/emargements/generate', isAuth, adminActsController.generatePdf);
 
-router.post('');
+router.post('/emargements/synchro', isAuth, adminActsController.synchronisationToSheet);
 
-router.post('');
+router.post(
+    '/promotions/add', 
+    isAuth,
+    [
+        body('promotion', 'Renseigner la promotion')
+            .not()
+            .isEmpty()
+    ],
+    adminActsController.addPromotion
+);
 
-router.post('');
+router.post(
+    '/promotions/update', 
+    isAuth,
+    [
+        body('promotionUpdate', 'Renseigner la promotion')
+            .not()
+            .isEmpty()
+    ],
+    adminActsController.editPromotion
+);
 
-router.post('');
+router.post('/promotions/delete', isAuth,adminActsController.deletePromotion);
+
+router.post(
+    '/apprenants/add', 
+    isAuth, 
+    [
+
+    ],
+    adminActsController.addAppprenant
+);
+
+router.post(
+    '/apprenants/edit', 
+    isAuth, 
+    [
+
+    ],
+    adminActsController.editApprenant
+);
+
+router.post('/apprenants/delete', isAuth, adminActsController.deleteApprenant);
 
 module.exports = router;
