@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: error
+            message: 'Une erreur est survenue'
         });
     }
 
