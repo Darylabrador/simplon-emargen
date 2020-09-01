@@ -46,6 +46,18 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/data', express.static(path.join(__dirname, 'data')));
 
+// API configuration
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin:', '*');
+  res.setHeader('Access-Control-Allow-Methods:', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers:', 'Content-Type, Authorization');
+
+  if(req.method == 'OPTIONS'){
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Simple session
 app.use(
   session({
@@ -97,6 +109,8 @@ app.use((req, res, next) => {
 // routes handler
 app.use(authRoutes);
 app.use('/admin', adminRoutes);
+app.use('/api', apiAuthRoutes);
+app.use('/api', apiAdminRoutes);
 
 // catch 404 and forward to error handler
 app.use(errorController.get404);
