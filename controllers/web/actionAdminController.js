@@ -821,7 +821,6 @@ exports.generateSign = async (req, res, next) => {
     
         const dateSearchedOld = signDate.split('-');
         const dateSearchedNew = `${dateSearchedOld[2]}/${dateSearchedOld[1]}/${dateSearchedOld[0]}`;
-
         const dayExist = generalSign.days.find(element => element == dateSearchedNew);
         if (!dayExist) {
             req.flash('error', 'Le jour est incorrecte');
@@ -838,7 +837,7 @@ exports.generateSign = async (req, res, next) => {
 
         const learnerList = await User.find({ promoId: promotion, role: 'apprenant' });
         learnerList.forEach(learnerInfo => {
-            let link = req.protocol + '://' + req.get('host') + `/emargements/signature?apprenant=${learnerInfo._id}&jour=${signDate}&creneau=${creneau}`;
+            let link = req.protocol + '://' + req.get('host') + `/api/emargements/signature?apprenant=${learnerInfo._id}&jour=${signDate}&creneau=${creneau}`;
             const openSign = new Assign({
                 userId: learnerInfo._id,
                 signoffsheetId: emargementId,
