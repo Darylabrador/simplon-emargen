@@ -318,7 +318,21 @@ router.post(
 
 router.post('/templates/delete', isAuth, adminActsController.deleteTemplate);
 
-router.post('/emargements/add', isAuth, adminActsController.getDataFromSheet);
+router.post(
+    '/emargements/add', 
+    isAuth, 
+    [
+        body('googleSheetUrl', 'Veuillez renseigné l\'URL du Google Sheet')
+            .isURL(),
+        body('pageNumber', 'Veuillez renseigné la feuille utiliser')
+            .not()
+            .isEmpty(),
+        body('template', 'Veuillez choisir un template')
+            .not()
+            .isEmpty()
+    ],
+    adminActsController.getDataFromSheet
+);
 
 router.post('/emargements/generate', isAuth, adminActsController.generatePdf);
 

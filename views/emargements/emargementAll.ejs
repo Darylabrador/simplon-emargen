@@ -18,44 +18,48 @@
             </ol>
         </nav>
 
-        <div class="row no-gutters px-5 mt-0 justify-content-around">
-            <div class="card col-12 col-lg-3 col-sm-6 col-xl-3 my-2 mx-3">
-                <div class="card-header mb-0 bg-transparent p-0 d-flex justify-content-end border-0">
-                    <p class="mt-2 mr-4 mb-0 version"> version 1 </p>
-                </div>
-                <div class="card-body mb-0">
-                    <h5 class="card-title mt-0 font-weight-bold text-center">Emargement</h5>
-                    <p class="text-center my-1"> SIMPLON RUN <br> 03/08/2020 au 07/08/2020 <br>
-                    </p>
-                    <p class="text-center my-0">
-                        Contrat d’apprentissage - TP Développeur web et web mobiles - 2020
-                    </p>
-                </div>
-                <div class="card-footer p-0 d-flex">
-                    <button class="btn btn-primary w-50 leftBorder py-2">Générer</button>
-                    <div class="btnDivider"></div>
-                    <button class="btn btn-secondary w-50 rightBorder py-2 btnSynchroInfo" data-id="1" data-toggle="modal" data-target="#modalSynchro">Synchroniser</button>
-                </div>
-            </div>
+        <div class="w-50 mx-auto">
+            <% include ../includes/messageFlash %>
+        </div>
 
-            <div class="card col-12 col-lg-3 col-sm-6 col-xl-3 my-2 mx-3">
-                <div class="card-header mb-0 bg-transparent p-0 d-flex justify-content-end border-0">
-                    <p class="mt-2 mr-4 mb-0 version"> version 1 </p>
+        <div class="row no-gutters px-5 mt-0 justify-content-around">
+
+            <% if (signoffsheetData.length == 0) { %>
+            
+            <h5 class="alert alert-info my-5 text-center"> Aucune feuille d'emargement n'a été trouvé ! </h5>
+            
+            <% } else { %>
+                <% signoffsheetData.forEach(signoffInfo => { %>
+                <div class="card col-12 col-lg-3 col-sm-6 col-xl-3 my-2 mx-3">
+                    <div class="card-header mb-0 bg-transparent p-0 d-flex justify-content-end border-0">
+                        <p class="mt-2 mr-4 mb-0 version"> version <%= signoffInfo.version %> </p>
+                    </div>
+                    <div class="card-body mb-0">
+                        <h5 class="card-title mt-0 font-weight-bold text-center">Emargement</h5>
+                        <p class="text-center my-1"> <%= signoffInfo.templateId.organisme %><br> <%= signoffInfo.timeStart %> au
+                            <%=signoffInfo.timeEnd %> <br>
+                        </p>
+                        <p class="text-center my-0">
+                            <%= signoffInfo.templateId.intitule %>
+                        </p>
+                    </div>
+                    <div class="card-footer p-0 d-flex">
+                        <% if (signoffInfo.fileExist) { %>
+                            <a href="/admin/emargements/<%= signoffInfo._id %>" class="btn btn-primary w-50 leftBorder py-2">Visualiser</a>
+                        <% } else  { %>
+                            <form action="/admin/emargements/generate" method="POST" class="w-50">
+                                <input type="hidden" id="emargementId" name="emargementId" value="<%= signoffInfo._id %>">
+                                <button type="submit" class="btn btn-primary w-100 leftBorder py-2"> Générer</button>
+                            </form>
+                        <% } %>
+                        <div class="btnDivider"></div>
+                        <button class="btn btn-secondary w-50 rightBorder py-2 btnSynchroInfo" data-id="<%= signoffInfo._id %>"
+                            data-toggle="modal" data-target="#modalSynchro">Synchroniser</button>
+                    </div>
                 </div>
-                <div class="card-body mb-0">
-                    <h5 class="card-title mt-0 font-weight-bold text-center">Emargement</h5>
-                    <p class="text-center my-1"> SIMPLON RUN <br> 03/08/2020 au 07/08/2020 <br>
-                    </p>
-                    <p class="text-center my-0">
-                        Contrat d’apprentissage - TP Développeur web et web mobiles - 2020
-                    </p>
-                </div>
-                <div class="card-footer p-0 d-flex">
-                    <a href="/admin/emargements/1" class="btn btn-primary w-50 leftBorder py-2">Visualiser</a>
-                    <div class="btnDivider"></div>
-                    <button class="btn btn-secondary w-50 rightBorder py-2 btnSynchroInfo" data-id="2" data-toggle="modal" data-target="#modalSynchro">Synchroniser</button>
-                </div>
-            </div>
+                <% }) %>
+            <% } %>
+
         </div>
     </main>
 
@@ -87,20 +91,21 @@
                 <form class="modal-body w-100 p-0" action="/admin/emargements/add" method="POST">
                     <div class="p-4">
                         <div class="my-3 mb-2 mr-sm-2">
+                            <label class="mb-1" for="googleSheetUrl" style="margin-left: 16px;">Lien du Google Sheet</label>
+                            <input style="padding-left: 16px !important;" type="url" class="form-control inputBorder" id="googleSheetUrl" name="googleSheetUrl" placeholder="Coller le lien ici">
+                        </div>
+                        <div class="my-3 mb-2 mr-sm-2">
+                                <label class="mb-1" for="pageNumber" style="margin-left: 16px;">Numéro de la feuille</label>
+                            <input required style="padding-left: 16px !important;" type="number" steps="1" min="1" class="form-control inputBorder" id="pageNumber" name="pageNumber" placeholder="1">
+                        </div>
+                        <div class="mb-4 mb-2 mr-sm-2">
                             <label class="mb-1" for="template" style="margin-left: 16px;">Le template</label>
                             <select class="form-control inputBorder inputSelect" name="template" id="template">
                                 <option value="">Choix du template à utiliser</option>
+                                <% templateInfo.forEach(templates => { %>
+                                    <option value="<%= templates._id %>"><%= templates.name %></option>
+                                <% }) %>
                             </select>
-                        </div>
-                        <div class="my-3 mb-2 mr-sm-2">
-                            <label class="mb-1" for="promotion" style="margin-left: 16px;">La promotion</label>
-                            <select class="form-control inputBorder inputSelect" name="promotion" id="promotion">
-                                <option value="">Choix de la promotion</option>
-                            </select>
-                        </div>
-                        <div class="mb-4 mb-2 mr-sm-2">
-                            <label class="mb-1" for="googleSheetUrl" style="margin-left: 16px;">Lien du Google Sheet</label>
-                            <input style="padding-left: 16px !important;" type="url" class="form-control inputBorder" id="googleSheetUrl" name="googleSheetUrl" placeholder="Coller le lien ici" >
                         </div>
                     </div>
                     <div class="card-footer p-0 d-flex">
@@ -109,7 +114,6 @@
                         <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Ajouter</button>
                     </div>
                 </form>
-                
             </div>
         </div>
     </div>

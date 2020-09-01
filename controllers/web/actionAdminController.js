@@ -18,6 +18,7 @@ const Yeargroup      = require('../../models/yeargroups');
 const Template       = require('../../models/templates');
 const Signoffsheet   = require('../../models/signoffsheets');
 const Assign         = require('../../models/assigns');
+const { info } = require('console');
 
 // Send mail configuration
 const transporter = nodemailer.createTransport(sengridTransport({
@@ -137,236 +138,6 @@ exports.postEditPassword = async (req, res, next) => {
     }
 }
 
-/** Handle add template
- * @name addTemplate
- * @function
- * @param {string} name
- * @param {string} intitule
- * @param {string} organisme
- * @param logo Logo de l'organisme
- * @throws Will throw an error if one error occursed
- */
-exports.addTemplate = async (req, res, next) => {
-    const { name, intitule, organisme } = req.body;
-    const imageFile = req.file;
-    const errors    = validationResult(req);
-
-    console.log(req.file);
-
-    try {
-        if (!errors.isEmpty()) {
-            let breadcrumb = [];
-            breadcrumb.push("Templates");
-            breadcrumb.push("Ajouter");
-
-            res.status(422).render('templates/templateAdd', {
-                title: "Templates",
-                breadcrumb: breadcrumb,
-                isTemplatePage: true,
-                isEmargementPage: false,
-                isPromotionPage: false,
-                isApprenantPage: false,
-                hasError: true,
-                errorMessage: errors.array()[0].msg,
-                validationErrors: errors.array(),
-                oldInput: { name, intitule, organisme }
-            });
-        }
-
-        if (!imageFile) {
-            req.flash('error', "Obligatoire : Image du logo");
-            return res.redirect('/admin/templates/add');
-        }
-
-        const imageUploaded = imageFile.path.replace("\\", "/"); // only with window
-        const image = imageFile.path.split('public')[1];
-
-        const newTemplate = new Template({
-            name: name,
-            intitule: intitule,
-            organisme: organisme,
-            logo: image
-        });
-
-        await newTemplate.save();
-        req.flash('success', "Template ajouté avec succès");
-        res.redirect('/admin/templates');
-    
-    } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        next(err);
-        return err;
-    }
-}
-
-/** Handle edit template
- * @name editTemplate
- * @function
- * @param {string} name
- * @param {string} intitule
- * @param {string} organisme
- * @param logo Logo de l'organisme
- * @throws Will throw an error if one error occursed
- */
-exports.editTemplate = async (req, res, next) => {
-    const { templateId, name, intitule, organisme } = req.body;
-    const imageFile = req.file;
-    const errors    = validationResult(req);
-
-    try {
-        const updatedTemplate = await Template.findById(templateId);
-
-        if (!errors.isEmpty()) {
-            let breadcrumb = [];
-            breadcrumb.push("Templates");
-            breadcrumb.push("Modifications");
-
-            return res.status(422).render('templates/templateEdit', {
-                title: "Templates",
-                breadcrumb: breadcrumb,
-                isTemplatePage: true,
-                isEmargementPage: false,
-                isPromotionPage: false,
-                isApprenantPage: false,
-                hasError: true,
-                templateInfo: null,
-                errorMessage: errors.array()[0].msg,
-                validationErrors: errors.array(),
-                oldInput: { name, intitule, organisme, logo: updatedTemplate.logo, templateId }
-            });
-        }
-
-        if (!updatedTemplate) {
-            req.flash('error', 'Le template n\'a pas été trouvé');
-            return res.redirect(`/admin/templates`);
-        }
-
-        if (imageFile) {
-            const oldLogoDelete = 'public/' + updatedTemplate.logo;
-            deleteFile(oldLogoDelete);
-            const newLogoUploaded = imageFile.path.replace("\\", "/"); // uniquement sous windows
-            const newLogo = imageFile.path.split('public')[1];
-            updatedTemplate.logo = newLogo;
-        }
-
-        updatedTemplate.name        = name;
-        updatedTemplate.intitule    = intitule;
-        updatedTemplate.organisme   = organisme;
-        await updatedTemplate.save();
-
-        req.flash('success', 'Mise à jour effectuée !');
-        return res.redirect('/admin/templates');
-    } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        next(err);
-        return err;
-    }
-}
-
-
-/** Delete specific template
- * @name deleteTemplate
- * @function
- * @param {number} templateId
- * @throws Will throw an error if one error occursed
- */
-exports.deleteTemplate = async (req, res, next) => {
-    const { templateId } = req.body;
-
-    try {
-        const deletedTemplate = await Template.findById(templateId);
-
-        if (!deletedTemplate) {
-            req.flash('error', 'Le template n\'a pas été trouvé');
-            return res.redirect(`/admin/templates`);
-        }
-
-        const deletedLogo = 'public/' + deletedTemplate.logo;
-        deleteFile(deletedLogo);
-
-        await deletedTemplate.deleteOne();
-
-        req.flash('success', 'Template supprimé !');
-        return res.redirect('/admin/templates');
-
-    } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        return next(err);
-    }
-};
-
-
-/** handle post generated pdf
- * @name getDataFromSheet
- * @function
- * @param {object} template template (logo etc.)
- * @param {string} dataSheet url
- * @param {number} number sheet number's page
- * @throws Will throw an error if one error occursed
- */
-exports.getDataFromSheet = async (req, res, next) => {
-
-    try {
-
-    } catch (error) {
-        let errorMessage = "";
-
-        if (error.message == "Request failed with status code 400") {
-            errorMessage = "Cette feuille n'existe pas";
-        } else {
-            errorMessage = "Une erreur est survenue";
-        }
-
-        res.json({
-            success: false,
-            message: errorMessage
-        });
-        return error;
-    }
-}
-
-
-/**
- * generate SignOff sheet PDF
- * @name generatePdf
- * @function
- * @param {string} signoffId
- * @throws Will throw an error if one error occursed
- */
-exports.generatePdf = async (req, res, next) => {
-
-    try {
-
-    } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        return next(err);
-    }
-}
-
-
-/**
- * Synchronise Google Sheet and our app Sign-off Sheet
- * @name synchronisationToSheet
- * @function
- * @param {string} signoffId
- * @throws Will throw an error if one error occursed
- */
-exports.synchronisationToSheet = async (req, res, next) => {
-
-    try {
-
-    } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        return next(err);
-    }
-}
-
-
 /**
  * Add promotion
  * @name addPromotion
@@ -461,6 +232,15 @@ exports.deletePromotion = async (req, res, next) => {
 }
 
 
+/** Handle add learner account
+ * @name addAppprenant
+ * @function
+ * @param {string} nom
+ * @param {string} prenom
+ * @param {string} email
+ * @param {string} promotion
+ * @throws Will throw an error if one error occursed
+ */
 exports.addAppprenant = async (req, res, next) => {
     const { nom, prenom, email, promotion } = req.body;
     const errors = validationResult(req);
@@ -508,6 +288,16 @@ exports.addAppprenant = async (req, res, next) => {
 }
 
 
+/** Handle edit learner account
+ * @name editApprenant
+ * @function
+ * @param {string} learnerId
+ * @param {string} nom
+ * @param {string} prenom
+ * @param {string} email
+ * @param {string} promotion
+ * @throws Will throw an error if one error occursed
+ */
 exports.editApprenant = async (req, res, next) => {
     const { learnerId, nom, prenom, email, promotion } = req.body;
     const errors = validationResult(req);
@@ -539,6 +329,12 @@ exports.editApprenant = async (req, res, next) => {
     }
 }
 
+/** Handle reset pass for learner account
+ * @name resetPassApprenant
+ * @function
+ * @param {string} learnerId
+ * @throws Will throw an error if one error occursed
+ */
 exports.resetPassApprenant = async (req, res, next) => {
     const { learnerId } = req.body;
 
@@ -579,6 +375,12 @@ exports.resetPassApprenant = async (req, res, next) => {
 }
 
 
+/** Handle delete learner account
+ * @name deleteApprenant
+ * @function
+ * @param {string} learnerId
+ * @throws Will throw an error if one error occursed
+ */
 exports.deleteApprenant = async (req, res, next) => {
     const { learnerId } = req.body;
     try {
@@ -590,6 +392,395 @@ exports.deleteApprenant = async (req, res, next) => {
         await learner.deleteOne();
         req.flash('success', 'Suppression effectué avec succès');
         res.redirect('/admin/apprenants');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+/** Handle add template
+ * @name addTemplate
+ * @function
+ * @param {string} name
+ * @param {string} intitule
+ * @param {string} organisme
+ * @param logo Logo de l'organisme
+ * @throws Will throw an error if one error occursed
+ */
+exports.addTemplate = async (req, res, next) => {
+    const { name, intitule, organisme } = req.body;
+    const imageFile = req.file;
+    const errors = validationResult(req);
+
+    console.log(req.file);
+
+    try {
+        if (!errors.isEmpty()) {
+            let breadcrumb = [];
+            breadcrumb.push("Templates");
+            breadcrumb.push("Ajouter");
+
+            res.status(422).render('templates/templateAdd', {
+                title: "Templates",
+                breadcrumb: breadcrumb,
+                isTemplatePage: true,
+                isEmargementPage: false,
+                isPromotionPage: false,
+                isApprenantPage: false,
+                hasError: true,
+                errorMessage: errors.array()[0].msg,
+                validationErrors: errors.array(),
+                oldInput: { name, intitule, organisme }
+            });
+        }
+
+        if (!imageFile) {
+            req.flash('error', "Obligatoire : Image du logo");
+            return res.redirect('/admin/templates/add');
+        }
+
+        const imageUploaded = imageFile.path.replace("\\", "/"); // only with window
+        const image = imageFile.path.split('public')[1];
+
+        const newTemplate = new Template({
+            name: name,
+            intitule: intitule,
+            organisme: organisme,
+            logo: image
+        });
+
+        await newTemplate.save();
+        req.flash('success', "Template ajouté avec succès");
+        res.redirect('/admin/templates');
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        next(err);
+        return err;
+    }
+}
+
+/** Handle edit template
+ * @name editTemplate
+ * @function
+ * @param {string} name
+ * @param {string} intitule
+ * @param {string} organisme
+ * @param logo Logo de l'organisme
+ * @throws Will throw an error if one error occursed
+ */
+exports.editTemplate = async (req, res, next) => {
+    const { templateId, name, intitule, organisme } = req.body;
+    const imageFile = req.file;
+    const errors = validationResult(req);
+
+    try {
+        const updatedTemplate = await Template.findById(templateId);
+
+        if (!errors.isEmpty()) {
+            let breadcrumb = [];
+            breadcrumb.push("Templates");
+            breadcrumb.push("Modifications");
+
+            return res.status(422).render('templates/templateEdit', {
+                title: "Templates",
+                breadcrumb: breadcrumb,
+                isTemplatePage: true,
+                isEmargementPage: false,
+                isPromotionPage: false,
+                isApprenantPage: false,
+                hasError: true,
+                templateInfo: null,
+                errorMessage: errors.array()[0].msg,
+                validationErrors: errors.array(),
+                oldInput: { name, intitule, organisme, logo: updatedTemplate.logo, templateId }
+            });
+        }
+
+        if (!updatedTemplate) {
+            req.flash('error', 'Le template n\'a pas été trouvé');
+            return res.redirect(`/admin/templates`);
+        }
+
+        if (imageFile) {
+            const oldLogoDelete = 'public/' + updatedTemplate.logo;
+            deleteFile(oldLogoDelete);
+            const newLogoUploaded = imageFile.path.replace("\\", "/"); // uniquement sous windows
+            const newLogo = imageFile.path.split('public')[1];
+            updatedTemplate.logo = newLogo;
+        }
+
+        updatedTemplate.name = name;
+        updatedTemplate.intitule = intitule;
+        updatedTemplate.organisme = organisme;
+        await updatedTemplate.save();
+
+        req.flash('success', 'Mise à jour effectuée !');
+        return res.redirect('/admin/templates');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        next(err);
+        return err;
+    }
+}
+
+
+/** Delete specific template
+ * @name deleteTemplate
+ * @function
+ * @param {number} templateId
+ * @throws Will throw an error if one error occursed
+ */
+exports.deleteTemplate = async (req, res, next) => {
+    const { templateId } = req.body;
+
+    try {
+        const deletedTemplate = await Template.findById(templateId);
+
+        if (!deletedTemplate) {
+            req.flash('error', 'Le template n\'a pas été trouvé');
+            return res.redirect(`/admin/templates`);
+        }
+
+        const deletedLogo = 'public/' + deletedTemplate.logo;
+        deleteFile(deletedLogo);
+
+        await deletedTemplate.deleteOne();
+        req.flash('success', 'Template supprimé !');
+        return res.redirect('/admin/templates');
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+};
+
+
+/** handle post generated pdf
+ * @name getDataFromSheet
+ * @function
+ * @param {object} template template (logo etc.)
+ * @param {string} googleSheetUrl url
+ * @param {number} pageNumber sheet number's page
+ * @throws Will throw an error if one error occursed
+ */
+exports.getDataFromSheet = async (req, res, next) => {
+    const learners   = [];
+    const days       = [];
+    const trainers   = [];
+
+    const { googleSheetUrl, pageNumber, template } = req.body;
+    const infoUrl = googleSheetUrl.split('/')[5];
+    const errors = validationResult(req);
+
+    try {
+        if (!errors.isEmpty()) {
+            req.flash('error', errors.array()[0].msg);
+            return res.redirect('/admin/emargements');
+        }
+
+        const response = await axios.get(`https://spreadsheets.google.com/feeds/cells/${infoUrl}/${pageNumber}/public/full?alt=json`);
+        const infoJson = response.data.feed.entry;
+        infoJson.forEach(data => {
+            if (data.gs$cell.col == 1 && data.gs$cell.row != 1) {
+                learners.push(data.gs$cell.inputValue);
+            }
+
+            if (data.gs$cell.col > 1 && data.gs$cell.col <= 6 && data.gs$cell.row == 1) {
+                days.push(data.gs$cell.inputValue);
+            }
+
+            if (data.gs$cell.col > 1 && data.gs$cell.col <= 6 && data.gs$cell.row == 2) {
+                trainers.push(data.gs$cell.inputValue);
+            }
+        });
+
+        const signoffPDF = 'emargement-' + new Date().getTime() + '-v1.pdf';
+        const createdPdf = new Signoffsheet({
+            urlSheet: `https://spreadsheets.google.com/feeds/cells/${infoUrl}/${pageNumber}/public/full?alt=json`,
+            name: signoffPDF,
+            templateId: template,
+            timeStart: days[0],
+            timeEnd: days[days.length - 1]
+        });
+
+        const newPdfFile = await createdPdf.save();
+
+        learners.forEach(appr => {
+            newPdfFile.learners.push(appr);
+        })
+
+        days.forEach(jour => {
+            newPdfFile.days.push(jour);
+        })
+
+        trainers.forEach(formatr => {
+            newPdfFile.trainers.push(formatr);
+        })
+
+        await newPdfFile.save();
+        req.flash('success', 'La feuille d\'émargement est prête!');
+        return res.redirect('/admin/emargements');
+    } catch (error) {
+        let errorMessage = "";
+
+        if (error.message == "Request failed with status code 400") {
+            errorMessage = "Cette feuille n'existe pas";
+        } else {
+            errorMessage = "Une erreur est survenue";
+        }
+
+        req.flash('error', errorMessage);
+        res.redirect('/admin/emargements');
+    }
+}
+
+
+/**
+ * generate SignOff sheet PDF
+ * @name generatePdf
+ * @function
+ * @param {string} emargementId
+ * @throws Will throw an error if one error occursed
+ */
+exports.generatePdf = async (req, res, next) => {
+    const { emargementId } = req.body;
+
+    try {
+        const versionning = await Signoffsheet.findById(emargementId);
+        versionning.versionningHistory.push(versionning.name);
+        await versionning.save();
+
+        const signoffSheetData = await Signoffsheet.findById(emargementId).populate('templateId').exec();
+        const logoTemplate = path.join('public', signoffSheetData.templateId.logo);
+        const signoffPath = path.join('data', 'pdf', signoffSheetData.name);
+
+        // Créer le PDF
+        const doc = new PDFDocument({
+            size: 'A4',
+            layout: 'landscape',
+            autoFirstPage: false
+        });
+
+        doc.pipe(fs.createWriteStream(signoffPath).on('close', () => {
+            req.flash('success', 'La visualisation est disponible');
+            res.redirect('/admin/emargements');
+            doc.pipe(res);
+        }));
+
+        let xEntete           = 200;
+        let yEntete           = 160;
+        let xApprenant        = 30;
+        let yApprenant        = 182;
+        var compteurInitPlage = 0;
+        var compteurFinPlage  = 5;
+
+        for (let y = 0; y < signoffSheetData.learners.length; y++) {
+            if (y % 5 == 0) {
+                doc.addPage();
+                pdfFunction.headerPdf(doc, logoTemplate, signoffSheetData.templateId.intitule, signoffSheetData.templateId.organisme);
+                pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.days, signoffSheetData.learners, signoffSheetData.trainers, compteurInitPlage, compteurFinPlage, emargementId);
+                // pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.days, signoffSheetData.learners, signoffSheetData.trainers, compteurInitPlage, compteurFinPlage, signoffId, logoTemplate);
+                compteurInitPlage += 5;
+                compteurFinPlage += 5;
+            }
+        }
+
+        doc.end();
+        signoffSheetData.fileExist = true;
+        await signoffSheetData.save();
+
+        // store data before resetting
+        const generalSign = await Signoffsheet.findById(emargementId);
+        const generalSignArray = generalSign.signLocation;
+
+        // reset the document
+        const sign = await Signoffsheet.findById(emargementId);
+        sign.signLocation = [];
+        await sign.save();
+
+        // iterate to get coordinates
+        let arrayTest = [];
+        generalSignArray.forEach((element) => {
+            for (let a = 0; a < element.length; a++) {
+                if (element[a + 1]) {
+                    if (element[a][0] != element[a + 1][0]) {
+                        arrayTest.push(element[a])
+                        generalSignArray.push(arrayTest)
+                        arrayTest = [];
+                    } else {
+                        arrayTest.push(element[a])
+                    }
+                } else {
+                    arrayTest.push(element[a]);
+                    generalSignArray.push(arrayTest)
+                    arrayTest = [];
+                }
+            }
+        });
+
+        await generalSign.save();
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+/**
+ * Synchronise Google Sheet and our app Sign-off Sheet
+ * @name synchronisationToSheet
+ * @function
+ * @param {string} emargementId
+ * @throws Will throw an error if one error occursed
+ */
+exports.synchronisationToSheet = async (req, res, next) => {
+    const { emargementId } = req.body;
+
+    try {
+        const synchroInfo = await Signoffsheet.findById(emargementId);
+        if (!synchroInfo) {
+            req.flash('error', 'La feuile d\'émargement n\'a pas été trouvé !');
+            return res.redirect('/admin/emargements');
+        }
+
+        synchroInfo.learners     = [];
+        synchroInfo.days         = [];
+        synchroInfo.trainers     = [];
+        synchroInfo.signLocation = [];
+        synchroInfo.version      = synchroInfo.version + 1;
+        synchroInfo.fileExist    = false;
+
+        const dataUpdate = await synchroInfo.save();
+        const response   = await axios.get(dataUpdate.urlSheet);
+        const infoJson   = response.data.feed.entry;
+
+        infoJson.forEach(data => {
+            if (data.gs$cell.col == 1 && data.gs$cell.row != 1) {
+                dataUpdate.learners.push(data.gs$cell.inputValue);
+            }
+
+            if (data.gs$cell.col > 1 && data.gs$cell.col <= 6 && data.gs$cell.row == 1) {
+                dataUpdate.days.push(data.gs$cell.inputValue);
+            }
+
+            if (data.gs$cell.col > 1 && data.gs$cell.col <= 6 && data.gs$cell.row == 2) {
+                dataUpdate.trainers.push(data.gs$cell.inputValue);
+            }
+        });
+
+        const pdfname = dataUpdate.name.split('-')[1];
+        const signoffPDF = 'emargement-' + pdfname + '-v' + synchroInfo.version + '.pdf';
+        dataUpdate.name = signoffPDF;
+        await dataUpdate.save();
+
+        req.flash('success', 'Synchronisation effectuée !');
+        return res.redirect('/admin/emargements');
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
