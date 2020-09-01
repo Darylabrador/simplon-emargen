@@ -362,4 +362,3 @@ exports.getEmargementsIframe = async (req, res, next) => {
         return err;
     }
 }
-

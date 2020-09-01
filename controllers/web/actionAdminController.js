@@ -807,8 +807,6 @@ exports.generateSign = async (req, res, next) => {
                 }
             });
             await generalSign.save();
-        } else {
-            console.log('already formatted')
         }
     
         res.redirect('/admin/emargements');
