@@ -10615,7 +10615,7 @@ li.page-item.active {
   #datatableApprenant #apprenanTable {
     width: 100% !important;
   }
-  #datatableApprenant th:nth-child(1), #datatableApprenant td:nth-child(1), #datatableApprenant th:nth-child(2), #datatableApprenant td:nth-child(2), #datatableApprenant th:nth-child(4), #datatableApprenant td:nth-child(4) {
+  #datatableApprenant th:nth-child(3), #datatableApprenant td:nth-child(3), #datatableApprenant th:nth-child(2), #datatableApprenant td:nth-child(2), #datatableApprenant th:nth-child(4), #datatableApprenant td:nth-child(4) {
     display: none;
   }
 
@@ -10700,7 +10700,7 @@ li.page-item.active {
   #datatableApprenant #apprenanTable {
     width: 100% !important;
   }
-  #datatableApprenant th:nth-child(1), #datatableApprenant td:nth-child(1), #datatableApprenant th:nth-child(2), #datatableApprenant td:nth-child(2), #datatableApprenant th:nth-child(4), #datatableApprenant td:nth-child(4) {
+  #datatableApprenant th:nth-child(3), #datatableApprenant td:nth-child(3), #datatableApprenant th:nth-child(2), #datatableApprenant td:nth-child(2), #datatableApprenant th:nth-child(4), #datatableApprenant td:nth-child(4) {
     display: none;
   }
 

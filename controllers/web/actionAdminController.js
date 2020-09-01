@@ -264,6 +264,7 @@ exports.addAppprenant = async (req, res, next) => {
         });
         await newLearner.save();
 
+        /*
         await transporter.sendMail({
             to: email,
             from: `${process.env.EMAIL_USER}`,
@@ -277,6 +278,7 @@ exports.addAppprenant = async (req, res, next) => {
                 <br> 
                 <p> Vos identifiants sont valides uniquement sur l'application mobile. En cas d'oublie du mot de passe, il faut vous adresser à l'administration de Simplon</p>`
         });
+        */
 
         req.flash('success', "Compte apprenant créer avec succès");
         return res.redirect('/admin/apprenants');
@@ -352,6 +354,7 @@ exports.resetPassApprenant = async (req, res, next) => {
         updatePassLearner.firstConnection = true;
         await updatePassLearner.save();
 
+        /*
         await transporter.sendMail({
             to: updatePassLearner.email,
             from: `${process.env.EMAIL_USER}`,
@@ -364,7 +367,7 @@ exports.resetPassApprenant = async (req, res, next) => {
                 <br> 
                 <p> Vos identifiants sont valides uniquement sur l'application mobile. En cas d'oublie du mot de passe, il faut vous adresser à l'administration de Simplon</p>`
         });
-
+        */
         req.flash('success', "Mot de passe mis à jour !");
         return res.redirect('/admin/apprenants');
     } catch (error) {
@@ -413,8 +416,6 @@ exports.addTemplate = async (req, res, next) => {
     const imageFile = req.file;
     const errors = validationResult(req);
 
-    console.log(req.file);
-
     try {
         if (!errors.isEmpty()) {
             let breadcrumb = [];
@@ -442,7 +443,6 @@ exports.addTemplate = async (req, res, next) => {
 
         const imageUploaded = imageFile.path.replace("\\", "/"); // only with window
         const image = imageFile.path.split('public')[1];
-
         const newTemplate = new Template({
             name: name,
             intitule: intitule,
@@ -583,11 +583,17 @@ exports.getDataFromSheet = async (req, res, next) => {
             return res.redirect('/admin/emargements');
         }
 
+        const learner  = await User.find({ role: "apprenant" });
         const response = await axios.get(`https://spreadsheets.google.com/feeds/cells/${infoUrl}/${pageNumber}/public/full?alt=json`);
         const infoJson = response.data.feed.entry;
         infoJson.forEach(data => {
             if (data.gs$cell.col == 1 && data.gs$cell.row != 1) {
-                learners.push(data.gs$cell.inputValue);
+                learner.forEach(learnerInfo => {
+                    if (data.gs$cell.inputValue == learnerInfo._id){
+                        let identite = `${learnerInfo.name} ${learnerInfo.surname}`;
+                        learners.push(identite);
+                    }
+                });
             }
 
             if (data.gs$cell.col > 1 && data.gs$cell.col <= 6 && data.gs$cell.row == 1) {
@@ -694,6 +700,7 @@ exports.generatePdf = async (req, res, next) => {
         signoffSheetData.fileExist = true;
         await signoffSheetData.save();
 
+        /*
         // store data before resetting
         const generalSign = await Signoffsheet.findById(emargementId);
         const generalSignArray = generalSign.signLocation;
@@ -722,8 +729,8 @@ exports.generatePdf = async (req, res, next) => {
                 }
             }
         });
-
         await generalSign.save();
+        */
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -757,12 +764,18 @@ exports.synchronisationToSheet = async (req, res, next) => {
         synchroInfo.fileExist    = false;
 
         const dataUpdate = await synchroInfo.save();
+        const learner    = await User.find({ role: "apprenant" });
         const response   = await axios.get(dataUpdate.urlSheet);
         const infoJson   = response.data.feed.entry;
 
         infoJson.forEach(data => {
             if (data.gs$cell.col == 1 && data.gs$cell.row != 1) {
-                dataUpdate.learners.push(data.gs$cell.inputValue);
+                learner.forEach(learnerInfo => {
+                    if (data.gs$cell.inputValue == learnerInfo._id) {
+                        let identite = `${learnerInfo.name} ${learnerInfo.surname}`;
+                        dataUpdate.learners.push(identite);
+                    }
+                });
             }
 
             if (data.gs$cell.col > 1 && data.gs$cell.col <= 6 && data.gs$cell.row == 1) {

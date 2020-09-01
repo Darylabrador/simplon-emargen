@@ -26,8 +26,8 @@
                 <table id="apprenanTable" class="table table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Nom</th>
-                            <th scope="col">Prénom</th>
+                            <th scope="col">N° apprenant</th>
+                            <th scope="col">Identité</th>
                             <th scope="col">Adresse email</th>
                             <th scope="col">Signatures</th>
                             <th scope="col">Actions</th>
@@ -38,8 +38,8 @@
                         <% if(apprenants.length != 0) { %>
                             <% apprenants.forEach(apprenantInfo => { %>
                                 <tr>
-                                    <td><%= apprenantInfo.name %></td>
-                                    <td><%= apprenantInfo.surname %></td>
+                                    <td><%= apprenantInfo._id %></td>
+                                    <td><%= apprenantInfo.name %> <%= apprenantInfo.surname %></td>
                                     <td><%= apprenantInfo.email %></td>
                                     <td><%= apprenantInfo.signImage != null ? 'configurer' : 'non configurer' %></td>
                                     <td>
