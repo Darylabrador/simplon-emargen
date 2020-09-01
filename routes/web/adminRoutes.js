@@ -341,9 +341,6 @@ router.post('/emargements/synchro', isAuth, adminActsController.synchronisationT
 router.post(
     '/emargements/generateSign', 
     isAuth, 
-    [
-
-    ],
     adminActsController.generateSign
 );
 

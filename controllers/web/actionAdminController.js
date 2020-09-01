@@ -773,6 +773,16 @@ exports.synchronisationToSheet = async (req, res, next) => {
     }
 }
 
+/**
+ * Generate limited user interaction to sign signoffsheet pdf
+ * @name generateSign
+ * @function
+ * @param {string} emargementId
+ * @param {string} signDate
+ * @param {string} creneau
+ * @param {string} promotion
+ * @throws Will throw an error if one error occursed
+ */
 exports.generateSign = async (req, res, next) => {
     const { emargementId, signDate, creneau, promotion } = req.body;
 
@@ -809,8 +819,36 @@ exports.generateSign = async (req, res, next) => {
             await generalSign.save();
         }
     
-        res.redirect('/admin/emargements');
+        const dateSearchedOld = signDate.split('-');
+        const dateSearchedNew = `${dateSearchedOld[2]}/${dateSearchedOld[1]}/${dateSearchedOld[0]}`;
 
+        const dayExist = generalSign.days.find(element => element == dateSearchedNew);
+        if (!dayExist) {
+            req.flash('error', 'Le jour est incorrecte');
+            return res.redirect('/admin/emargements');
+        }
+
+        const assignCount = await Assign.find({ signoffsheetId: emargementId}).countDocuments();
+        const assignList  = await Assign.find({ signoffsheetId: emargementId });
+        if (assignCount != 0) {
+            assignList.forEach(element => {
+                element.deleteOne()
+            })
+        } 
+
+        const learnerList = await User.find({ promoId: promotion, role: 'apprenant' });
+        learnerList.forEach(learnerInfo => {
+            let link = req.protocol + '://' + req.get('host') + `/emargements/signature?apprenant=${learnerInfo._id}&jour=${signDate}&creneau=${creneau}`;
+            const openSign = new Assign({
+                userId: learnerInfo._id,
+                signoffsheetId: emargementId,
+                signLink: link
+            });
+            openSign.save();
+        });
+     
+        req.flash('success', 'Les apprenants ont 10min pour signé');
+        res.redirect('/admin/emargements');
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
