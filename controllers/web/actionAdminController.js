@@ -701,35 +701,7 @@ exports.generatePdf = async (req, res, next) => {
         await signoffSheetData.save();
 
         /*
-        // store data before resetting
-        const generalSign = await Signoffsheet.findById(emargementId);
-        const generalSignArray = generalSign.signLocation;
-
-        // reset the document
-        const sign = await Signoffsheet.findById(emargementId);
-        sign.signLocation = [];
-        await sign.save();
-
-        // iterate to get coordinates
-        let arrayTest = [];
-        generalSignArray.forEach((element) => {
-            for (let a = 0; a < element.length; a++) {
-                if (element[a + 1]) {
-                    if (element[a][0] != element[a + 1][0]) {
-                        arrayTest.push(element[a])
-                        generalSignArray.push(arrayTest)
-                        arrayTest = [];
-                    } else {
-                        arrayTest.push(element[a])
-                    }
-                } else {
-                    arrayTest.push(element[a]);
-                    generalSignArray.push(arrayTest)
-                    arrayTest = [];
-                }
-            }
-        });
-        await generalSign.save();
+ 
         */
     } catch (error) {
         const err = new Error(error);
@@ -794,6 +766,53 @@ exports.synchronisationToSheet = async (req, res, next) => {
 
         req.flash('success', 'Synchronisation effectuée !');
         return res.redirect('/admin/emargements');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+exports.generateSign = async (req, res, next) => {
+    const { emargementId, signDate, creneau, promotion } = req.body;
+
+    try {
+        // store data before resetting
+        const generalSign = await Signoffsheet.findById(emargementId);
+        const generalSignArray = generalSign.signLocation;
+
+        if (generalSign.learners.length != generalSignArray.length) {
+            // reset the document
+            const sign = await Signoffsheet.findById(emargementId);
+            sign.signLocation = [];
+            await sign.save();
+
+            // iterate to get coordinates
+            let arrayTest = [];
+            generalSignArray.forEach((element) => {
+                for (let a = 0; a < element.length; a++) {
+                    if (element[a + 1]) {
+                        if (element[a][0] != element[a + 1][0]) {
+                            arrayTest.push(element[a])
+                            generalSignArray.push(arrayTest)
+                            arrayTest = [];
+                        } else {
+                            arrayTest.push(element[a])
+                        }
+                    } else {
+                        arrayTest.push(element[a]);
+                        generalSignArray.push(arrayTest)
+                        arrayTest = [];
+                    }
+                }
+            });
+            await generalSign.save();
+        } else {
+            console.log('already formatted')
+        }
+    
+        res.redirect('/admin/emargements');
+
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;

@@ -5,7 +5,8 @@ const ObjectId = mongoose.Types.ObjectId;
 const userSchema = mongoose.Schema({
     promoId: {
         type: ObjectId,
-        default: null
+        default: null,
+        ref: 'yeargroups'
     },
     name: {
         type: String,

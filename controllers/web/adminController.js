@@ -159,7 +159,7 @@ exports.getApprenants = async (req, res, next) => {
     breadcrumb.push("Tous");
 
     try {
-        const apprenants = await User.find({ role: "apprenant" });
+        const apprenants = await User.find({ role: "apprenant" }).populate('promoId').exec();
         const promotions = await Yeargroup.find({});
 
         res.render('apprenants/apprenants', {
@@ -362,3 +362,4 @@ exports.getEmargementsIframe = async (req, res, next) => {
         return err;
     }
 }
+

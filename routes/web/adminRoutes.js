@@ -338,4 +338,13 @@ router.post('/emargements/generate', isAuth, adminActsController.generatePdf);
 
 router.post('/emargements/synchro', isAuth, adminActsController.synchronisationToSheet);
 
+router.post(
+    '/emargements/generateSign', 
+    isAuth, 
+    [
+
+    ],
+    adminActsController.generateSign
+);
+
 module.exports = router;

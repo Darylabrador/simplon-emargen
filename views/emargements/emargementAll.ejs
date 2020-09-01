@@ -32,7 +32,11 @@
                 <% signoffsheetData.forEach(signoffInfo => { %>
                 <div class="card col-12 col-lg-3 col-sm-6 col-xl-3 my-2 mx-3">
                     <div class="card-header mb-0 bg-transparent p-0 d-flex justify-content-end border-0">
-                        <p class="mt-2 mr-4 mb-0 version"> version <%= signoffInfo.version %> </p>
+                        <p class="mt-2 mr-4 mb-0 version"> 
+                            <span class="iconify iconify__white linkBtn" data-id="<%= signoffInfo._id %>" data-inline="false" data-icon="bx:bxs-calendar-edit" style="font-size: 13px;"></span>
+                            version <%= signoffInfo.version %> 
+
+                        </p>
                     </div>
                     <div class="card-body mb-0">
                         <h5 class="card-title mt-0 font-weight-bold text-center">Emargement</h5>
@@ -126,8 +130,46 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalSignature" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0">
+                <div class="card-header bg-transparent font-weight-bold">
+                    Créneau horaire de signature
+                </div>
+                <form class="modal-body w-100 p-0" action="/admin/emargements/generateSign" method="POST">
+                    <input type="hidden" id="emargementIdSign" name="emargementId" value="">
+                    <div class="p-4">
+                        <div class="my-3 mb-2 mr-sm-2">
+                            <label class="mb-1" for="signDate" style="margin-left: 16px;">La date</label>
+                            <input style="padding-left: 16px !important;" type="date" class="form-control inputBorder" name="signDate" id="signDate">
+                        </div>
+                        <div class="my-3 mb-2 mr-sm-2">
+                            <label class="mb-1" for="pageNumber" style="margin-left: 16px;">Créneau horaire</label>
+                            <select class="form-control inputBorder inputSelect" name="creneau" id="creneau">
+                                <option value="morning">Matin</option>
+                                <option value="afternoon">Après-midi</option>
+                            </select>
+                        </div>
+                        <div class="mb-4 mb-2 mr-sm-2">
+                            <label class="mb-1" for="promotion" style="margin-left: 16px;">La promotion</label>
+                            <select class="form-control inputBorder inputSelect" name="promotion" id="promotion">
+                                <% promotions.forEach(promotionInfo => { %>
+                                    <option value="<%= promotionInfo._id %>"><%= promotionInfo.label %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer p-0 d-flex">
+                        <button class="btn btn-primary w-50 leftBorder py-2" data-dismiss="modal">Annuler</button>
+                        <div class="btnDivider"></div>
+                        <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Créer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <% include ../includes/footer %>
-    <script src="/js/emargements/emargementAdd.js"></script>
     <script src="/js/emargements/emargementScript.js"></script>
 </body>
 

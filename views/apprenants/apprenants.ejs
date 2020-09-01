@@ -18,19 +18,19 @@
         </nav>
 
         <div class="settingHeight60 d-flex justify-content-center align-items-center py-5 my-5 datable">
-            <div id="datatableApprenant" class="container bg-white rounded pb-2 pt-3 px-0">
+            <div id="datatableApprenant" class="container bg-white rounded pb-2 pt-3 px-0 mt-5">
                 <div class="my-3">
                     <% include ../includes/messageFlash %>
                 </div>
                 
-                <table id="apprenanTable" class="table table-bordered">
+                <table id="apprenanTable" class="table table-bordered w-100">
                     <thead>
                         <tr>
                             <th scope="col">N° apprenant</th>
+                            <th scope="col">Promotion</th>
                             <th scope="col">Identité</th>
-                            <th scope="col">Adresse email</th>
                             <th scope="col">Signatures</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,8 +39,8 @@
                             <% apprenants.forEach(apprenantInfo => { %>
                                 <tr>
                                     <td><%= apprenantInfo._id %></td>
+                                    <td><%= apprenantInfo.promoId.label %></td>
                                     <td><%= apprenantInfo.name %> <%= apprenantInfo.surname %></td>
-                                    <td><%= apprenantInfo.email %></td>
                                     <td><%= apprenantInfo.signImage != null ? 'configurer' : 'non configurer' %></td>
                                     <td>
                                         <span class="iconify iconify__black mx-1 editLearnersBtn" data-id="<%= apprenantInfo._id %>" data-inline="false" data-icon="clarity:pencil-solid"></span>
