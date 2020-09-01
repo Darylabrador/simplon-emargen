@@ -4,12 +4,22 @@ const User          = require('../../models/users');
 const Yeargroup     = require('../../models/yeargroups');
 const Assign        = require('../../models/assigns');
 
+const ITEM_PER_PAGE = 6;
+
 exports.getIndex = async (req, res, next) => {
     let breadcrumb = [];
     breadcrumb.push("Accueil");
 
     try {
-        const signoffsheetPdf = await Signoffsheet.find().populate('templateId');
+        const page       = +req.query.page || 1;
+        const totalItems = await Signoffsheet.find().countDocuments();
+
+        const signoffsheetPdf = await Signoffsheet.find()
+            .skip((page - 1) * ITEM_PER_PAGE)
+            .limit(ITEM_PER_PAGE).sort({ createdAt: -1 })
+            .populate('templateId')
+            .exec();
+
         res.render('index', {
             title: "Accueil",
             breadcrumb: breadcrumb,
@@ -20,7 +30,14 @@ exports.getIndex = async (req, res, next) => {
             errorMessage: null,
             hasError: false,
             validationErrors: [],
-            signoffsheetData: signoffsheetPdf
+            signoffsheetData: signoffsheetPdf,
+            currentPage: page,
+            hasNextPage: ITEM_PER_PAGE * page < totalItems,
+            hasPreviousPage: page > 1,
+            nextPage: page + 1,
+            previousPage: page - 1,
+            lastPage: Math.ceil(totalItems / ITEM_PER_PAGE),
+            total: totalItems
         });
     } catch (error) {
         const err = new Error(error);
@@ -184,7 +201,13 @@ exports.getTemplates = async (req, res, next) => {
     breadcrumb.push("Tous");
 
     try {
-        const templateInfo = await Template.find();
+        const page       = +req.query.page || 1;
+        const totalItems = await Signoffsheet.find().countDocuments();
+
+        const templateInfo = await Template.find()
+            .skip((page - 1) * ITEM_PER_PAGE)
+            .limit(ITEM_PER_PAGE).sort({ createdAt: -1 });
+
         res.render('templates/templateAll', {
             title: "Templates",
             breadcrumb: breadcrumb,
@@ -195,7 +218,14 @@ exports.getTemplates = async (req, res, next) => {
             errorMessage: null,
             hasError: false,
             validationErrors: [],
-            templateInfo: templateInfo
+            templateInfo: templateInfo,
+            currentPage: page,
+            hasNextPage: ITEM_PER_PAGE * page < totalItems,
+            hasPreviousPage: page > 1,
+            nextPage: page + 1,
+            previousPage: page - 1,
+            lastPage: Math.ceil(totalItems / ITEM_PER_PAGE),
+            total: totalItems
         });
     } catch (error) {
         const err = new Error(error);
@@ -258,7 +288,15 @@ exports.getEmargements = async (req, res, next) => {
     breadcrumb.push("Tous");
 
     try {
-        const signoffsheetPdf = await Signoffsheet.find().populate('templateId');
+        const page       = +req.query.page || 1;
+        const totalItems = await Signoffsheet.find().countDocuments();
+
+        const signoffsheetPdf = await Signoffsheet.find()
+            .skip((page - 1) * ITEM_PER_PAGE)
+            .limit(ITEM_PER_PAGE).sort({ createdAt: -1 })
+            .populate('templateId')
+            .exec();
+
         const templates  = await Template.find({});
         const promotions = await Yeargroup.find({});
 
@@ -274,7 +312,14 @@ exports.getEmargements = async (req, res, next) => {
             validationErrors: [],
             templateInfo : templates,
             promotions: promotions,
-            signoffsheetData: signoffsheetPdf
+            signoffsheetData: signoffsheetPdf,
+            currentPage: page,
+            hasNextPage: ITEM_PER_PAGE * page < totalItems,
+            hasPreviousPage: page > 1,
+            nextPage: page + 1,
+            previousPage: page - 1,
+            lastPage: Math.ceil(totalItems / ITEM_PER_PAGE),
+            total: totalItems
         });
     } catch (error) {
         const err = new Error(error);
