@@ -199,11 +199,6 @@ exports.corpsPdfSignature = (doc, xEntete, yEntete, xApprenant, yApprenant, jour
                 .font('Helvetica-Bold')
                 .text(`${apprenants[m]}`, xApprenant + 8, yApprenant + 48);
 
-            // Example to set sign location
-            // if (apprenants[m] == "ABRADOR Daryl") {
-            //     doc.image(logoOrganisme, 200, 212, { width: 50 });
-            // }
-
             // signature location
             for (let j = 0; j < 10; j++) {
                 doc.lineJoin('miter')
