@@ -5,7 +5,9 @@
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass --watch ./www/scss/base/style.scss:./platforms/android/app/src/main/assets/www/css/style.css",
+    "compressed": "sass ./www/scss/base/style.scss:./platforms/android/app/src/main/assets/www/css/style.css --style compressed"
   },
   "keywords": [
     "ecosystem:cordova"

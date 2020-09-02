@@ -1,0 +1,514 @@
+@use "../vendors/bootstrap-4-5-2.min.css";
+@use "../utils/colors";
+@use "../utils/mixins";
+@use "../pages/authentification";
+
+// --------------  FONTS  -----------------
+
+@include mixins.googleFonts(Domine);
+@include mixins.googleFonts(Roboto);
+
+// --------------  GENERAL  -----------------
+
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: colors.$background;
+    font-family: 'Domine', serif;
+}
+
+main {
+    min-height: 70vh;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+iframe {
+    width: 70%;
+    height: 100vh;
+}
+
+footer {
+    font-family: 'Rototo', sans-serif;
+}
+
+select {
+    -moz-appearance: none; /* Firefox */
+    -webkit-appearance: none; /* Safari and Chrome */
+    appearance: none;
+
+    &.inputSelect {
+        background-image: url('https://api.iconify.design/dashicons/arrow-down-alt2.svg') !important;
+        background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), 100% 0 !important;
+        background-size: 15px 15px, 15px 15px, 2.5em 2.5em !important;
+        background-repeat: no-repeat !important;
+    }
+}
+
+li.page-item {
+    
+    a.page-link {
+        color: colors.$white !important;
+        background: colors.$paginationInactive !important;
+        border: none !important;
+        border-radius: 5px !important;
+        padding: 7px 13px 7px 13px !important;
+
+        &:hover {
+            color: colors.$redHover !important;
+        }
+    }
+
+    &.active {
+        background: colors.$red !important;
+        border-radius: 5px !important;
+    }
+}
+
+.iconify {
+    font-size: 24px;
+    cursor: pointer;
+
+    &.iconify__black {
+        color: colors.$black;
+    }
+
+    &.iconify__red {
+        color: colors.$red;
+    }
+
+    &.iconify__blue {
+        color: colors.$blue;
+    }
+
+    &.iconify__white {
+        color: colors.$white;
+
+        &:hover {
+            color: colors.$redHover;
+        }
+    }
+}
+
+.form-control:focus {
+    border-style: none none inset none !important; 
+    box-shadow: none !important;
+}
+
+.btn {
+    box-shadow: none !important;
+    font-family: 'Rototo', sans-serif;
+    font-weight: bold !important;
+}
+
+.card, .modal, #detailEmargement {
+    font-family: 'Rototo', sans-serif;
+}
+
+.inputBorder {
+    border-style: none none inset none !important; 
+    background: white !important;
+    border-radius: 0;
+    border-color: colors.$black;
+    padding-bottom: 0px !important;
+}
+
+.leftBorder {
+    border-radius: 0px 0px 0px 5px !important;
+    @include mixins.formButton;
+}
+
+.rightBorder {
+    border-radius: 0px 0px 5px 0px !important;
+    @include mixins.formButton;
+}
+
+.btnDivider {
+    width: 3px; 
+    background: white;
+}
+
+
+.formWidth {
+    font-family: 'Roboto', sans-serif;
+
+    h5 {
+        font-family: 'Domine', sans-serif;
+    }
+}
+
+.settingHeight60 {
+    @include mixins.heightvh(60);
+}
+
+// --------------  NAVBAR  -----------------
+
+.btnSetting {
+    background: colors.$btnSettingColor;
+    border-radius: 25px;
+    padding: 0px 15px 0px 15px !important;
+    border: 2px solid transparent;
+
+    .btnSetting__white {
+        color: colors.$white !important;
+
+        &:hover {
+            color: colors.$red !important;
+        }
+    }
+
+    &:hover {
+        border: 2px solid colors.$red;
+    }
+}
+
+.dropdown-menu {
+    background: colors.$red !important;
+
+    .dropdown-item {
+        color: colors.$white !important;
+        &:hover {
+            background: none !important;
+            font-weight: 600 !important;
+        }
+    }
+}
+
+.dropdown-toggle {
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+
+    &:focus, &:hover {
+        color: colors.$red !important;
+    }
+
+    &:after {
+        border: none;
+        font-size: 18px;
+        font-weight: bold;
+        content: ">";
+        rotate: 90deg;
+        vertical-align: middle !important;
+    }
+}
+
+.breadcrumb {
+    font-family: 'Rototo', sans-serif;
+    background: transparent !important;
+
+    .breadcrumb-item {
+        & {
+            color: colors.$black !important;
+        }
+        &.active {
+            font-weight: bold;
+        }
+    }
+}
+
+.version {
+    padding: 2px 10px;
+    border-radius: 25px;
+    color: colors.$white;
+    background: colors.$btnGeneralColor;
+    font-size: 11px;
+}
+
+
+.btnModalRed {
+    background: colors.$red !important;
+    color: colors.$white !important;
+    border-radius: 5px !important;
+    padding: 0px 7px 3px 7px !important;
+    margin-left: 15px;
+
+    &:hover {
+        background: colors.$redHover !important;
+    }
+}
+
+.image-preview {
+    width: 300px;
+    min-height: 100px;
+    border: 2px solid #ccc;
+}
+
+#datatableApprenant {
+    font-family: 'Rototo', sans-serif;
+    border: 2px solid colors.$btnGeneralColor !important;
+
+    #apprenanTable {
+        border-right: 1px solid colors.$btnGeneralColor !important;
+    }
+    
+    th {
+        border-top: 2px solid colors.$btnGeneralColor !important;
+    }
+
+    #apprenanTable_previous, #apprenanTable_next {
+        display: none !important;
+    }
+
+    #apprenanTable_paginate {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        ul li {
+            margin: 0px 2px;
+        }
+    }
+}
+
+#datatablePromotion {
+    font-family: 'Rototo', sans-serif;
+    border: 2px solid colors.$btnGeneralColor !important;
+
+    #promotionTable {
+        border-right: 1px solid colors.$btnGeneralColor !important;
+    }
+    
+    #promotionTable_previous, #promotionTable_next {
+        display: none !important;
+    }
+
+    th {
+        border-top: 2px solid colors.$btnGeneralColor !important;
+    }
+
+    #promotionTable_paginate {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        ul li {
+            margin: 0px 2px;
+        }
+    }
+}
+
+
+// ---------------- Responsivity -------------------------
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) { 
+    .btn, .btnSetting {
+        font-size: 12px !important;
+    }
+
+    .py-5 {
+        @include mixins.paddingTopBottom(80px,120px);
+    }
+    
+    .my-5 {
+        @include mixins.marginTopBottom(80px,120px);
+    }
+
+    #datatableApprenant {
+        & {
+            font-size: 3.4vw;
+            @include mixins.widthPourcentage(85%);
+        }
+
+        .iconify {
+            font-size: calc(2vw + 15px);
+        }
+
+        #apprenanTable {
+            @include mixins.widthPourcentage(100%);
+        }
+        
+        th:nth-child(3), td:nth-child(3),th:nth-child(2), td:nth-child(2),th:nth-child(4), td:nth-child(4)  {
+            display: none;
+        }
+    }
+
+    #datatablePromotion {
+        & {
+            font-size: 3vw;
+            @include mixins.widthPourcentage(85%);
+        }
+
+        .iconify {
+            font-size: calc(2vw + 15px);
+        }
+
+        #promotionTable {
+            @include mixins.widthPourcentage(100%);
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            display: none;
+        }
+    }
+
+    .formWidth {
+        @include mixins.widthPourcentage(90%);
+        @include mixins.marginTopBottom(80px,80px);
+
+        .img-fluid {
+            width: 50vw !important ;
+        }
+        .my-5 {
+            @include mixins.marginTopBottom(10px,30px);
+        }
+
+        input, p{
+            font-size: 12px !important;
+        }
+    }
+
+    #modalDelete, #modalSynchro {
+        .my-5 {
+            @include mixins.marginTopBottom(40px,80px);
+        }
+    }
+
+    #detailEmargement {
+        font-size: 12px !important;
+        margin-bottom: 80px !important;
+
+        &.mt-5 {
+            margin-top: 20px !important;
+        }
+    }
+
+    .datable {
+        &.my-5{
+            @include mixins.marginTopBottom(30px,30px);
+        }
+        &.py-5{
+            @include mixins.paddingTopBottom(20px,80px);
+        }
+    }
+
+    #navbarNav, .dropdown-menu {
+        font-size: 13px !important;
+
+        .btnSetting__white {
+            margin-top: 5px !important;
+            margin-right: 20px !important;
+        }
+    }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) and (max-width: 767.98px) { 
+    .btn, .btnSetting{
+        font-size: 12px !important;
+    }
+
+    .py-5 {
+        @include mixins.paddingTopBottom(calc(2vw + 120px),200px);
+    }
+    
+    .my-5 {
+        @include mixins.marginTopBottom(calc(2vw + 110px),calc(2vw + 120px));
+    }
+
+    #datatableApprenant {
+        & {
+            @include mixins.widthPourcentage(85%);
+        }
+
+        #apprenanTable {
+            @include mixins.widthPourcentage(100%);
+        }
+
+        th:nth-child(3), td:nth-child(3),th:nth-child(2), td:nth-child(2),th:nth-child(4), td:nth-child(4)  {
+            display: none;
+        }
+    }
+
+    #datatablePromotion {
+        & {
+            @include mixins.widthPourcentage(85%);
+        }
+
+        #promotionTable {
+            @include mixins.widthPourcentage(100%);
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            display: none;
+        }
+    }
+
+    .formWidth {
+        @include mixins.widthPourcentage(75%);
+        @include mixins.paddingTopBottom(25px,0px);
+
+        .img-fluid {
+            width: 40vw !important ;
+        }
+
+        .my-5 {
+            @include mixins.marginTopBottom(10px,30px);
+        }
+
+        input, p {
+            font-size: 12px !important;
+        }
+    }
+
+    #modalDelete, #modalSynchro {
+        .my-5 {
+            @include mixins.marginTopBottom(40px,80px);
+        }
+    }
+
+    #detailEmargement {
+        font-size: 12px !important;
+        margin-bottom: 80px !important;
+
+        &.mt-5 {
+            margin-top: 20px !important;
+        }
+    }
+
+    .datable {
+        &.my-5{
+            @include mixins.marginTopBottom(80px,160px);
+        }
+        &.py-5{
+            @include mixins.paddingTopBottom(80px,80px);
+        }
+    }
+
+    #navbarNav, .dropdown-menu {
+        font-size: 13px !important;
+
+        .btnSetting__white {
+            margin-top: 5px !important;
+            margin-right: 20px !important;
+        }
+    }
+
+    #templateEdit {
+        @include mixins.marginTopBottom(130px,190px);
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .formWidth {
+        @include mixins.widthPourcentage(65%);
+    }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) and (max-width: 1199.98px) { 
+    .formWidth {
+        @include mixins.widthPourcentage(50%);
+    }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { 
+    .formWidth {
+        @include mixins.widthPourcentage(40%); 
+
+    }
+}
