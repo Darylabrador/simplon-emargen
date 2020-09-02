@@ -12,5 +12,4 @@ loginFormContainer.addEventListener('submit', evt => {
     setTimeout(() => {
         location.href = 'accueil.html';
     }, 2000);
-    
 })
