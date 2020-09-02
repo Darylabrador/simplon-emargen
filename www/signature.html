@@ -37,17 +37,15 @@
             <a class="navbar-brand" href="#">
                 <img class="img-fluid logo" src="img/logo.png" alt="Logo simplon" style="max-width: 80px">
             </a>
-            <ul class="d-flex">
-                <li style="list-style: none;">
-                    <a style="font-size: 5px !important;" href="accueil.html">Accueil</a>
-                </li>
-                <li style="list-style: none; margin-left: 3px !important;">
-                    <a style="font-size: 5px !important;" href="password.html">Password</a>
-                </li>
-                <li style="list-style: none; margin-left: 3px !important;">
-                    <a style="font-size: 5px !important;" href="signature.html">Signature</a>
-                </li>
-            </ul>
+    
+            <span id="openMenu">open</span>
+    
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" id="closeMenu">&times;</a>
+                <a style="font-size: 5px !important;" href="accueil.html">Accueil</a>
+                <a style="font-size: 5px !important;" href="password.html">Password</a>
+                <a style="font-size: 5px !important;" href="signature.html">Signature</a>
+            </div>
         </nav>
     </header>
 
@@ -82,6 +80,7 @@
     <script src="cordova.js"></script>
     <script src="js/signature_pad.min.js"></script>
     <script src="js/signature.js"></script>
+    <script src="js/menu.js"></script>
 </body>
 
 </html>
