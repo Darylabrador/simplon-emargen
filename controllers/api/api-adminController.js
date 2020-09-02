@@ -1,3 +1,9 @@
+const fs          = require('fs');
+const path        = require('path');
+
+const PDFDocument = require('pdfkit');
+
+const pdfFunction   = require('../../utils/pdfGenerator');
 const Template      = require('../../models/templates');
 const Signoffsheet  = require('../../models/signoffsheets');
 const User          = require('../../models/users');
@@ -71,11 +77,45 @@ exports.signEmargement = async (req, res, next) => {
                 }
             }
 
-            await newArraySaved.save();
-            res.status(200).json({
-                success: true,
-                message: 'Document signé'
+            // regenerate PDF
+            const regenerateData   = await newArraySaved.save();
+            const regenerate = await regenerateData.populate().populate('templateId').execPopulate();
+
+            const logoTemplate = path.join('public', regenerate.templateId.logo);
+            const signoffPath  = path.join('data', 'pdf', regenerate.name);
+
+            const doc = new PDFDocument({
+                size: 'A4',
+                layout: 'landscape',
+                autoFirstPage: false
             });
+
+            doc.pipe(fs.createWriteStream(signoffPath).on('close', () => {
+                res.status(200).json({
+                    success: true,
+                    message: 'Document signé'
+                });
+                doc.pipe(res);
+            }));
+
+            let xEntete = 200;
+            let yEntete = 160;
+            let xApprenant = 30;
+            let yApprenant = 182;
+            var compteurInitPlage = 0;
+            var compteurFinPlage = 5;
+
+            for (let y = 0; y < regenerate.learners.length; y++) {
+                if (y % 5 == 0) {
+                    doc.addPage();
+                    pdfFunction.headerPdf(doc, logoTemplate, regenerate.templateId.intitule, regenerate.templateId.organisme);
+                    pdfFunction.corpsPdfSignature(doc, xEntete, yEntete, xApprenant, yApprenant, regenerate.days, regenerate.learners, regenerate.trainers, compteurInitPlage, compteurFinPlage, regenerate.signLocation);
+                    compteurInitPlage += 5;
+                    compteurFinPlage  += 5;
+                }
+            }
+
+            doc.end();
 
         } else {
             res.status(200).json({
@@ -85,6 +125,7 @@ exports.signEmargement = async (req, res, next) => {
         }
 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: 'Une erreur est survenue'
