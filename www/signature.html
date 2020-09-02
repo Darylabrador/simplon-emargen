@@ -84,26 +84,38 @@
         </nav>
     </header>
 
-    <div id="error" class="container-fluid"></div>
+    <main class="my-4 py-4">
+        <div class="settingHeight60 d-flex justify-content-center align-items-center my-4 flex-column">
+            <div id="error" class="container-fluid" style="margin-bottom: -70px !important; margin-top: 8px !important;">
+            </div>
+    
+            <div class="formWidth bg-white rounded">
+    
+                <h5 class="text-center pt-5 mb-5">Signature</h5>
+    
+                <p class="text-center"> Veuillez faire votre signature dans le cadre ci-dessous </p>
 
-    <main class="mt-2">
-        <h1>Signature</h1>
-        <ul>
-            <li>
-                <a href="accueil.html">Accueil</a>
-            </li>
-            <li>
-                <a href="password.html">Password</a>
-            </li>
-            <li>
-                <a href="signature.html">Signature</a>
-            </li>
-        </ul>
+                
+                <div class="d-flex justify-content-center px-2">
+                    <canvas id="signature-pad" class="signature-pad w-100" style="border: 1px solid rgba(0,0,0,0.25);"></canvas>
+                </div>
+                
+
+                <div class="w-100 d-flex mt-5">
+                    <button id="clear" class="btn btn-primary w-50 leftBorder py-2">Recommencer</button>
+                    <div class="btnDivider"></div>
+                    <button id="save-png" class="btn btn-secondary w-50 rightBorder py-2"> Sauvegarder </button>
+                </div>
+
+            </div>
+        </div>
     </main>
 
 
     <script src="cordova.js"></script>
     <script src="js/index.js"></script>
+    <script src="js/signature_pad.min.js"></script>
+    <script src="js/signature.js"></script>
 </body>
 
 </html>
