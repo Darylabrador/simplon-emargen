@@ -18,7 +18,6 @@ const Yeargroup      = require('../../models/yeargroups');
 const Template       = require('../../models/templates');
 const Signoffsheet   = require('../../models/signoffsheets');
 const Assign         = require('../../models/assigns');
-const { info } = require('console');
 
 // Send mail configuration
 const transporter = nodemailer.createTransport(sengridTransport({

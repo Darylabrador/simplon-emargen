@@ -36,6 +36,8 @@ router.post('/configuration/signature', isAuthApi, uploadImage);
 
 router.post('/emargements/signature', isAuthApi);
 
-router.get('/emargements/signature', isAuthApi);
+// router.get('/emargements/signature', isAuthApi);
+
+router.get('/emargements/signature', apiAdminController.signEmargement);
 
 module.exports = router;

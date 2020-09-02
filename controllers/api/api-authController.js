@@ -44,6 +44,8 @@ exports.postLogin = async (req, res, next) => {
         res.status(200).json({
             sucess: true,
             token: token,
+            firstConnection: userExist.firstConnection,
+            signImage: userExist.signImage,
             message: 'Vous êtes connecté(e)'
         });
 
@@ -76,12 +78,15 @@ exports.postReinitPass = async (req, res, next) => {
             });
         }
 
-        const newHashedPwd   = await bcrypt.hash(newpass, 12);
-        userUpdated.password = newHashedPwd;
-        await userUpdated.save();
+        const newHashedPwd          = await bcrypt.hash(newpass, 12);
+        userUpdated.password        = newHashedPwd;
+        userUpdated.firstConnection = false;
+        const userAfter = await userUpdated.save();
 
         res.status(200).json({
             sucess: true,
+            firstConnection: userAfter.firstConnection,
+            signImage: userAfter.signImage,
             message: 'Mise à jour effectuée'
         });
 
