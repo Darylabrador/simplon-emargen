@@ -25,9 +25,7 @@ exports.signEmargement = async (req, res, next) => {
 
         // 10min delay to sign (600000ms)
         if (isEndTimer <= 600000) {
-
             if (!signCreneau.alreadySign) {
-
                 const apprenantSign = await User.findOne({ _id: apprenant });
                 const identite = `${apprenantSign.name} ${apprenantSign.surname}`;
                 const emargementInfo = await Signoffsheet.findOne({ _id: signCreneau.signoffsheetId });
@@ -83,12 +81,12 @@ exports.signEmargement = async (req, res, next) => {
                 // regenerate PDF
                 signCreneau.alreadySign = true;
                 await signCreneau.save();
-                
+
                 const regenerateData = await newArraySaved.save();
                 const regenerate = await regenerateData.populate().populate('templateId').execPopulate();
 
                 const logoTemplate = path.join('public', regenerate.templateId.logo);
-                const signoffPath = path.join('data', 'pdf', regenerate.name);
+                const signoffPath  = path.join('data', 'pdf', regenerate.name);
 
                 const doc = new PDFDocument({
                     size: 'A4',
@@ -133,7 +131,6 @@ exports.signEmargement = async (req, res, next) => {
                 message: 'Lien expiré'
             });
         }
-
     } catch (error) {
         console.log(error)
         return res.status(500).json({

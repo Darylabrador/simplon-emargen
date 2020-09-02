@@ -34,6 +34,6 @@ const router = express.Router();
 
 router.post('/configuration/signature', isAuthApi, uploadImage);
 
-router.get('/emargements/signature', apiAdminController.signEmargement);
+router.get('/emargements/signature', isAuthApi, apiAdminController.signEmargement);
 
 module.exports = router;
