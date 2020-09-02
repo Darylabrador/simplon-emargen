@@ -14,6 +14,10 @@ const assignSchema = mongoose.Schema({
     signLink: {
         type: String,
         required: true
+    },
+    alreadySign: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true })
 

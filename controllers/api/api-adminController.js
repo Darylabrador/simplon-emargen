@@ -25,98 +25,108 @@ exports.signEmargement = async (req, res, next) => {
 
         // 10min delay to sign (600000ms)
         if (isEndTimer <= 600000) {
-            const apprenantSign  = await User.findOne({_id: apprenant});
-            const identite       = `${apprenantSign.name} ${apprenantSign.surname}`;
-            const emargementInfo = await Signoffsheet.findOne({ _id: signCreneau.signoffsheetId });
 
-            // get learner index
-            const indexlearner = emargementInfo.learners.indexOf(identite);
+            if (!signCreneau.alreadySign) {
 
-            // get day index
-            const dateSearchedOld = jour.split('-');
-            const dateSearched    = `${dateSearchedOld[2]}/${dateSearchedOld[1]}/${dateSearchedOld[0]}`;
-            const indexDay        = emargementInfo.days.indexOf(dateSearched);
-        
-            // put sign at right location
-            const allSignLocation  = emargementInfo.signLocation;
-            const signLocatioArray = emargementInfo.signLocation[indexlearner];
-            const morningArray     = [];
-            const afternoonArray   = [];
+                const apprenantSign = await User.findOne({ _id: apprenant });
+                const identite = `${apprenantSign.name} ${apprenantSign.surname}`;
+                const emargementInfo = await Signoffsheet.findOne({ _id: signCreneau.signoffsheetId });
 
-            for (let y = 0; y < signLocatioArray.length; y++) {
-                if(y % 2 == 0) {
-                    morningArray.push(signLocatioArray[y]);
-                } else {
-                    afternoonArray.push(signLocatioArray[y]);
+                // get learner index
+                const indexlearner = emargementInfo.learners.indexOf(identite);
+
+                // get day index
+                const dateSearchedOld = jour.split('-');
+                const dateSearched = `${dateSearchedOld[2]}/${dateSearchedOld[1]}/${dateSearchedOld[0]}`;
+                const indexDay = emargementInfo.days.indexOf(dateSearched);
+
+                // put sign at right location
+                const allSignLocation = emargementInfo.signLocation;
+                const signLocatioArray = emargementInfo.signLocation[indexlearner];
+                const morningArray = [];
+                const afternoonArray = [];
+
+                for (let y = 0; y < signLocatioArray.length; y++) {
+                    if (y % 2 == 0) {
+                        morningArray.push(signLocatioArray[y]);
+                    } else {
+                        afternoonArray.push(signLocatioArray[y]);
+                    }
                 }
-            }
 
-            if (creneau == "morning") {
-                morningArray[indexDay][4] = apprenantSign.signImage;
-            }  
-            
-            if (creneau == "afternoon") {
-                afternoonArray[indexDay][4] = apprenantSign.signImage;
-            }
-
-            // save modification to database
-            emargementInfo.signLocation = [];
-            const newArraySaved = await emargementInfo.save();
-
-            allSignLocation.forEach(element => {
-                newArraySaved.signLocation.push(element)
-            })
-            
-            newArraySaved.signLocation[indexlearner] = [];
-            
-            for (let y = 0; y < signLocatioArray.length; y++) {
-                if (y % 2 == 0) {
-                    newArraySaved.signLocation[indexlearner].push(signLocatioArray[y])
-                } else {
-                    newArraySaved.signLocation[indexlearner].push(signLocatioArray[y])
+                if (creneau == "morning") {
+                    morningArray[indexDay][4] = apprenantSign.signImage;
                 }
-            }
 
-            // regenerate PDF
-            const regenerateData   = await newArraySaved.save();
-            const regenerate = await regenerateData.populate().populate('templateId').execPopulate();
+                if (creneau == "afternoon") {
+                    afternoonArray[indexDay][4] = apprenantSign.signImage;
+                }
 
-            const logoTemplate = path.join('public', regenerate.templateId.logo);
-            const signoffPath  = path.join('data', 'pdf', regenerate.name);
+                // save modification to database
+                emargementInfo.signLocation = [];
+                const newArraySaved = await emargementInfo.save();
 
-            const doc = new PDFDocument({
-                size: 'A4',
-                layout: 'landscape',
-                autoFirstPage: false
-            });
+                allSignLocation.forEach(element => {
+                    newArraySaved.signLocation.push(element)
+                })
 
-            doc.pipe(fs.createWriteStream(signoffPath).on('close', () => {
+                newArraySaved.signLocation[indexlearner] = [];
+
+                for (let y = 0; y < signLocatioArray.length; y++) {
+                    if (y % 2 == 0) {
+                        newArraySaved.signLocation[indexlearner].push(signLocatioArray[y])
+                    } else {
+                        newArraySaved.signLocation[indexlearner].push(signLocatioArray[y])
+                    }
+                }
+
+                // regenerate PDF
+                signCreneau.alreadySign = true;
+                await signCreneau.save();
+                
+                const regenerateData = await newArraySaved.save();
+                const regenerate = await regenerateData.populate().populate('templateId').execPopulate();
+
+                const logoTemplate = path.join('public', regenerate.templateId.logo);
+                const signoffPath = path.join('data', 'pdf', regenerate.name);
+
+                const doc = new PDFDocument({
+                    size: 'A4',
+                    layout: 'landscape',
+                    autoFirstPage: false
+                });
+
+                doc.pipe(fs.createWriteStream(signoffPath).on('close', () => {
+                    res.status(200).json({
+                        success: true,
+                        message: 'Document signé'
+                    });
+                    doc.pipe(res);
+                }));
+
+                let xEntete = 200;
+                let yEntete = 160;
+                let xApprenant = 30;
+                let yApprenant = 182;
+                var compteurInitPlage = 0;
+                var compteurFinPlage = 5;
+
+                for (let y = 0; y < regenerate.learners.length; y++) {
+                    if (y % 5 == 0) {
+                        doc.addPage();
+                        pdfFunction.headerPdf(doc, logoTemplate, regenerate.templateId.intitule, regenerate.templateId.organisme);
+                        pdfFunction.corpsPdfSignature(doc, xEntete, yEntete, xApprenant, yApprenant, regenerate.days, regenerate.learners, regenerate.trainers, compteurInitPlage, compteurFinPlage, regenerate.signLocation);
+                        compteurInitPlage += 5;
+                        compteurFinPlage += 5;
+                    }
+                }
+                doc.end();
+            } else {
                 res.status(200).json({
                     success: true,
-                    message: 'Document signé'
+                    message: 'Document déjà signé'
                 });
-                doc.pipe(res);
-            }));
-
-            let xEntete = 200;
-            let yEntete = 160;
-            let xApprenant = 30;
-            let yApprenant = 182;
-            var compteurInitPlage = 0;
-            var compteurFinPlage = 5;
-
-            for (let y = 0; y < regenerate.learners.length; y++) {
-                if (y % 5 == 0) {
-                    doc.addPage();
-                    pdfFunction.headerPdf(doc, logoTemplate, regenerate.templateId.intitule, regenerate.templateId.organisme);
-                    pdfFunction.corpsPdfSignature(doc, xEntete, yEntete, xApprenant, yApprenant, regenerate.days, regenerate.learners, regenerate.trainers, compteurInitPlage, compteurFinPlage, regenerate.signLocation);
-                    compteurInitPlage += 5;
-                    compteurFinPlage  += 5;
-                }
             }
-
-            doc.end();
-
         } else {
             res.status(200).json({
                 success: false,

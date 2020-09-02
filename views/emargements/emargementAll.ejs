@@ -33,9 +33,10 @@
                 <div class="card col-12 col-lg-3 col-sm-6 col-xl-3 my-2 mx-3">
                     <div class="card-header mb-0 bg-transparent p-0 d-flex justify-content-end border-0">
                         <p class="mt-2 mr-4 mb-0 version"> 
-                            <span class="iconify iconify__white linkBtn" data-id="<%= signoffInfo._id %>" data-inline="false" data-icon="bx:bxs-calendar-edit" style="font-size: 13px;"></span>
+                            <% if( signoffInfo.fileExist ) { %>
+                                <span class="iconify iconify__white linkBtn" data-id="<%= signoffInfo._id %>" data-inline="false" data-icon="bx:bxs-calendar-edit" style="font-size: 13px;"></span>
+                            <% } %>
                             version <%= signoffInfo.version %> 
-
                         </p>
                     </div>
                     <div class="card-body mb-0">
