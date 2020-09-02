@@ -10793,8 +10793,7 @@ li.page-item.active {
   top: 0;
   /* Stay at the top */
   left: 0;
-  background-color: #111;
-  /* Black*/
+  background-color: #fff;
   overflow-x: hidden;
   /* Disable horizontal scroll */
   padding-top: 60px;
@@ -10807,7 +10806,7 @@ li.page-item.active {
 .sidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
-  font-size: 25px;
+  font-size: 13px;
   color: #818181;
   display: block;
   transition: 0.3s;
@@ -10825,6 +10824,13 @@ li.page-item.active {
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
+}
+
+.navbar-brand {
+  position: absolute !important;
+  top: 10px !important;
+  left: -10px !important;
+  margin-right: 50px !important;
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
