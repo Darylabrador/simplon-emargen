@@ -1,12 +1,15 @@
 document.addEventListener('deviceready', function() {
 
     document.querySelector("#prepare").addEventListener("touchend", function () {
-        window.QRScanner.prepare(onDone); // show the prompt
+        if (!localStorage.getItem(signImage)) {
+            window.QRScanner.prepare(onDone); // show the prompt
+        } else {
+            location.href = "signature.html";
+        }
     });
 
     document.querySelector("#scan").addEventListener("touchend", function () {
         window.QRScanner.scan(displayContents);
-
     });
 
     function onDone(err, status) {
