@@ -29,7 +29,7 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta http-equiv="Content-Security-Policy"/>
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
@@ -58,7 +58,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <input type="email" name="email" placeholder="Adresse email" class="form-control inputBorder">
+                        <input id="email" type="email" name="email" placeholder="Adresse email" class="form-control inputBorder">
                     </div>
     
                     <div class="my-5 input-group mb-2 mr-sm-2">
@@ -78,7 +78,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <input type="password" name="password" class="form-control inputBorder" placeholder="Mot de passe">
+                        <input id="password" type="password" name="password" class="form-control inputBorder" placeholder="Mot de passe">
                     </div>
                 </div>
     
@@ -91,6 +91,5 @@
         </div>
         <script src="cordova.js"></script>
         <script src="js/login.js"></script>
-        <script src="js/menu.js"></script>
     </body>
 </html>
