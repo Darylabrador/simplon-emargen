@@ -40,52 +40,54 @@
     <body class="d-flex flex-column align-items-center justify-content-center authentification">
         <div id="error" class="container-fluid" style="margin-bottom: -55px !important;"></div>
 
-        <div class="bg-white rounded formWidth">
-
-            <div class="text-center w-100 my-3">
-                <img class="img-fluid" src="img/logo.png" alt="Logo Simplon.co">
-            </div>
+        <div class="formWidth">
 
             <form id="loginFormContainer" method="POST">
-                <div class="px-5">
-                    <div class="my-5 input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text inputBorder">
-                                <svg width="15" height="15" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.7473 2.87793H2.14944C1.55834 2.87793 1.08008 3.32948 1.08008 3.88137L1.07471 9.90204C1.07471 10.4539 1.55834 10.9055 2.14944 10.9055H10.7473C11.3384 10.9055 11.8221 10.4539 11.8221 9.90204V3.88137C11.8221 3.32948 11.3384 2.87793 10.7473 2.87793ZM10.7473 9.90204H2.14944V4.88482L6.44838 7.39343L10.7473 4.88482V9.90204ZM6.44838 6.38999L2.14944 3.88137H10.7473L6.44838 6.38999Z"
-                                        fill="black" />
-                                </svg>
-                            </div>
-                        </div>
-                        <input id="email" type="email" name="email" placeholder="Adresse email" class="form-control inputBorder">
+                <div class="bg-white rounded pb-3">
+                    <div class="text-center w-100 my-3">
+                        <img class="img-fluid" src="img/logo.png" alt="Logo Simplon.co">
                     </div>
-    
-                    <div class="my-5 input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text inputBorder">
-                                <svg width="15" height="17" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0)">
+                    
+                    <div class="px-5">
+                        <div class="my-5 input-group mb-2 mr-sm-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text inputBorder">
+                                    <svg width="15" height="15" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
-                                            d="M5.4484 0.220703C4.51696 0.220703 3.71091 0.518601 3.03025 1.1144C2.34958 1.71019 2.00925 2.41574 2.00925 3.23104V4.7362C1.52562 4.7362 1.11811 4.88123 0.786738 5.17129C0.455361 5.46135 0.289673 5.81804 0.289673 6.24137V10.7569C0.289673 11.1802 0.455361 11.5369 0.786738 11.827C1.11811 12.117 1.52562 12.262 2.00925 12.262H8.88755C9.37118 12.262 9.77869 12.117 10.1101 11.827C10.4414 11.5369 10.6071 11.1802 10.6071 10.7569V6.24137C10.6071 5.81804 10.4414 5.46135 10.1101 5.17129C9.77869 4.88123 9.37118 4.7362 8.88755 4.7362V3.23104C8.88755 2.41574 8.54722 1.71019 7.86655 1.1144C7.18589 0.518601 6.37984 0.220703 5.4484 0.220703ZM9.45179 6.24137V10.7569C9.45179 11.0861 9.26371 11.2508 8.88755 11.2508H2.00925C1.63309 11.2508 1.44501 11.0861 1.44501 10.7569V6.24137C1.44501 5.91212 1.63309 5.74749 2.00925 5.74749H8.88755C9.26371 5.74749 9.45179 5.91212 9.45179 6.24137ZM3.16459 4.7362V3.23104C3.16459 2.68228 3.38849 2.21191 3.8363 1.81994C4.2841 1.42797 4.82147 1.23199 5.4484 1.23199C6.07533 1.23199 6.6127 1.42797 7.0605 1.81994C7.50831 2.21191 7.73221 2.68228 7.73221 3.23104V4.7362H3.16459ZM5.4484 6.24137C4.96477 6.24137 4.55727 6.3864 4.22589 6.67646C3.89451 6.96652 3.72882 7.32321 3.72882 7.74654C3.72882 8.06011 3.8363 8.34625 4.05124 8.60495C4.26619 8.86365 4.54383 9.04788 4.88416 9.15763V9.74559C4.88416 10.0905 5.07224 10.263 5.4484 10.263C5.82456 10.263 6.01264 10.0905 6.01264 9.74559V9.15763C6.78286 8.92245 7.16798 8.45209 7.16798 7.74654C7.16798 7.32321 7.00229 6.96652 6.67091 6.67646C6.33953 6.3864 5.93203 6.24137 5.4484 6.24137ZM5.4484 8.24042C5.07224 8.24042 4.88416 8.07579 4.88416 7.74654C4.88416 7.41728 5.07224 7.25266 5.4484 7.25266C5.82456 7.25266 6.01264 7.41728 6.01264 7.74654C6.01264 8.07579 5.82456 8.24042 5.4484 8.24042Z"
+                                            d="M10.7473 2.87793H2.14944C1.55834 2.87793 1.08008 3.32948 1.08008 3.88137L1.07471 9.90204C1.07471 10.4539 1.55834 10.9055 2.14944 10.9055H10.7473C11.3384 10.9055 11.8221 10.4539 11.8221 9.90204V3.88137C11.8221 3.32948 11.3384 2.87793 10.7473 2.87793ZM10.7473 9.90204H2.14944V4.88482L6.44838 7.39343L10.7473 4.88482V9.90204ZM6.44838 6.38999L2.14944 3.88137H10.7473L6.44838 6.38999Z"
                                             fill="black" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0">
-                                            <rect width="10.3175" height="12.0413" fill="white" transform="translate(0.289673 0.822266)" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
+                                    </svg>
+                                </div>
                             </div>
+                            <input id="email" type="email" name="email" placeholder="Adresse email" class="form-control inputBorder">
                         </div>
-                        <input id="password" type="password" name="password" class="form-control inputBorder" placeholder="Mot de passe">
+                    
+                        <div class="my-5 input-group mb-2 mr-sm-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text inputBorder">
+                                    <svg width="15" height="17" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0)">
+                                            <path
+                                                d="M5.4484 0.220703C4.51696 0.220703 3.71091 0.518601 3.03025 1.1144C2.34958 1.71019 2.00925 2.41574 2.00925 3.23104V4.7362C1.52562 4.7362 1.11811 4.88123 0.786738 5.17129C0.455361 5.46135 0.289673 5.81804 0.289673 6.24137V10.7569C0.289673 11.1802 0.455361 11.5369 0.786738 11.827C1.11811 12.117 1.52562 12.262 2.00925 12.262H8.88755C9.37118 12.262 9.77869 12.117 10.1101 11.827C10.4414 11.5369 10.6071 11.1802 10.6071 10.7569V6.24137C10.6071 5.81804 10.4414 5.46135 10.1101 5.17129C9.77869 4.88123 9.37118 4.7362 8.88755 4.7362V3.23104C8.88755 2.41574 8.54722 1.71019 7.86655 1.1144C7.18589 0.518601 6.37984 0.220703 5.4484 0.220703ZM9.45179 6.24137V10.7569C9.45179 11.0861 9.26371 11.2508 8.88755 11.2508H2.00925C1.63309 11.2508 1.44501 11.0861 1.44501 10.7569V6.24137C1.44501 5.91212 1.63309 5.74749 2.00925 5.74749H8.88755C9.26371 5.74749 9.45179 5.91212 9.45179 6.24137ZM3.16459 4.7362V3.23104C3.16459 2.68228 3.38849 2.21191 3.8363 1.81994C4.2841 1.42797 4.82147 1.23199 5.4484 1.23199C6.07533 1.23199 6.6127 1.42797 7.0605 1.81994C7.50831 2.21191 7.73221 2.68228 7.73221 3.23104V4.7362H3.16459ZM5.4484 6.24137C4.96477 6.24137 4.55727 6.3864 4.22589 6.67646C3.89451 6.96652 3.72882 7.32321 3.72882 7.74654C3.72882 8.06011 3.8363 8.34625 4.05124 8.60495C4.26619 8.86365 4.54383 9.04788 4.88416 9.15763V9.74559C4.88416 10.0905 5.07224 10.263 5.4484 10.263C5.82456 10.263 6.01264 10.0905 6.01264 9.74559V9.15763C6.78286 8.92245 7.16798 8.45209 7.16798 7.74654C7.16798 7.32321 7.00229 6.96652 6.67091 6.67646C6.33953 6.3864 5.93203 6.24137 5.4484 6.24137ZM5.4484 8.24042C5.07224 8.24042 4.88416 8.07579 4.88416 7.74654C4.88416 7.41728 5.07224 7.25266 5.4484 7.25266C5.82456 7.25266 6.01264 7.41728 6.01264 7.74654C6.01264 8.07579 5.82456 8.24042 5.4484 8.24042Z"
+                                                fill="black" />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0">
+                                                <rect width="10.3175" height="12.0413" fill="white"
+                                                    transform="translate(0.289673 0.822266)" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </div>
+                            </div>
+                            <input id="password" type="password" name="password" class="form-control inputBorder"
+                                placeholder="Mot de passe">
+                        </div>
                     </div>
                 </div>
-    
-                <div class="w-100 d-flex">
-                    <a href="#" class="btn btn-primary w-50 leftBorder py-2">Mot de passe oublié</a>
-                    <div class="btnDivider"></div>
-                    <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Connexion</button>
+
+                <div class="w-100 text-center py-2" style="background: rgba(0,0,0,0.25) !important;">
+                    <button type="submit" class="btn btn-secondary w-75 rightBorder py-2" style="border-radius: 5px !important;">Connexion</button>
                 </div>
             </form>
         </div>

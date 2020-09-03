@@ -10,7 +10,7 @@ savedBtn.addEventListener('click', function () {
     }
 
     let data = signaturePad.toDataURL('image/png');
-    console.log(data);
+    alert(data);
     window.open(data);
 });
 
