@@ -66,3 +66,9 @@ loginFormContainer.addEventListener('submit', evt => {
         }
     }
 })
+
+if(document.readyState == "loading") {
+    if (localStorage.getItem('token') != null) {
+        location.href = "accueil.html";
+    }
+}
