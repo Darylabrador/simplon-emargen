@@ -11,6 +11,7 @@ module.exports = (req, res, next) => {
     if(!authheader) {
         return res.status(401).json({
             success: false,
+            session: true,
             message: 'Pas authentifier'
         });
     }
@@ -23,6 +24,7 @@ module.exports = (req, res, next) => {
     } catch (error) {
         return res.status(500).json({
             success: false,
+            session: true,
             message: 'Une erreur est survenue'
         });
     }
