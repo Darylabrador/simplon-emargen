@@ -689,7 +689,6 @@ exports.generatePdf = async (req, res, next) => {
                 doc.addPage();
                 pdfFunction.headerPdf(doc, logoTemplate, signoffSheetData.templateId.intitule, signoffSheetData.templateId.organisme);
                 pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.days, signoffSheetData.learners, signoffSheetData.trainers, compteurInitPlage, compteurFinPlage, emargementId);
-                // pdfFunction.corpsPdf(doc, xEntete, yEntete, xApprenant, yApprenant, signoffSheetData.days, signoffSheetData.learners, signoffSheetData.trainers, compteurInitPlage, compteurFinPlage, signoffId, logoTemplate);
                 compteurInitPlage += 5;
                 compteurFinPlage += 5;
             }
