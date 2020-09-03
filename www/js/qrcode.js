@@ -1,10 +1,27 @@
 document.addEventListener('deviceready', function() {
 
+    let signMessage  = document.getElementById('error');
+    var isConfigSign = localStorage.getItem('notConfigSign');
+    
+    function displaySignMsg(type, message) {
+        signMessage.innerHTML = `
+        <div class="alert alert-${type} fade show my-0" role="alert" style="margin-bottom: -45px !important; margin-top: 10px !important;">
+            <strong style="font-size: 12px !important;"> ${message} </strong>
+        </div>
+    `;
+
+        setTimeout(() => {
+            loginMessage.innerHTML = "";
+            localStorage.removeItem('message');
+        }, 4000);
+    }
+
     document.querySelector("#prepare").addEventListener("touchend", function () {
-        if (!localStorage.getItem(signImage)) {
-            window.QRScanner.prepare(onDone); // show the prompt
-        } else {
+        if (isConfigSign == 'false') {
+            localStorage.setItem('message', 'Vous devez configuré votre signature');
             location.href = "signature.html";
+        } else {
+            window.QRScanner.prepare(onDone); // show the prompt
         }
     });
 
@@ -34,6 +51,37 @@ document.addEventListener('deviceready', function() {
         }
     }
 
+    function signDoc(urlSend) {
+        let request = new XMLHttpRequest();
+        let methods = "GET";
+        request.open(methods, urlSend);
+        request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem('token'));
+        request.responseType = "json";
+        request.send();
+
+        request.onload = () => {
+            if (request.readyState === XMLHttpRequest.DONE) {
+                if (request.status === 200) {
+                    let reponse = request.response;
+                    if (reponse != null) {
+                        if (reponse.success) {
+                            displaySignMsg('success', reponse.message);
+                        } else {
+                            displaySignMsg('danger', reponse.message);
+                        }
+                    }
+                } else {
+                    let reponse = request.response;
+                    if (reponse != null) {
+                        if (!reponse.success) {
+                            displaySignMsg('danger', reponse.message);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     function displayContents(err, text) {
         if (err) {
             // an error occurred, or the scan was canceled (error code `6`)
@@ -41,7 +89,7 @@ document.addEventListener('deviceready', function() {
             // The scan completed, display the contents of the QR code:
             document.querySelector('body').classList.remove('bg-transparent');
             document.querySelector('html').classList.remove('bg-transparent');
-            alert(text);
+            signDoc(text); 
         }
     }
 });

@@ -28,6 +28,7 @@ function displayMessagelogin(type, message) {
 if (localStorage.getItem('message') != null) {
     let messageSuccessLogin = localStorage.getItem('message');
     displayMessagelogin('success', messageSuccessLogin);
+    localStorage.removeItem('message');
 }
 
 if (localStorage.getItem('identite') != null && localStorage.getItem('email') != null) {

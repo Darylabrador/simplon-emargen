@@ -43,7 +43,7 @@ loginFormContainer.addEventListener('submit', evt => {
                         localStorage.setItem('identite', reponse.identite);
                         localStorage.setItem('email', reponse.email);
                         localStorage.setItem('firstCo', reponse.firstConnection);
-                        localStorage.setItem('signImage', reponse.signImage);
+                        localStorage.setItem('notConfigSign', reponse.notConfigSign);
                         localStorage.setItem('message', reponse.message);
 
                         if (localStorage.getItem('token') != null) {

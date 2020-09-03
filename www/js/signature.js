@@ -22,6 +22,12 @@ function displayMessageSign(type, message) {
     }, 4000);
 }
 
+if (localStorage.getItem('message') != null) {
+    let messageConfig = localStorage.getItem('message');
+    displayMessageSign('danger', messageConfig);
+    localStorage.removeItem('message');
+}
+
 savedBtn.addEventListener('click', function () {
     if (signaturePad.isEmpty()) {
         return displayMessageSign('danger', "Aucune signature détectée");
@@ -42,8 +48,7 @@ savedBtn.addEventListener('click', function () {
                 let reponse = req.response;
                 if (reponse != null) {
                     if (reponse.success) {
-                        localStorage.removeItem('signImage');
-                        localStorage.setItem('signImage', reponse.signImage);
+                        localStorage.setItem('notConfigSign', reponse.notConfigSign);
                         displayMessageSign('success', reponse.message);
                         signaturePad.clear();
                     } else {
