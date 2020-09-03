@@ -17,7 +17,7 @@ exports.postLogin = async (req, res, next) => {
             });
         };
 
-        const userExist = User.findOne({ email, role: 'apprenant' });
+        const userExist = await User.findOne({ email: email, role: 'apprenant' });
         if(!userExist){
             return res.status(422).json({
                 success: false,
@@ -25,7 +25,7 @@ exports.postLogin = async (req, res, next) => {
             });
         };
 
-        const isEqual = bcrypt.compare(password, userExist.password);
+        const isEqual = await bcrypt.compare(password, userExist.password);
         if(!isEqual) {
             return res.status(422).json({
                 success: false,
@@ -34,6 +34,7 @@ exports.postLogin = async (req, res, next) => {
         };
 
         const token = jwt.sign({
+                identite: `${userExist.name} ${userExist.surname}`,
                 email: userExist.email,
                 userId: userExist._id.toString()
             }, 
@@ -44,12 +45,14 @@ exports.postLogin = async (req, res, next) => {
         res.status(200).json({
             sucess: true,
             token: token,
+            identite: `${userExist.name} ${userExist.surname}`,
             firstConnection: userExist.firstConnection,
             signImage: userExist.signImage,
             message: 'Vous êtes connecté(e)'
         });
 
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: 'Une erreur est survenue'
