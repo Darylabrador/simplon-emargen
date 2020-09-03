@@ -155,12 +155,12 @@ exports.postSignature = async (req, res, next) =>{
 
             res.status(200).json({
                 success: true,
+                signImage: savedUpdatedUser.signImage == null,
                 message: 'Signature configurée'
             });
         } else {
             res.status(422).json({
                 success: false,
-                signImage: savedUpdatedUser.signImage == null,
                 message: 'Signature invalide'
             });
         }
