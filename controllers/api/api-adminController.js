@@ -120,13 +120,13 @@ exports.signEmargement = async (req, res, next) => {
                 }
                 doc.end();
             } else {
-                res.status(200).json({
-                    success: true,
+                res.status(422).json({
+                    success: false,
                     message: 'Document déjà signé'
                 });
             }
         } else {
-            res.status(200).json({
+            res.status(422).json({
                 success: false,
                 message: 'Lien expiré'
             });
@@ -155,7 +155,7 @@ exports.postSignature = async (req, res, next) =>{
 
             res.status(200).json({
                 success: true,
-                signImage: savedUpdatedUser.signImage == null,
+                notConfigSign: savedUpdatedUser.signImage != null,
                 message: 'Signature configurée'
             });
         } else {
@@ -165,7 +165,6 @@ exports.postSignature = async (req, res, next) =>{
             });
         }
     } catch (error) {
-        console.log(error)
         return res.status(500).json({
             success: false,
             message: 'Une erreur est survenue'

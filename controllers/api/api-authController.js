@@ -48,7 +48,7 @@ exports.postLogin = async (req, res, next) => {
             identite: `${userExist.name} ${userExist.surname}`,
             email: userExist.email,
             firstConnection: userExist.firstConnection,
-            signImage: userExist.signImage == null,
+            notConfigSign: userExist.signImage != null,
             message: 'Vous êtes connecté(e)'
         });
 
