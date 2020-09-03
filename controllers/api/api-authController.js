@@ -43,16 +43,16 @@ exports.postLogin = async (req, res, next) => {
         );
 
         res.status(200).json({
-            sucess: true,
+            success: true,
             token: token,
             identite: `${userExist.name} ${userExist.surname}`,
+            email: userExist.email,
             firstConnection: userExist.firstConnection,
             signImage: userExist.signImage,
             message: 'Vous êtes connecté(e)'
         });
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             success: false,
             message: 'Une erreur est survenue'

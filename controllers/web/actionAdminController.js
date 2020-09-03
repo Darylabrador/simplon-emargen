@@ -263,7 +263,6 @@ exports.addAppprenant = async (req, res, next) => {
         });
         await newLearner.save();
 
-        /*
         await transporter.sendMail({
             to: email,
             from: `${process.env.EMAIL_USER}`,
@@ -277,8 +276,6 @@ exports.addAppprenant = async (req, res, next) => {
                 <br> 
                 <p> Vos identifiants sont valides uniquement sur l'application mobile. En cas d'oublie du mot de passe, il faut vous adresser à l'administration de Simplon</p>`
         });
-        */
-
         req.flash('success', "Compte apprenant créer avec succès");
         return res.redirect('/admin/apprenants');
     } catch (error) {
@@ -353,7 +350,6 @@ exports.resetPassApprenant = async (req, res, next) => {
         updatePassLearner.firstConnection = true;
         await updatePassLearner.save();
 
-        /*
         await transporter.sendMail({
             to: updatePassLearner.email,
             from: `${process.env.EMAIL_USER}`,
@@ -366,7 +362,6 @@ exports.resetPassApprenant = async (req, res, next) => {
                 <br> 
                 <p> Vos identifiants sont valides uniquement sur l'application mobile. En cas d'oublie du mot de passe, il faut vous adresser à l'administration de Simplon</p>`
         });
-        */
         req.flash('success', "Mot de passe mis à jour !");
         return res.redirect('/admin/apprenants');
     } catch (error) {
