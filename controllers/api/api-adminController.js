@@ -16,7 +16,8 @@ exports.signEmargement = async (req, res, next) => {
     const creneau  = req.query.creneau;
 
     try {
-        const link = req.protocol + '://' + req.get('host') + `/api/emargements/signature?apprenant=${apprenant}&jour=${jour}&creneau=${creneau}`;
+        // const link = req.protocol + '://' + req.get('host') + `/api/emargements/signature?apprenant=${apprenant}&jour=${jour}&creneau=${creneau}`;
+        const link = req.protocol + '://' + '192.168.1.15:3000' + `/api/emargements/signature?apprenant=${apprenant}&jour=${jour}&creneau=${creneau}`;
         const signCreneau = await Assign.findOne({ signLink: link, userId: apprenant});
 
         let timeCreated = signCreneau.createdAt;
@@ -132,6 +133,7 @@ exports.signEmargement = async (req, res, next) => {
             });
         }
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: 'Une erreur est survenue'
@@ -150,14 +152,22 @@ exports.postSignature = async (req, res, next) =>{
             // Data information about image
             const dataSignImage  = signature.replace(/^data:image\/\w+;base64,/, "");
             const userUpdateSign = await User.findOne({_id: req.userId});
-            userUpdateSign.signImage = dataSignImage;
-            const savedUpdatedUser = await userUpdateSign.save();
 
-            res.status(200).json({
-                success: true,
-                notConfigSign: savedUpdatedUser.signImage != null,
-                message: 'Signature configurée'
-            });
+            if (userUpdateSign.signImage == null) {
+                userUpdateSign.signImage = dataSignImage;
+                const savedUpdatedUser = await userUpdateSign.save();
+
+                res.status(200).json({
+                    success: true,
+                    notConfigSign: savedUpdatedUser.signImage != null,
+                    message: 'Signature configurée'
+                });
+            } else {
+                res.status(422).json({
+                    success: false,
+                    message: 'Signature déjà configurée'
+                });
+            }
         } else {
             res.status(422).json({
                 success: false,
