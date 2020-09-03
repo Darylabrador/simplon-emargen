@@ -28,6 +28,9 @@ router.post(
     '/reinitialisation', 
     isAuthApi, 
     [
+        body('oldpass', 'Renseigner votre ancien mot de passe')
+            .not()
+            .isEmpty(),
         body('newpass', 'Mot de passe : minimum 5 caractères')
             .isLength({ min: 5 })
             .trim(),

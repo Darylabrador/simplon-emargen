@@ -32,7 +32,7 @@ const uploadImage = multer({ storage: signatureStorage, fileFilter: imageFilter 
 
 const router = express.Router();
 
-router.post('/configuration/signature', isAuthApi, uploadImage);
+router.post('/configuration/signature', isAuthApi, uploadImage, apiAdminController.postSignature);
 
 router.get('/emargements/signature', isAuthApi, apiAdminController.signEmargement);
 

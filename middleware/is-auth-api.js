@@ -16,10 +16,10 @@ module.exports = (req, res, next) => {
     }
 
     const token = authheader.split(' ')[1];
-    let decodedTokn;
+    let decodedToken;
 
     try {
-        decodedTokn = jwt.verify(token, process.env.JWT_SECRET)
+        decodedToken = jwt.verify(token, process.env.JWT_SECRET)
     } catch (error) {
         return res.status(500).json({
             success: false,

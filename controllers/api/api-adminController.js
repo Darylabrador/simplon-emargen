@@ -132,6 +132,39 @@ exports.signEmargement = async (req, res, next) => {
             });
         }
     } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: 'Une erreur est survenue'
+        });
+    }
+}
+
+exports.postSignature = async (req, res, next) =>{
+    const { signature } = req.body;
+    const signType = signature.split(';')[0];
+
+    try {
+         // Construct image from base64 data image
+        if (signType == 'data:image/png') {
+
+            // Data information about image
+            const dataSignImage  = signature.replace(/^data:image\/\w+;base64,/, "");
+            const userUpdateSign = await User.findOne({_id: req.userId});
+            userUpdateSign.signImage = dataSignImage;
+            const savedUpdatedUser = await userUpdateSign.save();
+
+            res.status(200).json({
+                success: true,
+                message: 'Signature configurée'
+            });
+        } else {
+            res.status(422).json({
+                success: false,
+                signImage: savedUpdatedUser.signImage == null,
+                message: 'Signature invalide'
+            });
+        }
+    } catch (error) {
         console.log(error)
         return res.status(500).json({
             success: false,

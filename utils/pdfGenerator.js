@@ -207,14 +207,17 @@ exports.corpsPdfSignature = (doc, xEntete, yEntete, xApprenant, yApprenant, jour
 
                 // set sign location
                 for (let d = 0; d < allSignLocation[m].length; d++) {
-                    let signoffPath = path.join('data', 'signatures', allSignLocation[m][d][4]);
+
+                    // reconstruct image from buffer to put the sign image
+                    let signImage = new Buffer.from(allSignLocation[m][d][4], 'base64');
+
                     if (d % 2 == 0) {
                         if (allSignLocation[m][d][4] != 'nosign') {
-                            doc.image(signoffPath, allSignLocation[m][d][2] + 10 , allSignLocation[m][d][3] + 10, { width: 45 });
+                            doc.image(signImage, allSignLocation[m][d][2] + 10 , allSignLocation[m][d][3] + 10, { width: 45 });
                         }
                     } else {
                         if (allSignLocation[m][d][4] != 'nosign') {
-                            doc.image(signoffPath, allSignLocation[m][d][2] + 10 , allSignLocation[m][d][3] + 10, { width: 45 });
+                            doc.image(signImage, allSignLocation[m][d][2] + 10 , allSignLocation[m][d][3] + 10, { width: 45 });
                         }
                     }
                 }
