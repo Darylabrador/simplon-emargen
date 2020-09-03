@@ -56,6 +56,10 @@ resetFormContainer.addEventListener('submit', evt => {
                 let reponse = req.response;
                 if (reponse != null) {
                     if (!reponse.success) {
+                        if (reponse.session) {
+                            localStorage.clear();
+                            return location.href = "index.html";
+                        }
                         displayMessagelogin('danger', reponse.message);
                     }
                 }

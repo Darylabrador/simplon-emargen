@@ -74,6 +74,10 @@ document.addEventListener('deviceready', function() {
                     let reponse = request.response;
                     if (reponse != null) {
                         if (!reponse.success) {
+                            if (reponse.session) {
+                                localStorage.clear();
+                                return location.href = "index.html";
+                            }
                             displaySignMsg('danger', reponse.message);
                         }
                     }

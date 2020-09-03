@@ -59,6 +59,10 @@ savedBtn.addEventListener('click', function () {
                 let reponse = req.response;
                 if (reponse != null) {
                     if (!reponse.success) {
+                        if (reponse.session) {
+                            localStorage.clear();
+                            return location.href = "index.html";
+                        }
                         displayMessageSign('danger', reponse.message);
                     }
                 }
