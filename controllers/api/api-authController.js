@@ -5,6 +5,13 @@ const dotenv               = require('dotenv').config();
 
 const User = require('../../models/users');
 
+/** Handle user's login
+ * @name postLogin
+ * @function
+ * @param {String} email
+ * @param {String} password
+ * @throws Will throw an error if one error occursed
+ */
 exports.postLogin = async (req, res, next) => {
     const { email, password } = req.body;
     const errors = validationResult(req);
@@ -60,6 +67,14 @@ exports.postLogin = async (req, res, next) => {
     }
 };
 
+
+/** Handle user's resetting password
+ * @name postReinitPass
+ * @function
+ * @param {String} oldpass
+ * @param {String} newpass
+ * @throws Will throw an error if one error occursed
+ */
 exports.postReinitPass = async (req, res, next) => {
     const { oldpass, newpass } = req.body;
     const errors = validationResult(req);

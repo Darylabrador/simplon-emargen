@@ -10,10 +10,18 @@ const User          = require('../../models/users');
 const Yeargroup     = require('../../models/yeargroups');
 const Assign        = require('../../models/assigns');
 
+/** Put sign image on the right location on the signoffsheet PDF
+ * @name signEmargement
+ * @function
+ * @param {String} apprenant
+ * @param {String} jour
+ * @param {String} creneau
+ * @throws Will throw an error if one error occursed
+ */
 exports.signEmargement = async (req, res, next) => {
     const apprenant = req.query.apprenant;
     const jour      = req.query.jour;
-    const creneau  = req.query.creneau;
+    const creneau   = req.query.creneau;
 
     try {
         // const link = req.protocol + '://' + req.get('host') + `/api/emargements/signature?apprenant=${apprenant}&jour=${jour}&creneau=${creneau}`;
@@ -140,12 +148,19 @@ exports.signEmargement = async (req, res, next) => {
     }
 }
 
+
+/** Setting up user sign image
+ * @name postSignature
+ * @function
+ * @param {String} signature base64 data
+ * @throws Will throw an error if one error occursed
+ */
 exports.postSignature = async (req, res, next) =>{
     const { signature } = req.body;
     const signType = signature.split(';')[0];
 
     try {
-         // Construct image from base64 data image
+        // Construct image from base64 data image
         if (signType == 'data:image/png') {
 
             // Data information about image
