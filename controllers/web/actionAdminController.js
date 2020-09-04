@@ -9,6 +9,7 @@ const nodemailer           = require('nodemailer');
 const sengridTransport     = require('nodemailer-sendgrid-transport');
 const dotenv               = require('dotenv').config();
 const crypto               = require('crypto');
+const QRCode                 = require('qrcode');
 
 const { deleteFile } = require('../../utils/file');
 const pdfFunction    = require('../../utils/pdfGenerator');
@@ -829,15 +830,43 @@ exports.generateSign = async (req, res, next) => {
         } 
 
         const learnerList = await User.find({ promoId: promotion, role: 'apprenant' });
+        
         learnerList.forEach(learnerInfo => {
             // let link = req.protocol + '://' + req.get('host') + `/api/emargements/signature?apprenant=${learnerInfo._id}&jour=${signDate}&creneau=${creneau}`;
             let link = req.protocol + '://' + '192.168.1.15:3000' + `/api/emargements/signature?apprenant=${learnerInfo._id}&jour=${signDate}&creneau=${creneau}`;
-            const openSign = new Assign({
-                userId: learnerInfo._id,
-                signoffsheetId: emargementId,
-                signLink: link
-            });
-            openSign.save();
+        
+            QRCode.toDataURL(link)
+                .then(url => {
+
+                    let qrcodeData = url.replace(/^data:image\/\w+;base64,/, "");
+
+                    const openSign = new Assign({
+                        userId: learnerInfo._id,
+                        signoffsheetId: emargementId,
+                        qrcode: qrcodeData,
+                        signLink: link
+                    });
+
+                    openSign.save();
+
+                    transporter.sendMail({
+                        attachments: [{ 
+                            filename: 'qrcode.png',
+                            content: new Buffer.from(qrcodeData, 'base64')
+                        }],
+                        to: learnerInfo.email,
+                        from: `${process.env.EMAIL_USER}`,
+                        subject: `QRcode : Signature ${signDate}`,
+                        html: `
+                        <p> Vous avez 10 minutes pour signer la feuille d'émargement en scannant le QRcode suivant via l'application SIMPLON </p>
+                        <p> Vos identifiants sont valides uniquement sur l'application mobile. En cas d'oublie du mot de passe, il faut vous adresser à l'administration de Simplon</p>
+                        `
+                    });
+                })
+                .catch(err => {
+                    req.flash('error', 'Le QR code n\'a pas pu être générer');
+                    return res.redirect('/admin/emargements');
+                })
         });
      
         req.flash('success', 'Les apprenants ont 10min pour signé');

@@ -15,6 +15,10 @@ const assignSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    qrcode: {
+        type: String,
+        required: true
+    },
     alreadySign: {
         type: Boolean,
         default: false
