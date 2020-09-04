@@ -49,8 +49,8 @@ Aficher le journal des modifications de la base de données
 
 ### Lancement du serveur
 
-Environnement de développement : npm run dev
-Environnement de production : npm start
+1. Environnement de développement : npm run dev
+2. Environnement de production : npm start
 
 ### Documentation
 
