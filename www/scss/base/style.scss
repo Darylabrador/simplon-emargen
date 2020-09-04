@@ -179,6 +179,7 @@ a {
 
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) { 
+
     .btn, .btnSetting {
         font-size: 12px !important;
     }
@@ -210,6 +211,12 @@ a {
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) { 
+
+    #infoUser {
+        margin-top: 80px !important;
+        margin-bottom: 80px !important;
+    }
+
     .btn, .btnSetting{
         font-size: 12px !important;
     }
@@ -222,9 +229,23 @@ a {
         @include mixins.marginTopBottom(calc(2vw + 110px),calc(2vw + 120px));
     }
 
+    #error {
+        margin-top: 100px !important;
+        margin-bottom: -100px !important;
+    }
+
     .formWidth {
-        @include mixins.widthPourcentage(75%);
+        @include mixins.widthPourcentage(70%);
         @include mixins.paddingTopBottom(25px,0px);
+        @include mixins.marginTopBottom(150px,30px);
+
+        .mb-5 {
+            margin-bottom: 20px !important;
+        }
+
+        .pt-3, .pt-5 {
+            padding-top: 0px !important;
+        }
 
         .img-fluid {
             width: 40vw !important ;
@@ -237,6 +258,11 @@ a {
         input, p {
             font-size: 12px !important;
         }
+
+    }
+
+    #logoutBtn {
+        margin-bottom: 30px !important;
     }
 
 }
