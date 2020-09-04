@@ -10347,44 +10347,6 @@ a {
   text-decoration: none !important;
 }
 
-iframe {
-  width: 70%;
-  height: 100vh;
-}
-
-footer {
-  font-family: "Rototo", sans-serif;
-}
-
-select {
-  -moz-appearance: none;
-  /* Firefox */
-  -webkit-appearance: none;
-  /* Safari and Chrome */
-  appearance: none;
-}
-select.inputSelect {
-  background-image: url("https://api.iconify.design/dashicons/arrow-down-alt2.svg") !important;
-  background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), 100% 0 !important;
-  background-size: 15px 15px, 15px 15px, 2.5em 2.5em !important;
-  background-repeat: no-repeat !important;
-}
-
-li.page-item a.page-link {
-  color: #fff !important;
-  background: rgba(206, 0, 51, 0.7) !important;
-  border: none !important;
-  border-radius: 5px !important;
-  padding: 7px 13px 7px 13px !important;
-}
-li.page-item a.page-link:hover {
-  color: #A4082F !important;
-}
-li.page-item.active {
-  background: #CE0033 !important;
-  border-radius: 5px !important;
-}
-
 .iconify {
   font-size: 24px;
   cursor: pointer;
@@ -10414,10 +10376,6 @@ li.page-item.active {
   box-shadow: none !important;
   font-family: "Rototo", sans-serif;
   font-weight: bold !important;
-}
-
-.card, .modal, #detailEmargement {
-  font-family: "Rototo", sans-serif;
 }
 
 .inputBorder {
@@ -10466,320 +10424,6 @@ li.page-item.active {
   height: 60vh !important;
 }
 
-.btnSetting {
-  background: rgba(0, 0, 0, 0.65);
-  border-radius: 25px;
-  padding: 0px 15px 0px 15px !important;
-  border: 2px solid transparent;
-}
-.btnSetting .btnSetting__white {
-  color: #fff !important;
-}
-.btnSetting .btnSetting__white:hover {
-  color: #CE0033 !important;
-}
-.btnSetting:hover {
-  border: 2px solid #CE0033;
-}
-
-.dropdown-menu {
-  background: #CE0033 !important;
-}
-.dropdown-menu .dropdown-item {
-  color: #fff !important;
-}
-.dropdown-menu .dropdown-item:hover {
-  background: none !important;
-  font-weight: 600 !important;
-}
-
-.dropdown-toggle {
-  border: none !important;
-  outline: none !important;
-  background: transparent !important;
-}
-.dropdown-toggle:focus, .dropdown-toggle:hover {
-  color: #CE0033 !important;
-}
-.dropdown-toggle:after {
-  border: none;
-  font-size: 18px;
-  font-weight: bold;
-  content: ">";
-  rotate: 90deg;
-  vertical-align: middle !important;
-}
-
-.breadcrumb {
-  font-family: "Rototo", sans-serif;
-  background: transparent !important;
-}
-.breadcrumb .breadcrumb-item {
-  color: #000 !important;
-}
-.breadcrumb .breadcrumb-item.active {
-  font-weight: bold;
-}
-
-.version {
-  padding: 2px 10px;
-  border-radius: 25px;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.42);
-  font-size: 11px;
-}
-
-.btnModalRed {
-  background: #CE0033 !important;
-  color: #fff !important;
-  border-radius: 5px !important;
-  padding: 0px 7px 3px 7px !important;
-  margin-left: 15px;
-}
-.btnModalRed:hover {
-  background: #A4082F !important;
-}
-
-.image-preview {
-  width: 300px;
-  min-height: 100px;
-  border: 2px solid #ccc;
-}
-
-#datatableApprenant {
-  font-family: "Rototo", sans-serif;
-  border: 2px solid rgba(0, 0, 0, 0.42) !important;
-}
-#datatableApprenant #apprenanTable {
-  border-right: 1px solid rgba(0, 0, 0, 0.42) !important;
-}
-#datatableApprenant th {
-  border-top: 2px solid rgba(0, 0, 0, 0.42) !important;
-}
-#datatableApprenant #apprenanTable_previous, #datatableApprenant #apprenanTable_next {
-  display: none !important;
-}
-#datatableApprenant #apprenanTable_paginate {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-#datatableApprenant #apprenanTable_paginate ul li {
-  margin: 0px 2px;
-}
-
-#datatablePromotion {
-  font-family: "Rototo", sans-serif;
-  border: 2px solid rgba(0, 0, 0, 0.42) !important;
-}
-#datatablePromotion #promotionTable {
-  border-right: 1px solid rgba(0, 0, 0, 0.42) !important;
-}
-#datatablePromotion #promotionTable_previous, #datatablePromotion #promotionTable_next {
-  display: none !important;
-}
-#datatablePromotion th {
-  border-top: 2px solid rgba(0, 0, 0, 0.42) !important;
-}
-#datatablePromotion #promotionTable_paginate {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-#datatablePromotion #promotionTable_paginate ul li {
-  margin: 0px 2px;
-}
-
-@media (max-width: 575.98px) {
-  .btn, .btnSetting {
-    font-size: 12px !important;
-  }
-
-  .py-5 {
-    padding-top: 80px !important;
-    padding-bottom: 120px !important;
-  }
-
-  .my-5 {
-    margin-top: 80px !important;
-    margin-bottom: 120px !important;
-  }
-
-  #datatableApprenant {
-    font-size: 3.4vw;
-    width: 85% !important;
-  }
-  #datatableApprenant .iconify {
-    font-size: calc(2vw + 15px);
-  }
-  #datatableApprenant #apprenanTable {
-    width: 100% !important;
-  }
-  #datatableApprenant th:nth-child(3), #datatableApprenant td:nth-child(3), #datatableApprenant th:nth-child(2), #datatableApprenant td:nth-child(2), #datatableApprenant th:nth-child(4), #datatableApprenant td:nth-child(4) {
-    display: none;
-  }
-
-  #datatablePromotion {
-    font-size: 3vw;
-    width: 85% !important;
-  }
-  #datatablePromotion .iconify {
-    font-size: calc(2vw + 15px);
-  }
-  #datatablePromotion #promotionTable {
-    width: 100% !important;
-  }
-  #datatablePromotion th:nth-child(2), #datatablePromotion td:nth-child(2) {
-    display: none;
-  }
-
-  .formWidth {
-    width: 90% !important;
-    margin-top: 80px !important;
-    margin-bottom: 80px !important;
-  }
-  .formWidth .img-fluid {
-    width: 50vw !important;
-  }
-  .formWidth .my-5 {
-    margin-top: 10px !important;
-    margin-bottom: 30px !important;
-  }
-  .formWidth input, .formWidth p {
-    font-size: 12px !important;
-  }
-
-  #modalDelete .my-5, #modalSynchro .my-5 {
-    margin-top: 40px !important;
-    margin-bottom: 80px !important;
-  }
-
-  #detailEmargement {
-    font-size: 12px !important;
-    margin-bottom: 80px !important;
-  }
-  #detailEmargement.mt-5 {
-    margin-top: 20px !important;
-  }
-
-  .datable.my-5 {
-    margin-top: 30px !important;
-    margin-bottom: 30px !important;
-  }
-  .datable.py-5 {
-    padding-top: 20px !important;
-    padding-bottom: 80px !important;
-  }
-
-  #navbarNav, .dropdown-menu {
-    font-size: 13px !important;
-  }
-  #navbarNav .btnSetting__white, .dropdown-menu .btnSetting__white {
-    margin-top: 5px !important;
-    margin-right: 20px !important;
-  }
-}
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .btn, .btnSetting {
-    font-size: 12px !important;
-  }
-
-  .py-5 {
-    padding-top: calc(2vw + 120px) !important;
-    padding-bottom: 200px !important;
-  }
-
-  .my-5 {
-    margin-top: calc(2vw + 110px) !important;
-    margin-bottom: calc(2vw + 120px) !important;
-  }
-
-  #datatableApprenant {
-    width: 85% !important;
-  }
-  #datatableApprenant #apprenanTable {
-    width: 100% !important;
-  }
-  #datatableApprenant th:nth-child(3), #datatableApprenant td:nth-child(3), #datatableApprenant th:nth-child(2), #datatableApprenant td:nth-child(2), #datatableApprenant th:nth-child(4), #datatableApprenant td:nth-child(4) {
-    display: none;
-  }
-
-  #datatablePromotion {
-    width: 85% !important;
-  }
-  #datatablePromotion #promotionTable {
-    width: 100% !important;
-  }
-  #datatablePromotion th:nth-child(2), #datatablePromotion td:nth-child(2) {
-    display: none;
-  }
-
-  .formWidth {
-    width: 75% !important;
-    padding-top: 25px !important;
-    padding-bottom: 0px !important;
-  }
-  .formWidth .img-fluid {
-    width: 40vw !important;
-  }
-  .formWidth .my-5 {
-    margin-top: 10px !important;
-    margin-bottom: 30px !important;
-  }
-  .formWidth input, .formWidth p {
-    font-size: 12px !important;
-  }
-
-  #modalDelete .my-5, #modalSynchro .my-5 {
-    margin-top: 40px !important;
-    margin-bottom: 80px !important;
-  }
-
-  #detailEmargement {
-    font-size: 12px !important;
-    margin-bottom: 80px !important;
-  }
-  #detailEmargement.mt-5 {
-    margin-top: 20px !important;
-  }
-
-  .datable.my-5 {
-    margin-top: 80px !important;
-    margin-bottom: 160px !important;
-  }
-  .datable.py-5 {
-    padding-top: 80px !important;
-    padding-bottom: 80px !important;
-  }
-
-  #navbarNav, .dropdown-menu {
-    font-size: 13px !important;
-  }
-  #navbarNav .btnSetting__white, .dropdown-menu .btnSetting__white {
-    margin-top: 5px !important;
-    margin-right: 20px !important;
-  }
-
-  #templateEdit {
-    margin-top: 130px !important;
-    margin-bottom: 190px !important;
-  }
-}
-@media (min-width: 768px) and (max-width: 991.98px) {
-  .formWidth {
-    width: 65% !important;
-  }
-}
-@media (min-width: 992px) and (max-width: 1199.98px) {
-  .formWidth {
-    width: 50% !important;
-  }
-}
-@media (min-width: 1200px) {
-  .formWidth {
-    width: 40% !important;
-  }
-}
 /* The side navigation menu */
 .sidenav {
   height: 100%;
@@ -10839,6 +10483,22 @@ li.page-item.active {
   padding: 20px;
 }
 
+.btnSetting {
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 25px;
+  padding: 0px 15px 0px 15px !important;
+  border: 2px solid transparent;
+}
+.btnSetting .btnSetting__white {
+  color: #fff !important;
+}
+.btnSetting .btnSetting__white:hover {
+  color: #CE0033 !important;
+}
+.btnSetting:hover {
+  border: 2px solid #CE0033;
+}
+
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
   .sidenav {
@@ -10847,6 +10507,105 @@ li.page-item.active {
 
   .sidenav a {
     font-size: 18px;
+  }
+}
+@media (max-width: 575.98px) {
+  .btn, .btnSetting {
+    font-size: 12px !important;
+  }
+
+  .py-5 {
+    padding-top: 80px !important;
+    padding-bottom: 120px !important;
+  }
+
+  .my-5 {
+    margin-top: 80px !important;
+    margin-bottom: 120px !important;
+  }
+
+  .formWidth {
+    width: 90% !important;
+    margin-top: 80px !important;
+    margin-bottom: 80px !important;
+  }
+  .formWidth .img-fluid {
+    width: 50vw !important;
+  }
+  .formWidth .my-5 {
+    margin-top: 10px !important;
+    margin-bottom: 30px !important;
+  }
+  .formWidth input, .formWidth p {
+    font-size: 12px !important;
+  }
+}
+@media (min-width: 576px) and (max-width: 767.98px) {
+  #infoUser {
+    margin-top: 80px !important;
+    margin-bottom: 80px !important;
+  }
+
+  .btn, .btnSetting {
+    font-size: 12px !important;
+  }
+
+  .py-5 {
+    padding-top: calc(2vw + 120px) !important;
+    padding-bottom: 200px !important;
+  }
+
+  .my-5 {
+    margin-top: calc(2vw + 110px) !important;
+    margin-bottom: calc(2vw + 120px) !important;
+  }
+
+  #error {
+    margin-top: 100px !important;
+    margin-bottom: -100px !important;
+  }
+
+  .formWidth {
+    width: 70% !important;
+    padding-top: 25px !important;
+    padding-bottom: 0px !important;
+    margin-top: 150px !important;
+    margin-bottom: 30px !important;
+  }
+  .formWidth .mb-5 {
+    margin-bottom: 20px !important;
+  }
+  .formWidth .pt-3, .formWidth .pt-5 {
+    padding-top: 0px !important;
+  }
+  .formWidth .img-fluid {
+    width: 40vw !important;
+  }
+  .formWidth .my-5 {
+    margin-top: 10px !important;
+    margin-bottom: 30px !important;
+  }
+  .formWidth input, .formWidth p {
+    font-size: 12px !important;
+  }
+
+  #logoutBtn {
+    margin-bottom: 30px !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .formWidth {
+    width: 65% !important;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .formWidth {
+    width: 50% !important;
+  }
+}
+@media (min-width: 1200px) {
+  .formWidth {
+    width: 40% !important;
   }
 }
 
