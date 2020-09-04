@@ -1,5 +1,8 @@
-let errorMessage = document.getElementById('error');
+/**
+ * Handle action on sign page
+ */
 
+let errorMessage = document.getElementById('error');
 let canvas   = document.getElementById('signature-pad');
 let savedBtn = document.getElementById('save-png');
 let clearBtn = document.getElementById('clear');
@@ -10,6 +13,11 @@ let req = new XMLHttpRequest();
 let url = "http://192.168.1.15:3000/api/configuration/signature";
 let method = "POST";
 
+/**
+ * Display message on the screen
+ * @param {String} type 
+ * @param {String} message 
+ */
 function displayMessageSign(type, message) {
     errorMessage.innerHTML = `
         <div class="alert alert-${type} fade show my-0" role="alert" style="margin-bottom: -45px !important; margin-top: 20px !important;">
@@ -22,19 +30,20 @@ function displayMessageSign(type, message) {
     }, 4000);
 }
 
+// Display on message if we got one from localStorage
 if (localStorage.getItem('message') != null) {
     let messageConfig = localStorage.getItem('message');
     displayMessageSign('danger', messageConfig);
     localStorage.removeItem('message');
 }
 
+// Handle action after clicking on "save" button
 savedBtn.addEventListener('click', function () {
     if (signaturePad.isEmpty()) {
         return displayMessageSign('danger', "Aucune signature détectée");
     }
 
     let signDataImage = signaturePad.toDataURL('image/png');
-
     let formData = new FormData();
     formData.append('signature', signDataImage);
     req.open(method, url);
@@ -69,8 +78,10 @@ savedBtn.addEventListener('click', function () {
             }
         }
     }
+
 });
 
+// handle the action to clear data and restart drawing
 clearBtn.addEventListener('click', function () {
     signaturePad.clear();
 });

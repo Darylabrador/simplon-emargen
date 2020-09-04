@@ -7,18 +7,23 @@ let req = new XMLHttpRequest();
 let url = "http://192.168.1.15:3000/api/login";
 let method, data, dataSend;
 
+/**
+ * Display message on the screen
+ * @param {String} type 
+ * @param {String} message 
+ */
 function displayMessagelogin(type, message) {
     errorMessage.innerHTML = `
         <div class="alert alert-${type} fade show my-0" role="alert">
             <strong style="font-size: 12px !important;"> ${message} </strong>
-        </div>
-    `;
+        </div>`;
 
     setTimeout(() => {
         errorMessage.innerHTML = "";
     }, 4000);
 }
 
+// Handle login action
 loginFormContainer.addEventListener('submit', evt => {
     evt.preventDefault();
     method = "POST";
@@ -65,6 +70,7 @@ loginFormContainer.addEventListener('submit', evt => {
     }
 })
 
+// Verify if we have a token
 if(document.readyState == "loading") {
     if (localStorage.getItem('token') != null) {
         location.href = "accueil.html";

@@ -1,14 +1,18 @@
 document.addEventListener('deviceready', function() {
 
-    let signMessage  = document.getElementById('error');
+    var signMessage  = document.getElementById('error');
     var isConfigSign = localStorage.getItem('notConfigSign');
     
+    /**
+     * Display message on the screen
+     * @param {String} type 
+     * @param {String} message 
+     */
     function displaySignMsg(type, message) {
         signMessage.innerHTML = `
         <div class="alert alert-${type} fade show my-0" role="alert" style="margin-bottom: -45px !important; margin-top: 10px !important;">
             <strong style="font-size: 12px !important;"> ${message} </strong>
-        </div>
-    `;
+        </div>`;
 
         setTimeout(() => {
             loginMessage.innerHTML = "";
@@ -16,6 +20,7 @@ document.addEventListener('deviceready', function() {
         }, 4000);
     }
 
+    // Prepare the scan (Authorization and show the preview)
     document.querySelector("#prepare").addEventListener("touchend", function () {
         if (isConfigSign == 'false') {
             localStorage.setItem('message', 'Vous devez configuré votre signature');
@@ -25,6 +30,7 @@ document.addEventListener('deviceready', function() {
         }
     });
 
+    // Enable the scan mode
     document.querySelector("#scan").addEventListener("touchend", function () {
         window.QRScanner.scan(displayContents);
     });
@@ -51,6 +57,11 @@ document.addEventListener('deviceready', function() {
         }
     }
 
+    /**
+     * Sign the signoffsheet 
+     * @method GET
+     * @param {String} urlSend 
+     */
     function signDoc(urlSend) {
         let request = new XMLHttpRequest();
         let methods = "GET";
@@ -86,6 +97,9 @@ document.addEventListener('deviceready', function() {
         }
     }
 
+    /**
+     * Display content after scanning the QRcode
+     */
     function displayContents(err, text) {
         if (err) {
             // an error occurred, or the scan was canceled (error code `6`)

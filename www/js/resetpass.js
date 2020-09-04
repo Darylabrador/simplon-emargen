@@ -9,19 +9,23 @@ let req = new XMLHttpRequest();
 let url = "http://192.168.1.15:3000/api/reinitialisation";
 let method, data, dataSend;
 
+/**
+ * Display message on the screen
+ * @param {String} type 
+ * @param {String} message 
+ */
 function displayMessageReset(type, message) {
     errorMessage.innerHTML = "";
     errorMessage.innerHTML = `
          <div class="alert alert-${type} fade show my-0" role="alert">
             <strong style="font-size: 12px !important;"> ${message} </strong>
-        </div>
-    `;
-
+        </div>`;
     setTimeout(() => {
         errorMessage.innerHTML = "";
     }, 4000);
 }
 
+// Handle resetting pass action
 resetFormContainer.addEventListener('submit', evt => {
     evt.preventDefault();
     method = "POST";
