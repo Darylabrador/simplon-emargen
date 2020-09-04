@@ -21,6 +21,7 @@ $(function () {
     var learnerId         = document.querySelector("#learnerId");
     var learnerIdReset    = document.querySelector("#learnerIdReinit");
 
+    // handle click on edit button
     if (editLearnersBtn.length != 0) {
         editLearnersBtn.forEach(editBtn => {
             editBtn.addEventListener("click", () =>{
@@ -50,6 +51,7 @@ $(function () {
         });
     };
 
+    // Handle click on reset pass button
     if (resetPassBtn.length != 0) {
         resetPassBtn.forEach(resetBtn => {
             resetBtn.addEventListener('click', evt => {
@@ -60,6 +62,7 @@ $(function () {
         });
     };
 
+    // Handle click on delete button
     if (deleteLearnersBtn.length != 0) {
         deleteLearnersBtn.forEach(deleteBtn => {
             deleteBtn.addEventListener("click", () =>{

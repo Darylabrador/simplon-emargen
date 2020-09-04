@@ -32,8 +32,25 @@ const uploadImage = multer({ storage: signatureStorage, fileFilter: imageFilter 
 
 const router = express.Router();
 
+/**
+ * Handle when user config his sign picture (mobile client)
+ * @name postSignature POST
+ * @function
+ * @memberof module:routers/api-admin
+ * @param {string} '/api/configuration/signature' - uri
+ * @param {function} adminController.postSignature
+ */
 router.post('/configuration/signature', isAuthApi, uploadImage, apiAdminController.postSignature);
 
+
+/**
+ * Handle sign document when scanning QRcode (mobile client)
+ * @name signEmargement GET
+ * @function
+ * @memberof module:routers/api-admin
+ * @param {string} '/api/emargements/signature' - uri
+ * @param {function} adminController.signEmargement
+ */
 router.get('/emargements/signature', isAuthApi, apiAdminController.signEmargement);
 
 module.exports = router;

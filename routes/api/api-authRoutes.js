@@ -11,6 +11,14 @@ const apiAuthController = require('../../controllers/api/api-authController');
 
 const router = express.Router();
 
+/**
+ * Handle login from API (mobile client)
+ * @name postLogin POST
+ * @function
+ * @memberof module:routers/api-auth
+ * @param {string} '/api/login' - uri
+ * @param {function} adminController.postLogin
+ */
 router.post(
     '/login', 
     [
@@ -24,6 +32,15 @@ router.post(
     apiAuthController.postLogin
 );
 
+
+/**
+ * Handle resetting password from API (mobile client)
+ * @name postReinitPass POST
+ * @function
+ * @memberof module:routers/api-auth
+ * @param {string} '/api/reinitialisation' - uri
+ * @param {function} adminController.postReinitPass
+ */
 router.post(
     '/reinitialisation', 
     isAuthApi, 

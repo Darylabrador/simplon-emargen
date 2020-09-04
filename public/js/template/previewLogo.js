@@ -1,25 +1,25 @@
 let logo        = document.querySelector("#logo");
 let previewLogo = document.querySelector("#previewLogo");
 
-// lorsqu'une image est sélectionné
+// When a picture is selected from input:file
 logo.addEventListener("change", function () {
 
-    // récupérer le fichier uploader au niveau des filesystem
+    // Get uploaded file from filesystems
     const file = this.files[0];
 
-    // si le fichier existe
+    // if file exist
     if(file) {
 
-        // Créer un objet qui va permettre d'avoir la preview
+        // Create object that allow to create a preview
         const reader = new FileReader();
         previewLogo.parentElement.classList.remove("image-preview", "bg-light");
 
-        // Quand l'image est chargé, on modifie les attribus sources
+        // When picture is uploaded, we modify image source to see it on the interface
         reader.addEventListener("load", function() {
             previewLogo.setAttribute("src", this.result);
         });
 
-        // lecture de l'image
+        // Set the preview visible for user
         reader.readAsDataURL(file);
     }
 });

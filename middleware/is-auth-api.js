@@ -6,8 +6,11 @@ const dotenv = require('dotenv').config();
 const jwt    = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
+
+    // Get Authorization header from request
     const authheader = req.get('Authorization');
 
+    // Verify if we have the Authorization header
     if(!authheader) {
         return res.status(401).json({
             success: false,
@@ -16,6 +19,7 @@ module.exports = (req, res, next) => {
         });
     }
 
+    // Try to decode the token using the secret, to know if it's authorized or not
     const token = authheader.split(' ')[1];
     let decodedToken;
 

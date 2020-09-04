@@ -20,10 +20,11 @@ $(function () {
     $("#promotionTable_paginate").addClass("mt-2");
     $(".pagination").addClass("justify-content-center");
 
-    var editPromotionBtn = document.querySelectorAll(".editPromotionBtn");
-    var deletePromotionBtn = document.querySelectorAll(".deletePromotionBtn");
-    var promotionId = document.querySelector("#promotionId");
+    var editPromotionBtn    = document.querySelectorAll(".editPromotionBtn");
+    var deletePromotionBtn  = document.querySelectorAll(".deletePromotionBtn");
+    var promotionId         = document.querySelector("#promotionId");
 
+    // handle click on edit btn
     if (editPromotionBtn.length != 0) {
         editPromotionBtn.forEach(editBtn => {
             editBtn.addEventListener("click", () => {
@@ -44,6 +45,7 @@ $(function () {
         });
     };
 
+    // handle click on delete btn
     if (deletePromotionBtn.length != 0) {
         deletePromotionBtn.forEach(deleteBtn => {
             deleteBtn.addEventListener("click", () => {
