@@ -338,10 +338,6 @@ li.page-item {
         #promotionTable {
             @include mixins.widthPourcentage(100%);
         }
-
-        th:nth-child(2), td:nth-child(2) {
-            display: none;
-        }
     }
 
     .formWidth {
@@ -429,10 +425,6 @@ li.page-item {
 
         #promotionTable {
             @include mixins.widthPourcentage(100%);
-        }
-
-        th:nth-child(2), td:nth-child(2) {
-            display: none;
         }
     }
 

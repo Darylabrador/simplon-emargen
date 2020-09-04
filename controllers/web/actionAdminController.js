@@ -250,7 +250,7 @@ exports.addAppprenant = async (req, res, next) => {
             return res.redirect('/admin/apprenants');
         }
 
-        const secretPass = await crypto.createHmac('sha256', 'm0MZyY48Ix9').update(email).digest('hex');
+        const secretPass = await crypto.createHmac('sha256', Date.now().toString()).update(email).digest('hex');
         const password   = secretPass.slice(0, 10);
         const hashedPwd  = await bcrypt.hash(password, 12);
 
@@ -343,7 +343,7 @@ exports.resetPassApprenant = async (req, res, next) => {
             return res.redirect('/admin/apprenants');
         }
 
-        const secretPass   = await crypto.createHmac('sha256', 'm0MZyY48Ix9').update(updatePassLearner.email).digest('hex');
+        const secretPass   = await crypto.createHmac('sha256', Date.now().toString()).update(updatePassLearner.email).digest('hex');
         const newPassword  = secretPass.slice(0, 10);
         const newHashedPwd = await bcrypt.hash(newPassword, 12);
         updatePassLearner.password = newHashedPwd;

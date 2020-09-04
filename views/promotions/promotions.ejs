@@ -30,7 +30,6 @@
                     <thead>
                         <tr>
                             <th scope="col">Promotion</th>
-                            <th scope="col">Nombre d'apprenants</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -39,7 +38,6 @@
                             <% yeargroups.forEach(promo => { %>
                             <tr>
                                 <td><%= promo.label %></td>
-                                <td>20</td>
                                 <td>
                                     <span class="iconify iconify__black mx-1 editPromotionBtn" data-id="<%= promo._id %>" data-inline="false"
                                         data-icon="clarity:pencil-solid"></span>
