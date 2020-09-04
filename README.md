@@ -1,5 +1,4 @@
-### Vous pouvez retrouver le client sur la branch : app-mobile
-### Ce client permet d'effectuer la signature via le scan d'un QR Code
+### Vous pouvez retrouver le client sur la branch : app-mobile, ce client permet d'effectuer la signature via le scan d'un QR Code
 
 ### Installation des modules
 > npm install
