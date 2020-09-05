@@ -6,9 +6,12 @@ module.exports = {
             validator: {
                 $jsonSchema: {
                     bsonType: "object",
-                    required: ["templateId", "urlSheet", "name", "learners", "days", "trainers", "timeStart", "timeEnd", "version", "versionningHistory", "fileExist", "signLocation"],
+                    required: ["templateId", "promoId", "urlSheet", "name", "learners", "days", "trainers", "timeStart", "timeEnd", "version", "versionningHistory", "fileExist", "signLocation"],
                     properties: {
                         templateId: {
+                            bsonType: 'objectId'
+                        },
+                        promoId: {
                             bsonType: 'objectId'
                         },
                         urlSheet: {
