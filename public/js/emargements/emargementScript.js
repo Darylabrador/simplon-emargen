@@ -16,7 +16,7 @@ if (btnSynchroInfo.length != 0) {
 if (linkBtn.length != 0) {
     linkBtn.forEach(btnGenerate => {
         btnGenerate.addEventListener('click', () => {
-            emargementIdSign.value = btnGenerate.getAttribute("data-id")
+            emargementIdSign.value = btnGenerate.getAttribute("data-id");
             $('#modalSignature').modal('toggle');
         })
     })

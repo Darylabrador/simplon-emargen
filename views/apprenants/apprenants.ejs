@@ -43,14 +43,19 @@
                                     <td><%= apprenantInfo.name %> <%= apprenantInfo.surname %></td>
                                     <td><%= apprenantInfo.signImage != null ? 'configurer' : 'non configurer' %></td>
                                     <td>
-                                        <span class="iconify iconify__black mx-1 editLearnersBtn" data-id="<%= apprenantInfo._id %>" data-inline="false" data-icon="clarity:pencil-solid"></span>
-                                        <span class="iconify iconify__blue mx-1 resetPassBtn" data-id="<%= apprenantInfo._id %>" data-inline="false" data-icon="mdi:lock-reset"></span>
-                                        <span class="iconify iconify__red mx-1 deleteLearnersBtn" data-id="<%= apprenantInfo._id %>" data-inline="false" data-icon="fa-solid:trash"></span>
+                                        <button class="editLearnersBtn bg-transparent border-0 mx-0 px-0" data-id="<%= apprenantInfo._id %>">
+                                            <span class="iconify iconify__black mx-1"  data-inline="false" data-icon="clarity:pencil-solid"></span>
+                                        </button>
+                                        <button class="resetPassBtn bg-transparent border-0 mx-0 px-0" data-id="<%= apprenantInfo._id %>">
+                                            <span class="iconify iconify__blue mx-1" data-inline="false" data-icon="mdi:lock-reset"></span>
+                                        </button>
+                                        <button class="deleteLearnersBtn bg-transparent border-0 mx-0 px-0" data-id="<%= apprenantInfo._id %>">
+                                            <span class="iconify iconify__red mx-1" data-inline="false" data-icon="fa-solid:trash"></span>
+                                        </button>
                                     </td>
                                 </tr>
                             <% }) %>
                         <% } %>
-
                     </tbody>
                 </table>
             </div>
