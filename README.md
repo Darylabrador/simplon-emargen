@@ -1,6 +1,6 @@
 # Emargen
 
-La structure du google sheet doit être de la manière suivante : 
+La structure du google sheet doit être de la manière suivante :
 
 <p align="center">
   <img src="https://github.com/Darylabrador/simplon-emargen/blob/Application-v2/ressources/Structure-googlesheet.PNG" width="650" title="hover text">

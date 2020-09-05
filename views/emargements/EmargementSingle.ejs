@@ -22,44 +22,7 @@
         </div>
     </main>
 
-    <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content p-0">
-                <div class="card-header bg-transparent font-weight-bold">
-                    Ajouter une feuille d’émargement
-                </div>
-                <form class="modal-body w-100 p-0" action="/admin/emargements/add" method="POST">
-                    <div class="p-4">
-                        <div class="my-3 mb-2 mr-sm-2">
-                            <label class="mb-1" for="googleSheetUrl" style="margin-left: 16px;">Lien du Google Sheet</label>
-                            <input style="padding-left: 16px !important;" type="url" class="form-control inputBorder"
-                                id="googleSheetUrl" name="googleSheetUrl" placeholder="Coller le lien ici">
-                        </div>
-                        <div class="my-3 mb-2 mr-sm-2">
-                            <label class="mb-1" for="pageNumber" style="margin-left: 16px;">Numéro de la feuille</label>
-                            <input required style="padding-left: 16px !important;" type="number" steps="1" min="1"
-                                class="form-control inputBorder" id="pageNumber" name="pageNumber" placeholder="1">
-                        </div>
-                        <div class="mb-4 mb-2 mr-sm-2">
-                            <label class="mb-1" for="template" style="margin-left: 16px;">Le template</label>
-                            <select class="form-control inputBorder inputSelect" name="template" id="template">
-                                <option value="">Choix du template à utiliser</option>
-                                <% templateInfo.forEach(templates => { %>
-                                <option value="<%= templates._id %>"><%= templates.name %></option>
-                                <% }) %>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="card-footer p-0 d-flex">
-                        <button class="btn btn-primary w-50 leftBorder py-2" data-dismiss="modal">Annuler</button>
-                        <div class="btnDivider"></div>
-                        <button type="submit" class="btn btn-secondary w-50 rightBorder py-2">Ajouter</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
+    <% include ../includes/modalAddEmargement , { templateInfo: templateInfo, promotions: promotions } %>
     <% include ../includes/footer %>
 </body>
 

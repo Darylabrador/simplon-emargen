@@ -568,7 +568,7 @@ exports.getDataFromSheet = async (req, res, next) => {
     const days       = [];
     const trainers   = [];
 
-    const { googleSheetUrl, pageNumber, template } = req.body;
+    const { googleSheetUrl, pageNumber, template, promo } = req.body;
     const infoUrl = googleSheetUrl.split('/')[5];
     const errors = validationResult(req);
 
@@ -578,9 +578,15 @@ exports.getDataFromSheet = async (req, res, next) => {
             return res.redirect('/admin/emargements');
         }
 
-        const learner  = await User.find({ role: "apprenant" });
+        const learner  = await User.find({ role: "apprenant", promoId: promo });
         const response = await axios.get(`https://spreadsheets.google.com/feeds/cells/${infoUrl}/${pageNumber}/public/full?alt=json`);
         const infoJson = response.data.feed.entry;
+
+        if(learner.length == 0) {
+            req.flash('error', 'La promotion est incorrecte');
+            return res.redirect('/admin/emargements');
+        }
+
         infoJson.forEach(data => {
             if (data.gs$cell.col == 1 && data.gs$cell.row != 1) {
                 learner.forEach(learnerInfo => {
@@ -605,6 +611,7 @@ exports.getDataFromSheet = async (req, res, next) => {
             urlSheet: `https://spreadsheets.google.com/feeds/cells/${infoUrl}/${pageNumber}/public/full?alt=json`,
             name: signoffPDF,
             templateId: template,
+            promoId: promo,
             timeStart: days[0],
             timeEnd: days[days.length - 1]
         });
@@ -774,16 +781,16 @@ exports.synchronisationToSheet = async (req, res, next) => {
  * @param {string} emargementId
  * @param {string} signDate
  * @param {string} creneau
- * @param {string} promotion
  * @throws Will throw an error if one error occursed
  */
 exports.generateSign = async (req, res, next) => {
-    const { emargementId, signDate, creneau, promotion } = req.body;
+    const { emargementId, signDate, creneau } = req.body;
 
     try {
         // store data before resetting
         const generalSign = await Signoffsheet.findById(emargementId);
         const generalSignArray = generalSign.signLocation;
+        const promotion = generalSign.promoId;
 
         if (generalSign.learners.length != generalSignArray.length) {
             // reset the document

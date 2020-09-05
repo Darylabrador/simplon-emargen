@@ -436,6 +436,9 @@ router.post(
             .isEmpty(),
         body('template', 'Veuillez choisir un template')
             .not()
+            .isEmpty(),
+        body('promo', 'Veuillez choisir la promotion')
+            .not()
             .isEmpty()
     ],
     adminActsController.getDataFromSheet

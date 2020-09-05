@@ -8,6 +8,11 @@ const signoffsheetSchema = mongoose.Schema({
         ref: "templates", 
         required: true
     },
+    promoId: {
+        type: ObjectId,
+        ref: 'yeargroups',
+        required: true
+    },
     urlSheet: {
         type: String,
         required: true

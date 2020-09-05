@@ -39,7 +39,13 @@
                             <% apprenants.forEach(apprenantInfo => { %>
                                 <tr>
                                     <td><%= apprenantInfo._id %></td>
-                                    <td><%= apprenantInfo.promoId.label %></td>
+                                    <td>
+                                        <% if (!apprenantInfo.promoId) { %>
+                                            Indisponible
+                                        <% } else { %>
+                                            <%= apprenantInfo.promoId.label %>
+                                        <% } %>
+                                        </td>
                                     <td><%= apprenantInfo.name %> <%= apprenantInfo.surname %></td>
                                     <td><%= apprenantInfo.signImage != null ? 'configurer' : 'non configurer' %></td>
                                     <td>
@@ -90,9 +96,11 @@
                             <label class="mb-0" for="promotion" style="margin-left: 13px;">Promotion</label>
                             <select class="form-control inputBorder inputSelect" id="promotion" name="promotion">
                                 <option value="">Choix de la promotion</option>
-                                <% promotions.forEach(promo => { %>
+                                <% if (promotions.length != 0 ) { %>
+                                    <% promotions.forEach(promo => { %>
                                     <option value="<%= promo._id %>"><%= promo.label %></option>
-                                <% }) %>
+                                    <% }) %>
+                                <% } %>
                             </select>
                         </div>
                     </div>
@@ -135,9 +143,11 @@
                             <label class="mb-0" for="promotion" style="margin-left: 13px;">Promotion</label>
                             <select class="form-control inputBorder inputSelect" id="promotionEdit" name="promotion">
                                 <option value="">Choix de la promotion</option>
-                                <% promotions.forEach(promo => { %>
-                                <option value="<%= promo._id %>"><%= promo.label %></option>
-                                <% }) %>
+                                <% if (promotions.length != 0 ) { %>
+                                    <% promotions.forEach(promo => { %>
+                                    <option value="<%= promo._id %>"><%= promo.label %></option>
+                                    <% }) %>
+                                <% } %>
                             </select>
                         </div>
                     </div>
