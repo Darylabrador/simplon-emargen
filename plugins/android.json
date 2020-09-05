@@ -1,0 +1,29 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.emargen.simplon"
+    },
+    "cordova-plugin-qrscanner": {
+      "PACKAGE_NAME": "com.emargen.simplon"
+    },
+    "cordova-plugin-camera": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "com.emargen.simplon"
+    },
+    "cordova-plugin-advanced-http": {
+      "PACKAGE_NAME": "com.emargen.simplon"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.emargen.simplon"
+    }
+  }
+}
