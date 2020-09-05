@@ -1,4 +1,14 @@
-### Vous pouvez retrouver le client permettant d'effectuer la signature (via le scan d'un qr code) sur la branch : app-mobile
+# Emargen
+
+La structure du google sheet doit être de la manière suivante : 
+
+<p align="center">
+  <img src="https://github.com/Darylabrador/simplon-emargen/blob/Application-v2/ressources/Structure-googlesheet.PNG" width="150" title="hover text">
+</p>
+
+## Information pour le client :
+
+Vous pouvez retrouver le client permettant d'effectuer la signature (via le scan d'un qr code) sur la branch : app-mobile
 
 ### Installation des modules
 > npm install
