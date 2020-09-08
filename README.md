@@ -8,7 +8,7 @@ La structure du google sheet doit être de la manière suivante :
 
 ## Information pour le client :
 
-Vous pouvez retrouver le client permettant d'effectuer la signature (via le scan d'un qr code) sur la branch : app-mobile
+Vous pouvez retrouver le client permettant d'effectuer la signature (via le scan d'un qr code) sur la branch : <a href="https://github.com/Darylabrador/simplon-emargen/tree/app-mobile"> app-mobile </a>
 
 ## Installation des modules
 > npm install
