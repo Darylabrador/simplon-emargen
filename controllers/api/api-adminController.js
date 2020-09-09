@@ -26,7 +26,7 @@ exports.signEmargement = async (req, res, next) => {
     try {
         // const link = req.protocol + '://' + req.get('host') + `/api/emargements/signature?apprenant=${apprenant}&jour=${jour}&creneau=${creneau}`;
         const link = req.protocol + '://' + '192.168.1.15:3000' + `/api/emargements/signature?apprenant=${apprenant}&jour=${jour}&creneau=${creneau}`;
-        const signCreneau = await Assign.findOne({ signLink: link, userId: apprenant});
+        const signCreneau = await Assign.findOne({ signLink: link, userId: req.userId });
 
         let timeCreated = signCreneau.createdAt;
         let timeNow = new Date();
@@ -35,7 +35,7 @@ exports.signEmargement = async (req, res, next) => {
         // 10min delay to sign (600000ms)
         if (isEndTimer <= 600000) {
             if (!signCreneau.alreadySign) {
-                const apprenantSign = await User.findOne({ _id: apprenant });
+                const apprenantSign = await User.findOne({ _id: req.userId });
                 const identite = `${apprenantSign.name} ${apprenantSign.surname}`;
                 const emargementInfo = await Signoffsheet.findOne({ _id: signCreneau.signoffsheetId });
 
